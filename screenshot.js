@@ -10,7 +10,7 @@ const path = require('path');
   await page.goto(fileUrl, { waitUntil: 'networkidle0', timeout: 60000 });
   
   // Warte kurz, bis Google Kalender geladen ist
-  await new Promise(resolve => setTimeout(resolve, 5000));
+  await new Promise(resolve => setTimeout(resolve, 12000));
   
   await page.screenshot({ path: 'dashboard.png', type: 'png' });
   await browser.close();
