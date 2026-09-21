@@ -1,0 +1,30 @@
+name: Generate Kindle Dashboard
+on:
+  schedule:
+    - cron: '0 * * * *' # Führt das Skript jede Stunde aus
+  workflow_dispatch: # Erlaubt manuelles Starten per Klick
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        
+      - name: Install Puppeteer
+        run: npm install puppeteer
+        
+      - name: Take Screenshot
+        run: node screenshot.js
+        
+      - name: Move to public folder
+        run: mkdir public && mv dashboard.png public/
+        
+      - name: Publish to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          publish_branch: gh-pages
+          force_orphan: true
