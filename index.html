@@ -32,10 +32,11 @@
 <body>
 
   <!-- Linke Box: Wetter für Sundern -->
-  <div class="box weather">
-    <a class="weatherwidget-io" href="https://forecast7.com/de/51d337d99/sundern/" data-label_1="SUNDERN" data-theme="pure" >Wetter Sundern</a>
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');</script>
-  </div>
+  <div class="box weather" style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+  <h2>Wetter Sundern</h2>
+  <!-- Statischer, zuverlässiger Wetter-Daten-Link der sich stündlich aktualisiert -->
+  <img src="https://wttr.in/Sundern?p0&lang=de" alt="Wetter" style="width: 100%; height: 85%; object-fit: contain; filter: grayscale(100%);">
+</div>
 
   <!-- Oben Rechts: Google Kalender Monatsübersicht -->
   <div class="box cal-month">
