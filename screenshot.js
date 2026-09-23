@@ -4,12 +4,14 @@ const puppeteer = require('puppeteer');
   const browser = await puppeteer.launch({
     args: [
       '--no-sandbox',
-      '--disable-setuid-sandbox'
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage'
     ]
   });
 
   const page = await browser.newPage();
 
+  // Exakte Display-Auflösung des Kindle Paperwhite 2 (Hochformat)
   await page.setViewport({
     width: 758,
     height: 1024,
