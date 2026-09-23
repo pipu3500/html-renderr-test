@@ -2,37 +2,228 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
+  <title>Kindle Dashboard</title>
   <style>
-    /* 1. Grundfläche exakt auf Kindle-Größe festlegen */
-    html, body {
+    /* Globales Reset für E-Ink Displays */
+    * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
+    }
+
+    html, body {
       width: 758px;
       height: 1024px;
       overflow: hidden;
       background-color: #ffffff;
       color: #000000;
-      font-family: sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
 
-    /* 2. Zentrierter Wrapper: Nutzt 1024x758 Platz und dreht ihn um 90 Grad */
-    .dashboard-wrapper {
+    /* Rotation-Wrapper: Erzeugt Querformat (1024x758) auf der Hochformat-Fläche (758x1024) */
+    .dashboard-container {
       position: absolute;
       top: 50%;
       left: 50%;
       width: 1024px;
       height: 758px;
       transform: translate(-50%, -50%) rotate(90deg);
-      box-sizing: border-box;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background-color: #ffffff;
+    }
+
+    /* Header mit Uhrzeit und Datum */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      border-bottom: 4px solid #000000;
+      padding-bottom: 15px;
+    }
+
+    .time-container {
+      line-height: 1;
+    }
+
+    .time {
+      font-size: 85px;
+      font-weight: 800;
+      letter-spacing: -2px;
+    }
+
+    .date {
+      font-size: 28px;
+      font-weight: 600;
+      margin-top: 5px;
+      text-transform: uppercase;
+    }
+
+    .status-badge {
+      font-size: 20px;
+      font-weight: 700;
+      border: 3px solid #000000;
+      padding: 8px 16px;
+      border-radius: 6px;
+    }
+
+    /* Hauptinhalt Grid */
+    .main-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-top: 20px;
+      flex-grow: 1;
+    }
+
+    .card {
+      border: 3px solid #000000;
+      border-radius: 8px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-title {
+      font-size: 22px;
+      font-weight: 800;
+      text-transform: uppercase;
+      border-bottom: 2px solid #000000;
+      padding-bottom: 8px;
+      margin-bottom: 15px;
+    }
+
+    /* Wetter Sektion */
+    .weather-temp {
+      font-size: 64px;
+      font-weight: 800;
+      margin-bottom: 5px;
+    }
+
+    .weather-desc {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+
+    .weather-details {
+      font-size: 18px;
+      line-height: 1.5;
+      font-weight: 500;
+    }
+
+    /* Termine Sektion */
+    .event-list {
+      list-style: none;
+    }
+
+    .event-item {
+      padding: 10px 0;
+      border-bottom: 1px solid #000000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .event-item:last-child {
+      border-bottom: none;
+    }
+
+    .event-time {
+      font-weight: 800;
+      font-size: 18px;
+      width: 80px;
+    }
+
+    .event-text {
+      font-size: 18px;
+      font-weight: 600;
+      flex-grow: 1;
+    }
+
+    /* Footer */
+    .footer {
+      border-top: 2px solid #000000;
+      padding-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 16px;
+      font-weight: 600;
     }
   </style>
 </head>
 <body>
 
-  <!-- Deinen bestehenden Dashboard-Inhalt hier in den Wrapper legen -->
-  <div class="dashboard-wrapper">
-    <!-- HIER DEIN DASHBOARD-HTML (Kalender, Wetter, etc.) -->
+  <div class="dashboard-container">
+    
+    <!-- HEADER -->
+    <div class="header">
+      <div class="time-container">
+        <div class="time" id="clock">12:00</div>
+        <div class="date" id="date-string">Mittwoch, 23. September</div>
+      </div>
+      <div class="status-badge">ONLINE</div>
+    </div>
+
+    <!-- MAIN GRID -->
+    <div class="main-content">
+      
+      <!-- WETTER CARD -->
+      <div class="card">
+        <div class="card-title">Wetter heute</div>
+        <div class="weather-temp">18°C</div>
+        <div class="weather-desc">Leicht bewölkt</div>
+        <div class="weather-details">
+          Wind: 12 km/h<br>
+          Luftfeuchtigkeit: 65%<br>
+          Regenwahrscheinlichkeit: 10%
+        </div>
+      </div>
+
+      <!-- TERMINE CARD -->
+      <div class="card">
+        <div class="card-title">Anstehende Termine</div>
+        <ul class="event-list">
+          <li class="event-item">
+            <span class="event-time">09:00</span>
+            <span class="event-text">System Checkup</span>
+          </li>
+          <li class="event-item">
+            <span class="event-time">14:30</span>
+            <span class="event-text">Projekt Update</span>
+          </li>
+          <li class="event-item">
+            <span class="event-time">18:00</span>
+            <span class="event-text">Kindle Sync</span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      <span>Kindle Paperwhite 2 Dashboard</span>
+      <span>Letztes Update: Automatisch via GitHub Actions</span>
+    </div>
+
   </div>
+
+  <script>
+    // Aktuelle Zeit und Datum direkt beim Rendering setzen
+    function updateDateTime() {
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      document.getElementById('clock').textContent = `${hours}:${minutes}`;
+
+      const options = { weekday: 'long', day: 'numeric', month: 'long' };
+      document.getElementById('date-string').textContent = now.toLocaleDateString('de-DE', options);
+    }
+    updateDateTime();
+  </script>
 
 </body>
 </html>
