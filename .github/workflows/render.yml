@@ -1,32 +1,40 @@
 name: Generate Kindle Dashboard
 on:
   schedule:
-    - cron: '0 * * * *' # Führt das Skript jede Stunde aus
-  workflow_dispatch: # Erlaubt manuelles Starten per Klick
+    - cron: '0 * * * *' # jede Stunde
+  workflow_dispatch:     # manuell per Klick startbar
+
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      id-token: write
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
-        
-      - name: Install Puppeteer
-        run: npm install puppeteer
-        
-      - name: Take Screenshot
+        uses: actions/checkout@v4
+
+      - name: Node einrichten
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Abhängigkeiten installieren (Puppeteer + sharp)
+        run: npm install
+
+      - name: Screenshot erzeugen (758x1024, Graustufen, gedreht)
         run: node screenshot.js
-        
-      - name: Move to public folder
-        run: mkdir public && mv dashboard.png public/
-        
-      - name: Publish to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        env:
+          # Steht das Dashboard auf dem Kindle auf dem Kopf: 90 -> 270 ändern
+          KINDLE_ROTATE: '90'
+
+      - name: In public-Ordner verschieben
+        run: mkdir -p public && mv dashboard.png preview.png public/
+
+      - name: Auf GitHub Pages veröffentlichen
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
           publish_branch: gh-pages
           force_orphan: true
-          timeout_minutes: 10
