@@ -1,10 +1,15 @@
 const puppeteer = require('puppeteer');
 
 (async () => {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox'
+    ]
+  });
+
   const page = await browser.newPage();
 
-  // Exakt 758x1024 Pixel für den Kindle Paperwhite 2
   await page.setViewport({
     width: 758,
     height: 1024,
