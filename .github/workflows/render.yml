@@ -3,6 +3,13 @@ on:
   schedule:
     - cron: '0 * * * *' # jede Stunde
   workflow_dispatch:     # manuell per Klick startbar
+  push:                  # neu rendern, wenn der Editor das Layout hochlädt
+    branches-ignore: [gh-pages]
+    paths: [layout.json, index.html, screenshot.js, editor.html]
+
+concurrency:
+  group: dashboard
+  cancel-in-progress: false
 
 permissions:
   contents: write
@@ -29,7 +36,7 @@ jobs:
           KINDLE_ROTATE: '90'
 
       - name: In public-Ordner verschieben
-        run: mkdir -p public && mv dashboard.png preview.png public/
+        run: mkdir -p public && mv dashboard.png preview.png public/ && cp editor.html public/
 
       - name: Auf GitHub Pages veröffentlichen
         uses: peaceiris/actions-gh-pages@v4
