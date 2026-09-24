@@ -2,9 +2,9 @@
   "version": 3,
   "profiles": [
     {
-      "name": "Paperwhite 2",
+      "name": "Paperwhite 2 1",
       "id": "paperwhite-2",
-      "file": "dashboard.png",
+      "file": "dashboard-paperwhite-2-1.png",
       "width": 758,
       "height": 1024,
       "rotate": 90,
