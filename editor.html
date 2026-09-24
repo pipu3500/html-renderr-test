@@ -37,12 +37,12 @@
 
   /* ---------- Kopfleiste ---------- */
   .bar {
-    display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px;
-    padding: 12px 20px;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px;
+    padding: 10px 16px;
     background: var(--panel);
     border-bottom: 1px solid var(--line);
   }
-  .bar h1 { margin: 0; font-size: 19px; font-weight: 600; letter-spacing: .01em; margin-right: 6px; }
+  .bar h1 { margin: 0; font-size: 18px; font-weight: 600; letter-spacing: .01em; margin-right: 2px; }
   .state {
     display: inline-flex; align-items: center; gap: 8px;
     padding: 4px 10px; border-radius: 99px; font-size: 13px;
@@ -111,9 +111,9 @@
   .card:not(.on) .nums, .card:not(.on) .opts { display: none; }
   .opts { display: grid; gap: 10px; margin-top: 12px; }
   .optf { display: grid; gap: 3px; font-size: 13px; color: var(--muted); }
-  .optf input {
+  .optf input, .optf select {
     width: 100%; padding: 7px 8px; border: 1px solid var(--line); border-radius: 6px;
-    background: #fff; color: var(--ink);
+    background: #fff; color: var(--ink); min-height: 36px;
   }
   .help { color: var(--muted); font-size: 12.5px; line-height: 1.35; margin-top: -4px; }
   .rotrow { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 13px; color: var(--muted); }
@@ -221,16 +221,48 @@
   }
   @media (pointer: coarse) { :root { --hs: 26px; } }
   @media (prefers-reduced-motion: reduce) { .track, .track::after { transition: none; } }
+
+  /* ---------- Geräte (Profile) ---------- */
+  .devsel { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--muted); }
+  .devsel select {
+    padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: var(--ink);
+    min-height: 40px; max-width: 250px; font-weight: 600;
+  }
+  .devinfo {
+    margin: 0 0 14px; padding: 10px 12px; background: #fff; border: 1px solid var(--line);
+    border-radius: 10px; font-size: 13px; color: var(--muted); line-height: 1.5;
+  }
+  .devinfo b { color: var(--ink); }
+  .devinfo .linkbtn { font-size: 13px; }
+  .chin {
+    position: absolute; display: none; align-items: center; justify-content: center;
+    font-size: 11px; letter-spacing: .12em; color: #7f8891; pointer-events: none; user-select: none;
+  }
+  .chin.r, .chin.l { top: 0; bottom: 0; writing-mode: vertical-rl; }
+  .chin.t, .chin.b { left: 0; right: 0; }
+  .device { position: relative; }
+  .btn.danger { color: var(--err); border-color: #e2b4b0; margin-right: auto; }
+  .btn[hidden] { display: none; }
+  dialog select, dialog input[type=number] {
+    padding: 9px 10px; border: 1px solid var(--line); border-radius: 6px; background: #fff; width: 100%; color: var(--ink);
+  }
+  .err { color: var(--err); font-size: 13px; min-height: 1.2em; margin: 0; }
+  .urlrow { display: flex; gap: 8px; }
+  .urlrow input { flex: 1; min-width: 0; padding: 9px 10px; border: 1px solid var(--line); border-radius: 6px; background: #eef1f4; font-size: 13px; }
+  dialog .two.three { grid-template-columns: 1fr 1fr 1fr; }
 </style>
 </head>
 <body>
 
 <header class="bar">
   <h1>Kindle-Dashboard</h1>
+  <label class="devsel">Gerät <select id="device" aria-label="Gerät wählen"></select></label>
+  <button class="btn" id="btnDevEdit" type="button">Bearbeiten</button>
+  <button class="btn" id="btnDevNew" type="button">Neues Gerät</button>
   <span class="state" id="state">Entwurf</span>
   <span class="spacer"></span>
   <button class="btn" id="btnLoad" type="button">Vom Repo laden</button>
-  <button class="btn" id="btnReset" type="button">Standardlayout</button>
+  <button class="btn" id="btnReset" type="button" title="Alle Fenster dieses Geräts auf das Standardlayout setzen">Zurücksetzen</button>
   <button class="btn" id="btnSettings" type="button">GitHub-Zugang</button>
   <button class="btn primary" id="btnUpload" type="button">Hochladen</button>
 </header>
@@ -238,6 +270,7 @@
 
 <main>
   <aside class="panel">
+    <div class="devinfo" id="devInfo"></div>
     <h2>Fenster</h2>
     <ul class="cards" id="cards"></ul>
 
@@ -251,18 +284,19 @@
           <option value="20">20 px</option>
         </select>
       </label>
-      <button class="linkbtn" id="btnExport" type="button">layout.json speichern</button>
-      <button class="linkbtn" id="btnImport" type="button">layout.json öffnen</button>
+      <button class="linkbtn" id="btnExport" type="button">profiles.json speichern</button>
+      <button class="linkbtn" id="btnImport" type="button">profiles.json öffnen</button>
       <input type="file" id="file" accept=".json,application/json" hidden>
     </div>
-    <p class="note">Die Größe des simulierten Displays entspricht dem Querformat 1024 × 758 px. Das Drehen ins Hochformat übernimmt GitHub beim Erzeugen des PNG.</p>
+    <p class="note">Die Layout-Fläche entspricht der Auflösung des Geräts geteilt durch den Zoom. Das Drehen ins Hochformat übernimmt GitHub beim Erzeugen des PNG.</p>
   </aside>
 
   <section class="stage" id="stage">
-    <div class="device">
+    <div class="device" id="device-frame">
       <div class="frame" id="frame"><div class="screen grid" id="screen" tabindex="0" aria-label="Simuliertes Kindle-Display"></div></div>
+      <span class="chin" id="chin">KINDLE-UNTERKANTE</span>
     </div>
-    <p class="hint">Fenster ziehen zum Verschieben, Griffe an Rand und Ecken zum Vergrößern. Mit den Pfeiltasten geht es pixelgenau, mit Umschalt in 10er-Schritten.</p>
+    <p class="hint">Fenster ziehen zum Verschieben, Griffe an Rand und Ecken zum Vergrößern. Mit den Pfeiltasten geht es pixelgenau, mit Umschalt in 10er-Schritten. Der breite Rand zeigt die Unterkante des Kindle.</p>
   </section>
 </main>
 
@@ -273,17 +307,51 @@
       <label>Benutzername <input type="text" id="cOwner" autocomplete="off" placeholder="dein-name"></label>
       <label>Repository <input type="text" id="cRepo" autocomplete="off" placeholder="html-renderr-test"></label>
     </div>
-    <div class="two">
-      <label>Branch <input type="text" id="cBranch" autocomplete="off" placeholder="leer = Standard-Branch"></label>
-      <label>Datei <input type="text" id="cPath" autocomplete="off" placeholder="layout.json"></label>
-    </div>
+    <label>Branch <input type="text" id="cBranch" autocomplete="off" placeholder="leer = Standard-Branch"></label>
     <label>Zugriffstoken
       <input type="password" id="cToken" autocomplete="off" placeholder="github_pat_…">
     </label>
-    <p>Lege unter <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">GitHub → Fine-grained tokens</a> ein Token nur für dieses Repository an: <b>Contents: Read and write</b>, optional <b>Actions: Read-only</b>, damit du siehst, wann das PNG fertig ist. Das Token bleibt in diesem Browser gespeichert und wird nur an api.github.com gesendet.</p>
+    <p>Lege unter <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">GitHub → Fine-grained tokens</a> ein Token nur für dieses Repository an: <b>Contents: Read and write</b>, optional <b>Actions: Read-only</b>, damit du siehst, wann die PNGs fertig sind. Das Token bleibt in diesem Browser gespeichert und wird nur an api.github.com gesendet.</p>
     <div class="row">
-      <button class="btn primary" value="save" id="cfgSave" type="submit">Speichern</button>
+      <button class="btn primary" value="save" type="submit">Speichern</button>
       <button class="btn" value="cancel" type="submit">Abbrechen</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="dlgDev">
+  <form method="dialog" id="devForm">
+    <h2 id="devTitle">Gerät</h2>
+    <label>Name <input type="text" id="dName" autocomplete="off" maxlength="40" placeholder="z. B. Paperwhite Küche"></label>
+    <label>Modell-Vorlage
+      <select id="dPreset"></select>
+    </label>
+    <div class="two">
+      <label>Breite in px <input type="number" id="dW" inputmode="numeric" min="200" max="4000"></label>
+      <label>Höhe in px <input type="number" id="dH" inputmode="numeric" min="200" max="4000"></label>
+    </div>
+    <p>Auflösung des Displays im Hochformat, wie das Kindle sie meldet (Breite kleiner als Höhe).</p>
+    <label>Ausrichtung
+      <select id="dRot">
+        <option value="90">Quer, Unterkante des Kindle rechts (90°)</option>
+        <option value="270">Quer, Unterkante des Kindle links (270°)</option>
+        <option value="0">Hochformat (0°)</option>
+        <option value="180">Hochformat kopfüber (180°)</option>
+      </select>
+    </label>
+    <div class="two">
+      <label>Zoom <input type="number" id="dZoom" step="0.01" min="0.5" max="4" inputmode="decimal"></label>
+      <label>PNG-Dateiname <input type="text" id="dFile" autocomplete="off" placeholder="dashboard-küche.png" spellcheck="false"></label>
+    </div>
+    <p id="dCanvas"></p>
+    <label>Adresse für dieses Kindle (IMAGE_URI in config.sh)
+      <span class="urlrow"><input type="text" id="dUrl" readonly><button class="btn" type="button" id="dCopy">Kopieren</button></span>
+    </label>
+    <p class="err" id="devErr" role="alert"></p>
+    <div class="row">
+      <button class="btn primary" value="save" type="submit" id="dSave">Speichern</button>
+      <button class="btn" value="cancel" type="submit" formnovalidate>Abbrechen</button>
+      <button class="btn danger" type="button" id="dDelete">Gerät löschen</button>
     </div>
   </form>
 </dialog>
@@ -292,33 +360,53 @@
 (() => {
   'use strict';
 
-  const SW = 1024, SH = 758, MIN = 60;
+  const MIN = 60;
   const ORDER = ['weather', 'calendar', 'agenda', 'photo'];
+  const FILE_RE = /^[a-z0-9][a-z0-9._-]{0,60}\.png$/;
+  const SRC = {
+    openmeteo: { name: 'Open-Meteo',        help: 'Sehr zuverlässig, weltweit, kostenlos. Schlichte Anzeige mit Symbolen (empfohlen).' },
+    dwd:       { name: 'DWD (Bright Sky)',  help: 'Daten des Deutschen Wetterdienstes, die beste Wahl für Orte in Deutschland.' },
+    metno:     { name: 'MET Norway (yr.no)', help: 'Norwegischer Wetterdienst, weltweit und sehr stabil. Zeigt Niederschlag in mm.' },
+    wttr:      { name: 'wttr.in (Bild)',    help: 'Fertiges Bild in Text-Optik wie bisher. Der Dienst ist manchmal überlastet.' }
+  };
   const META = {
-    weather:  { name: 'Wetter',          hint: 'Wetter-Bild von wttr.in',
+    weather:  { name: 'Wetter', hint: 'Vorhersage für bis zu 3 Tage',
                 icon: '<path d="M7 18h10a4 4 0 0 0 .5-8A6 6 0 0 0 6 11a3.5 3.5 0 0 0 1 7z"/>',
-                opt: { key: 'location', label: 'Ort', ph: 'Sundern',
-                       help: 'Ortsname, z. B. Sundern oder Berlin.' } },
+                fields: [
+                  { key: 'source', type: 'select', label: 'Wetterdienst', help: true,
+                    options: Object.keys(SRC).map((k) => [k, SRC[k].name]) },
+                  { key: 'location', type: 'text', label: 'Ort', ph: 'Sundern',
+                    help: 'Ortsname oder Koordinaten, z. B. 51.33, 7.97.' },
+                  { key: 'days', type: 'select', numeric: true, label: 'Vorhersage',
+                    options: [[1, '1 Tag (heute)'], [2, '2 Tage'], [3, '3 Tage']] } ] },
     calendar: { name: 'Google Kalender', hint: 'Monatsübersicht',
                 icon: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
-                opt: { key: 'calendarId', label: 'Kalender-ID', ph: 'xyz@group.calendar.google.com',
-                       help: 'Google Kalender → Einstellungen → Kalender integrieren. Der Kalender muss öffentlich sein.' } },
-    agenda:   { name: 'Google Termine',  hint: 'Nächste Termine als Liste',
+                fields: [{ key: 'calendarId', type: 'text', label: 'Kalender-ID', ph: 'xyz@group.calendar.google.com',
+                           help: 'Google Kalender → Einstellungen → Kalender integrieren. Der Kalender muss öffentlich sein.' }] },
+    agenda:   { name: 'Google Termine', hint: 'Nächste Termine als Liste',
                 icon: '<path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/>',
-                opt: { key: 'calendarId', label: 'Kalender-ID (leer = wie Google Kalender)', ph: 'leer lassen für denselben Kalender',
-                       help: 'Nur ausfüllen, wenn hier ein anderer Kalender erscheinen soll.' } },
-    photo:    { name: 'Google Drive',    hint: 'Foto aus Google Drive',
+                fields: [{ key: 'calendarId', type: 'text', label: 'Kalender-ID (leer = wie Google Kalender)', ph: 'leer lassen für denselben Kalender',
+                           help: 'Nur ausfüllen, wenn hier ein anderer Kalender erscheinen soll.' }] },
+    photo:    { name: 'Google Drive', hint: 'Foto aus Google Drive',
                 icon: '<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="m21 16-5-5-8 9"/>',
-                opt: { key: 'fileId', label: 'Datei-ID oder Freigabe-Link', ph: '1WVXOZY6CS56w8VjM-qV2itM60bWrqALy',
-                       help: 'Die Datei braucht die Freigabe „Jeder mit dem Link“. Den Link kannst du direkt einfügen.' } }
+                fields: [{ key: 'fileId', type: 'text', label: 'Datei-ID oder Freigabe-Link', ph: '1WVXOZY6CS56w8VjM-qV2itM60bWrqALy',
+                           help: 'Die Datei braucht die Freigabe „Jeder mit dem Link“. Den Link kannst du direkt einfügen.' }] }
   };
-  const DEFAULT = {
-    weather:  { enabled: true, x: 15,  y: 15,  w: 489, h: 728, rotate: 0, location: 'Sundern' },
-    calendar: { enabled: true, x: 519, y: 15,  w: 490, h: 475, rotate: 0, calendarId: 'family13776384795444561092@group.calendar.google.com' },
-    agenda:   { enabled: true, x: 519, y: 505, w: 238, h: 238, rotate: 0, calendarId: '' },
-    photo:    { enabled: true, x: 771, y: 505, w: 238, h: 238, rotate: 0, fileId: '1WVXOZY6CS56w8VjM-qV2itM60bWrqALy' }
+  // Grundlayout für eine Layout-Fläche von 1024 x 758 (wird bei anderen Flächen mitskaliert)
+  const BASE = {
+    weather:  { x: 15,  y: 15,  w: 489, h: 728, source: 'openmeteo', location: 'Sundern', days: 3 },
+    calendar: { x: 519, y: 15,  w: 490, h: 475, calendarId: 'family13776384795444561092@group.calendar.google.com' },
+    agenda:   { x: 519, y: 505, w: 238, h: 238, calendarId: '' },
+    photo:    { x: 771, y: 505, w: 238, h: 238, fileId: '1WVXOZY6CS56w8VjM-qV2itM60bWrqALy' }
   };
-  const KEY_DRAFT = 'kd-editor-draft', KEY_CFG = 'kd-editor-config';
+  const PRESETS = [
+    { id: 'k600',  w: 600,  h: 800,  name: 'Kindle Basic (bis 10. Gen), Touch' },
+    { id: 'pw2',   w: 758,  h: 1024, name: 'Paperwhite 1 und 2' },
+    { id: 'k1072', w: 1072, h: 1448, name: 'Paperwhite 3 und 4, Voyage, Oasis 1, Basic (11. Gen)' },
+    { id: 'pw5',   w: 1236, h: 1648, name: 'Paperwhite 5 (6,8 Zoll)' },
+    { id: 'oa2',   w: 1264, h: 1680, name: 'Oasis 2 und 3' }
+  ];
+  const KEY_DRAFT = 'kd-editor-draft-v3', KEY_OLD_DRAFT = 'kd-editor-draft', KEY_CFG = 'kd-editor-config';
 
   const $ = (id) => document.getElementById(id);
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
@@ -327,8 +415,17 @@
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* egal */ } }
   };
 
-  /* ---------- Zustand ---------- */
-  // Eingaben tolerant lesen: Einbettungs-Link -> Kalender-ID, Freigabe-Link -> Datei-ID
+  /* ---------- Hilfsfunktionen zu Auflösung und Fläche ---------- */
+  const suggestZoom = (w, h) => Math.round(Math.max(w, h) / 1024 * 100) / 100;
+  function canvasOf(p) {
+    const portrait = p.rotate === 0 || p.rotate === 180;
+    const nw = portrait ? p.width : p.height, nh = portrait ? p.height : p.width;
+    return { w: Math.round(nw / p.zoom), h: Math.round(nh / p.zoom) };
+  }
+  const slug = (s) => String(s).toLowerCase().replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss')
+    .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 30) || 'geraet';
+
+  /* ---------- Bereinigen (nie kaputte Daten weiterreichen) ---------- */
   function normOpt(key, v) {
     v = typeof v === 'string' ? v.replace(/[\u0000-\u001f]/g, '').trim().slice(0, 300) : '';
     if (key === 'calendarId') {
@@ -339,41 +436,88 @@
     if (key === 'fileId') { const m = v.match(/\/d\/([\w-]+)/) || v.match(/[?&]id=([\w-]+)/); return m ? m[1] : v; }
     return v;
   }
-  function cleanOne(id, s) {
-    s = s || {};
-    const d = DEFAULT[id], key = META[id].opt.key;
-    const n = (v, f) => (v === null || v === '' || !Number.isFinite(Number(v))) ? f : Math.round(Number(v));
-    const w = clamp(n(s.w, d.w), MIN, SW), h = clamp(n(s.h, d.h), MIN, SH);
-    let o = normOpt(key, s[key]);
-    if (!o && id !== 'agenda') o = d[key];            // leere Pflichtfelder -> Standardwert (Termine dürfen leer bleiben)
-    return {
-      enabled: typeof s.enabled === 'boolean' ? s.enabled : d.enabled,
-      x: clamp(n(s.x, d.x), 0, SW - w), y: clamp(n(s.y, d.y), 0, SH - h), w, h,
-      rotate: [0, 90, 180, 270].includes(Number(s.rotate)) ? Number(s.rotate) : 0,
-      [key]: o
-    };
+  function cleanField(f, raw, def, id) {
+    if (f.type === 'select') {
+      const v = f.numeric ? Number(raw) : String(raw);
+      return f.options.some((o) => o[0] === v) ? v : def;
+    }
+    const o = normOpt(f.key, raw);
+    return (!o && !(id === 'agenda')) ? def : o;
   }
-  function clean(src) {
-    const wid = (src && src.widgets) || {};
-    const out = {};
-    ORDER.forEach((id) => { out[id] = cleanOne(id, wid[id]); });
+  function cleanOne(id, s, dims) {
+    s = s || {};
+    const b = BASE[id];
+    const sx = dims.w / 1024, sy = dims.h / 758;
+    const dflt = { x: Math.round(b.x * sx), y: Math.round(b.y * sy), w: Math.round(b.w * sx), h: Math.round(b.h * sy) };
+    const n = (v, f) => (v === null || v === '' || v === undefined || !Number.isFinite(Number(v))) ? f : Math.round(Number(v));
+    const w = clamp(n(s.w, dflt.w), MIN, dims.w), h = clamp(n(s.h, dflt.h), MIN, dims.h);
+    const out = {
+      enabled: typeof s.enabled === 'boolean' ? s.enabled : true,
+      x: clamp(n(s.x, dflt.x), 0, dims.w - w), y: clamp(n(s.y, dflt.y), 0, dims.h - h), w, h,
+      rotate: [0, 90, 180, 270].includes(Number(s.rotate)) ? Number(s.rotate) : 0
+    };
+    META[id].fields.forEach((f) => { out[f.key] = cleanField(f, s[f.key], b[f.key], id); });
     return out;
   }
-  const serialize = () => JSON.stringify({ version: 2, widgets: state }, null, 2) + '\n';
+  function cleanWidgets(raw, dims) {
+    const out = {};
+    ORDER.forEach((id) => { out[id] = cleanOne(id, raw && raw[id], dims); });
+    return out;
+  }
+  function cleanProfile(raw, taken) {
+    raw = raw || {};
+    const num = (v, lo, hi, f) => { v = Number(v); return Number.isFinite(v) ? clamp(v, lo, hi) : f; };
+    const p = {};
+    p.name = String(raw.name || '').replace(/[\u0000-\u001f]/g, '').trim().slice(0, 40) || 'Gerät';
+    let id = slug(raw.id || p.name), k = 2;
+    while (taken.ids.has(id)) id = slug(raw.id || p.name) + '-' + (k++);
+    taken.ids.add(id); p.id = id;
+    let file = typeof raw.file === 'string' && FILE_RE.test(raw.file) ? raw.file : 'dashboard-' + id + '.png';
+    for (let j = 2; taken.files.has(file); j++) file = file.replace(/(-\d+)?\.png$/, '-' + j + '.png');
+    taken.files.add(file); p.file = file;
+    p.width = Math.round(num(raw.width, 200, 4000, 758));
+    p.height = Math.round(num(raw.height, 200, 4000, 1024));
+    p.rotate = [0, 90, 180, 270].includes(Number(raw.rotate)) ? Number(raw.rotate) : 90;
+    p.zoom = Math.round(num(raw.zoom, 0.5, 4, suggestZoom(p.width, p.height)) * 100) / 100;
+    p.widgets = cleanWidgets(raw.widgets, canvasOf(p));
+    return p;
+  }
+  function cleanDoc(rawList) {
+    const taken = { ids: new Set(), files: new Set() };
+    const list = (rawList || []).map((r) => cleanProfile(r, taken));
+    return list.length ? list : [cleanProfile({ name: 'Paperwhite 2', file: 'dashboard.png', width: 758, height: 1024, rotate: 90, zoom: 1 }, { ids: new Set(), files: new Set() })];
+  }
+  const legacyProfile = (widgets) => ({ name: 'Paperwhite 2', file: 'dashboard.png', width: 758, height: 1024, rotate: 90, zoom: 1, widgets });
+  function docFromJson(obj) {
+    if (obj && Array.isArray(obj.profiles)) return cleanDoc(obj.profiles);
+    if (obj && obj.widgets) return cleanDoc([legacyProfile(obj.widgets)]);        // alte layout.json
+    throw new Error('Format nicht erkannt');
+  }
+  const serialize = () => JSON.stringify({ version: 3, profiles: doc }, null, 2) + '\n';
 
-  let cfg = Object.assign({ owner: '', repo: '', branch: '', path: 'layout.json', token: '', grid: 5 }, store.get(KEY_CFG) || {});
+  /* ---------- Zustand ---------- */
+  let cfg = Object.assign({ owner: '', repo: '', branch: '', token: '', grid: 5 }, store.get(KEY_CFG) || {});
   if (!cfg.owner && /\.github\.io$/.test(location.hostname)) {           // auf GitHub Pages: Repo erkennen
     cfg.owner = location.hostname.split('.')[0];
     cfg.repo = location.pathname.split('/')[1] || '';
   }
-  const draft = store.get(KEY_DRAFT);
-  let state = clean(draft ? { widgets: draft } : { widgets: DEFAULT });
-  let baseline = draft ? null : serialize();     // null = Stand im Repo unbekannt
-  let selected = null;
-  let scale = 1;
+  let doc, cur, state, CW = 1024, CH = 758, baseline = null, selected = null, scale = 1;
+  const draft = store.get(KEY_DRAFT), oldDraft = store.get(KEY_OLD_DRAFT);
+  if (draft && Array.isArray(draft.profiles)) { doc = cleanDoc(draft.profiles); baseline = null; }
+  else if (oldDraft) { doc = cleanDoc([legacyProfile(oldDraft)]); baseline = null; }
+  else { doc = cleanDoc([]); baseline = serialize(); }
+  const hasDraft = !!(draft || oldDraft);
+  function use(id) {
+    cur = doc.find((p) => p.id === id) || doc[0];
+    state = cur.widgets;
+    const c = canvasOf(cur); CW = c.w; CH = c.h;
+    selected = null;
+    store.set('kd-editor-current', cur.id);
+  }
+  use(store.get('kd-editor-current'));
 
-  /* ---------- Aufbau ---------- */
-  const screen = $('screen'), frame = $('frame'), cards = $('cards');
+  /* ---------- Aufbau der Seitenleiste und Bühne ---------- */
+  const screen = $('screen'), frame = $('frame'), cards = $('cards'), deviceFrame = $('device-frame');
   const nodes = {}, cardEls = {};
 
   ORDER.forEach((id) => {
@@ -385,14 +529,21 @@
     screen.appendChild(el);
     nodes[id] = el;
 
+    const fieldsHtml = m.fields.map((f) => {
+      const inner = f.type === 'select'
+        ? `<select class="fld" data-k="${f.key}">${f.options.map((o) => `<option value="${o[0]}">${o[1]}</option>`).join('')}</select>`
+        : `<input type="text" class="fld" data-k="${f.key}" placeholder="${f.ph || ''}" spellcheck="false" autocomplete="off" autocapitalize="off">`;
+      const help = f.help === true ? `<small class="help" data-help="${f.key}"></small>` : (f.help ? `<small class="help">${f.help}</small>` : '');
+      return `<label class="optf">${f.label}${inner}</label>${help}`;
+    }).join('');
+
     const li = document.createElement('li');
     li.className = 'card'; li.dataset.id = id;
     li.innerHTML = `
       <label class="sw"><input type="checkbox" role="switch" data-k="enabled"><span class="track"></span>
         <span class="nm"><b>${m.name}</b><small>${m.hint}</small></span></label>
       <div class="opts">
-        <label class="optf">${m.opt.label}<input type="text" class="opt-input" data-k="${m.opt.key}" placeholder="${m.opt.ph}" spellcheck="false" autocomplete="off" autocapitalize="off"></label>
-        <small class="help">${m.opt.help}</small>
+        ${fieldsHtml}
         <div class="rotrow"><span>Inhalt drehen</span>
           <div class="seg" role="group" aria-label="Drehung von ${m.name}">
             <button type="button" data-rot="0">0°</button><button type="button" data-rot="90">90°</button><button type="button" data-rot="180">180°</button><button type="button" data-rot="270">270°</button>
@@ -409,6 +560,18 @@
   });
 
   /* ---------- Darstellung ---------- */
+  function paintDevices() {
+    const sel = $('device');
+    sel.innerHTML = doc.map((p) => `<option value="${p.id}">${p.name.replace(/</g, '&lt;')}</option>`).join('');
+    sel.value = cur.id;
+  }
+  const orientText = (r) => ({ 90: 'quer, Unterkante rechts', 270: 'quer, Unterkante links', 0: 'hoch', 180: 'hoch, kopfüber' }[r]);
+  const pngUrl = (p) => (cfg.owner && cfg.repo) ? `https://${cfg.owner}.github.io/${cfg.repo}/${p.file}` : `https://<user>.github.io/<repo>/${p.file}`;
+  function paintInfo() {
+    $('devInfo').innerHTML = `<b>${cur.name.replace(/</g, '&lt;')}</b><br>${cur.width} × ${cur.height} px, ${orientText(cur.rotate)}<br>` +
+      `Layout-Fläche ${CW} × ${CH} px (Zoom ${String(cur.zoom).replace('.', ',')})<br>PNG: <b>${cur.file}</b> ` +
+      `<button class="linkbtn" id="btnCopyUrl" type="button">Adresse kopieren</button>`;
+  }
   function paint() {
     ORDER.forEach((id) => {
       const s = state[id], el = nodes[id], c = cardEls[id];
@@ -417,17 +580,15 @@
       el.style.width = s.w + 'px'; el.style.height = s.h + 'px';
       el.classList.toggle('sel', selected === id && s.enabled);
       el.querySelector('.lbl span').textContent = `${s.w} × ${s.h}`;
-      el.querySelector('.lbl .sub').textContent = id === 'weather' ? s.location : '';
+      el.querySelector('.lbl .sub').textContent = id === 'weather' ? `${s.location}, ${SRC[s.source].name}, ${s.days} ${s.days === 1 ? 'Tag' : 'Tage'}` : '';
       el.querySelector('.lbl').style.transform = `rotate(${s.rotate}deg)`;
       c.classList.toggle('on', s.enabled);
       c.classList.toggle('sel', selected === id);
       c.querySelector('[data-k=enabled]').checked = s.enabled;
       c.querySelectorAll('[data-rot]').forEach((b) => b.setAttribute('aria-pressed', String(Number(b.dataset.rot) === s.rotate)));
-      const oi = c.querySelector('.opt-input');
-      if (document.activeElement !== oi) oi.value = s[oi.dataset.k];
-      c.querySelectorAll('.nums input').forEach((inp) => {
-        if (document.activeElement !== inp) inp.value = s[inp.dataset.k];
-      });
+      c.querySelectorAll('.fld').forEach((f) => { if (document.activeElement !== f) f.value = s[f.dataset.k]; });
+      const help = c.querySelector('[data-help=source]'); if (help) help.textContent = SRC[s.source].help;
+      c.querySelectorAll('.nums input').forEach((inp) => { if (document.activeElement !== inp) inp.value = s[inp.dataset.k]; });
     });
     updateState();
   }
@@ -437,30 +598,41 @@
     el.className = 'state ' + (dirty ? 'dirty' : 'synced');
     el.textContent = dirty ? 'Noch nicht hochgeladen' : 'Entspricht dem Repo';
   }
-  function changed() { store.set(KEY_DRAFT, state); paint(); }
+  function changed() { store.set(KEY_DRAFT, { profiles: doc }); paint(); }
 
+  /* Gehäuse: die Unterkante des Kindle ist breiter (bei 90° rechts, bei 270° links, hochkant unten/oben) */
   function fit() {
     const stage = $('stage');
-    const cs = getComputedStyle(document.documentElement);
-    const bz = parseFloat(cs.getPropertyValue('--bz')) || 0;
+    const narrow = window.matchMedia('(max-width: 900px)').matches;
+    const base = narrow ? 12 : 26, wide = Math.round(base * 2.1);
+    const side = { 90: 'r', 270: 'l', 0: 'b', 180: 't' }[cur.rotate];
+    const bz = { t: base, r: base, b: base, l: base }; bz[side] = wide;
+    deviceFrame.style.padding = `${bz.t}px ${bz.r}px ${bz.b}px ${bz.l}px`;
+    const chin = $('chin'); chin.className = 'chin ' + side; chin.style.display = 'flex';
+    chin.style.removeProperty('top'); chin.style.removeProperty('bottom'); chin.style.removeProperty('left'); chin.style.removeProperty('right');
+    if (side === 'r') { chin.style.right = '0'; chin.style.width = wide + 'px'; }
+    if (side === 'l') { chin.style.left = '0'; chin.style.width = wide + 'px'; }
+    if (side === 'b') { chin.style.bottom = '0'; chin.style.height = wide + 'px'; }
+    if (side === 't') { chin.style.top = '0'; chin.style.height = wide + 'px'; }
+
     const pad = parseFloat(getComputedStyle(stage).paddingLeft) || 0;
-    const wide = window.matchMedia('(min-width: 901px)').matches;
-    let s = (stage.clientWidth - 2 * pad - 2 * bz) / SW;
-    if (wide) s = Math.min(s, Math.max(0.5, (window.innerHeight - 190) / SH));
-    scale = clamp(s, 0.25, 1.25);
-    frame.style.width = SW * scale + 'px';
-    frame.style.height = SH * scale + 'px';
+    const wideView = window.matchMedia('(min-width: 901px)').matches;
+    let s = (stage.clientWidth - 2 * pad - bz.l - bz.r) / CW;
+    if (wideView) s = Math.min(s, Math.max(0.35, (window.innerHeight - 200 - bz.t - bz.b) / CH));
+    scale = clamp(s, 0.2, 1.25);
+    frame.style.width = CW * scale + 'px';
+    frame.style.height = CH * scale + 'px';
+    screen.style.width = CW + 'px'; screen.style.height = CH + 'px';
     screen.style.transform = `scale(${scale})`;
     document.documentElement.style.setProperty('--inv', String(1 / scale));
   }
   function applyGrid() {
     const g = Number(cfg.grid) || 1;
     screen.classList.toggle('grid', g > 1);
-    // Bei feinem Raster nur jede n-te Linie zeigen, damit das Display ruhig bleibt
-    screen.style.setProperty('--gs', (g > 1 ? g * Math.ceil(15 / g) : 15) + 'px');
+    screen.style.setProperty('--gs', (g > 1 ? g * Math.ceil(15 / g) : 15) + 'px');   // bei feinem Raster nur jede n-te Linie zeigen
     $('grid').value = String(g);
   }
-
+  function refreshAll() { paintDevices(); paintInfo(); fit(); paint(); }
   function select(id) { selected = id; paint(); }
 
   /* ---------- Ziehen und Skalieren ---------- */
@@ -469,9 +641,9 @@
 
   screen.addEventListener('pointerdown', (e) => {
     const w = e.target.closest('.w');
-    if (!w) { screen.focus({ preventScroll: true }); select(null); return; }
-    const id = w.dataset.id, h = e.target.closest('.h');
     screen.focus({ preventScroll: true });      // Fokus aus Zahlenfeldern holen, damit die Pfeiltasten das Fenster bewegen
+    if (!w) { select(null); return; }
+    const id = w.dataset.id, h = e.target.closest('.h');
     select(id);
     drag = { id, dir: h ? h.dataset.dir : 'move', sx: e.clientX, sy: e.clientY, s: Object.assign({}, state[id]), pid: e.pointerId };
     screen.setPointerCapture(e.pointerId);
@@ -482,13 +654,13 @@
     const dx = (e.clientX - drag.sx) / scale, dy = (e.clientY - drag.sy) / scale;
     const s = drag.s, t = state[drag.id];
     if (drag.dir === 'move') {
-      t.x = clamp(snap(s.x + dx), 0, SW - s.w);
-      t.y = clamp(snap(s.y + dy), 0, SH - s.h);
+      t.x = clamp(snap(s.x + dx), 0, CW - s.w);
+      t.y = clamp(snap(s.y + dy), 0, CH - s.h);
     } else {
       let L = s.x, R = s.x + s.w, T = s.y, B = s.y + s.h;
-      if (drag.dir.includes('e')) R = clamp(snap(R + dx), L + MIN, SW);
+      if (drag.dir.includes('e')) R = clamp(snap(R + dx), L + MIN, CW);
       if (drag.dir.includes('w')) L = clamp(snap(L + dx), 0, R - MIN);
-      if (drag.dir.includes('s')) B = clamp(snap(B + dy), T + MIN, SH);
+      if (drag.dir.includes('s')) B = clamp(snap(B + dy), T + MIN, CH);
       if (drag.dir.includes('n')) T = clamp(snap(T + dy), 0, B - MIN);
       t.x = L; t.y = T; t.w = R - L; t.h = B - T;
     }
@@ -500,12 +672,12 @@
 
   document.addEventListener('keydown', (e) => {
     if (!selected || !state[selected].enabled) return;
-    if (/^(INPUT|SELECT|TEXTAREA)$/.test(document.activeElement.tagName)) return;
+    if (/^(INPUT|SELECT|TEXTAREA)$/.test(document.activeElement.tagName) || $('dlg').open || $('dlgDev').open) return;
     const step = e.shiftKey ? 10 : 1;
     const d = { ArrowLeft: [-step, 0], ArrowRight: [step, 0], ArrowUp: [0, -step], ArrowDown: [0, step] }[e.key];
     if (!d) return;
     const t = state[selected];
-    t.x = clamp(t.x + d[0], 0, SW - t.w); t.y = clamp(t.y + d[1], 0, SH - t.h);
+    t.x = clamp(t.x + d[0], 0, CW - t.w); t.y = clamp(t.y + d[1], 0, CH - t.h);
     e.preventDefault(); changed();
   });
 
@@ -514,16 +686,18 @@
     const card = e.target.closest('.card'); if (!card) return;
     const id = card.dataset.id, k = e.target.dataset.k;
     if (k === 'enabled') { state[id].enabled = e.target.checked; if (e.target.checked) selected = id; }
-    else if (e.target.classList.contains('opt-input')) {
-      state[id][k] = e.target.value; state[id] = cleanOne(id, state[id]); e.target.value = state[id][k];
+    else if (e.target.classList.contains('fld')) {
+      state[id][k] = e.target.value;
+      state[id] = cleanOne(id, state[id], { w: CW, h: CH });
+      e.target.value = state[id][k];
     }
-    else { state[id][k] = Number(e.target.value); state[id] = cleanOne(id, state[id]); e.target.blur(); }
+    else { state[id][k] = Number(e.target.value); state[id] = cleanOne(id, state[id], { w: CW, h: CH }); e.target.blur(); }
     changed();
   });
   cards.addEventListener('input', (e) => {
     const card = e.target.closest('.card'); if (!card) return;
-    if (e.target.classList.contains('opt-input')) {          // Text: sofort übernehmen, aufräumen beim Verlassen des Feldes
-      state[card.dataset.id][e.target.dataset.k] = e.target.value; store.set(KEY_DRAFT, state); updateState(); paint(); return;
+    if (e.target.classList.contains('fld') && e.target.tagName === 'INPUT') {    // Text sofort übernehmen, aufräumen beim Verlassen
+      state[card.dataset.id][e.target.dataset.k] = e.target.value; store.set(KEY_DRAFT, { profiles: doc }); paint(); return;
     }
     if (!e.target.matches('.nums input')) return;
     const v = Number(e.target.value);
@@ -539,22 +713,25 @@
   });
   $('grid').addEventListener('change', (e) => { cfg.grid = Number(e.target.value); store.set(KEY_CFG, cfg); applyGrid(); });
 
+  $('device').addEventListener('change', (e) => { use(e.target.value); refreshAll(); });
+
   $('btnReset').addEventListener('click', () => {
-    if (!confirm('Alle Fenster auf das Standardlayout zurücksetzen?')) return;
-    state = clean({ widgets: DEFAULT }); selected = null; changed(); say('Standardlayout geladen. Zum Übernehmen noch hochladen.', 'ok');
+    if (!confirm('Alle Fenster dieses Geräts auf das Standardlayout zurücksetzen?')) return;
+    cur.widgets = state = cleanWidgets({}, { w: CW, h: CH }); selected = null; changed();
+    say('Standardlayout geladen. Zum Übernehmen noch hochladen.', 'ok');
   });
 
   /* Datei-Export/Import */
   $('btnExport').addEventListener('click', () => {
     const a = document.createElement('a');
     a.href = URL.createObjectURL(new Blob([serialize()], { type: 'application/json' }));
-    a.download = 'layout.json'; a.click(); URL.revokeObjectURL(a.href);
+    a.download = 'profiles.json'; a.click(); URL.revokeObjectURL(a.href);
   });
   $('btnImport').addEventListener('click', () => $('file').click());
   $('file').addEventListener('change', async (e) => {
     const f = e.target.files[0]; e.target.value = ''; if (!f) return;
-    try { state = clean(JSON.parse(await f.text())); selected = null; changed(); say('layout.json geöffnet.', 'ok'); }
-    catch { say('Die Datei ist keine gültige layout.json.', 'err'); }
+    try { doc = docFromJson(JSON.parse(await f.text())); use(cur.id); store.set(KEY_DRAFT, { profiles: doc }); refreshAll(); say('Datei geöffnet.', 'ok'); }
+    catch { say('Die Datei ist keine gültige profiles.json oder layout.json.', 'err'); }
   });
 
   /* ---------- Statusmeldungen ---------- */
@@ -564,6 +741,103 @@
     el.textContent = msg;
     if (link) { el.append(' '); const a = document.createElement('a'); a.href = link.href; a.target = '_blank'; a.rel = 'noopener'; a.textContent = link.text; el.append(a); }
   }
+  function copyText(text) {
+    const done = () => say('Adresse kopiert: ' + text, 'ok');
+    if (navigator.clipboard && window.isSecureContext) { navigator.clipboard.writeText(text).then(done, () => fallbackCopy(text, done)); }
+    else fallbackCopy(text, done);
+  }
+  function fallbackCopy(text, done) {
+    const t = document.createElement('textarea'); t.value = text; t.style.position = 'fixed'; t.style.opacity = '0';
+    document.body.appendChild(t); t.select();
+    try { document.execCommand('copy'); done(); } catch { say('Kopieren nicht möglich, bitte die Adresse von Hand markieren: ' + text, 'err'); }
+    t.remove();
+  }
+  $('devInfo').addEventListener('click', (e) => { if (e.target.id === 'btnCopyUrl') copyText(pngUrl(cur)); });
+
+  /* ---------- Gerät bearbeiten / neu ---------- */
+  let devMode = 'edit';
+  const presetOf = (w, h) => PRESETS.find((p) => p.w === w && p.h === h);
+  $('dPreset').innerHTML = PRESETS.map((p) => `<option value="${p.id}">${p.name} (${p.w} × ${p.h})</option>`).join('') + '<option value="custom">Eigene Auflösung</option>';
+
+  function devRead() {
+    return { name: $('dName').value.trim(), width: Number($('dW').value), height: Number($('dH').value),
+             rotate: Number($('dRot').value), zoom: Number($('dZoom').value), file: $('dFile').value.trim() };
+  }
+  function devRefresh() {
+    const v = devRead();
+    const ok = Number.isFinite(v.width) && Number.isFinite(v.height) && v.width >= 200 && v.height >= 200 && v.zoom >= 0.5;
+    if (ok) { const c = canvasOf(v); $('dCanvas').textContent = `Layout-Fläche im Editor: ${c.w} × ${c.h} px. Der Zoom bestimmt, wie groß Schrift und Kalender im PNG wirken (Vorschlag: ${String(suggestZoom(v.width, v.height)).replace('.', ',')}).`; }
+    else $('dCanvas').textContent = '';
+    $('dUrl').value = (cfg.owner && cfg.repo ? `https://${cfg.owner}.github.io/${cfg.repo}/` : 'https://<user>.github.io/<repo>/') + (v.file || '…');
+  }
+  function openDevice(mode) {
+    devMode = mode;
+    const p = mode === 'edit' ? cur : Object.assign({}, cur, { name: cur.name + ' 2', file: '' });
+    $('devTitle').textContent = mode === 'edit' ? 'Gerät bearbeiten' : 'Neues Gerät (Kopie des aktuellen Layouts)';
+    $('dName').value = p.name; $('dW').value = p.width; $('dH').value = p.height; $('dRot').value = String(p.rotate);
+    $('dZoom').value = p.zoom; $('dFile').value = mode === 'edit' ? p.file : '';
+    const pr = presetOf(p.width, p.height); $('dPreset').value = pr ? pr.id : 'custom';
+    $('dDelete').hidden = mode !== 'edit' || doc.length < 2;
+    $('devErr').textContent = '';
+    devRefresh();
+    $('dlgDev').showModal();
+  }
+  $('btnDevEdit').addEventListener('click', () => openDevice('edit'));
+  $('btnDevNew').addEventListener('click', () => openDevice('new'));
+  $('dPreset').addEventListener('change', (e) => {
+    const p = PRESETS.find((x) => x.id === e.target.value); if (!p) return;
+    $('dW').value = p.w; $('dH').value = p.h; $('dZoom').value = suggestZoom(p.w, p.h); devRefresh();
+  });
+  ['dW', 'dH'].forEach((id) => $(id).addEventListener('input', () => {
+    const w = Number($('dW').value), h = Number($('dH').value), pr = presetOf(w, h);
+    $('dPreset').value = pr ? pr.id : 'custom';
+    if (Number.isFinite(w) && Number.isFinite(h) && w >= 200 && h >= 200) $('dZoom').value = suggestZoom(w, h);
+    devRefresh();
+  }));
+  ['dRot', 'dZoom', 'dFile'].forEach((id) => $(id).addEventListener('input', devRefresh));
+  $('dName').addEventListener('input', () => {
+    if (devMode === 'new' && !$('dFile').dataset.touched) $('dFile').value = 'dashboard-' + slug($('dName').value) + '.png';
+    devRefresh();
+  });
+  $('dFile').addEventListener('input', () => { $('dFile').dataset.touched = '1'; });
+  $('dCopy').addEventListener('click', () => copyText($('dUrl').value));
+
+  $('devForm').addEventListener('submit', (e) => {
+    if (!e.submitter || e.submitter.value !== 'save') return;
+    const v = devRead();
+    const fail = (msg) => { e.preventDefault(); $('devErr').textContent = msg; };
+    if (!v.name) return fail('Bitte einen Namen eingeben.');
+    if (!(v.width >= 200 && v.width <= 4000 && v.height >= 200 && v.height <= 4000)) return fail('Breite und Höhe müssen zwischen 200 und 4000 liegen.');
+    if (!(v.zoom >= 0.5 && v.zoom <= 4)) return fail('Der Zoom muss zwischen 0,5 und 4 liegen.');
+    if (!v.file) v.file = 'dashboard-' + slug(v.name) + '.png';
+    if (!FILE_RE.test(v.file)) return fail('Dateiname: nur Kleinbuchstaben, Ziffern, Punkt, Minus, Unterstrich und am Ende .png.');
+    if (doc.some((p) => p !== (devMode === 'edit' ? cur : null) && p.file === v.file)) return fail('Diesen Dateinamen nutzt schon ein anderes Gerät.');
+    v.width = Math.round(v.width); v.height = Math.round(v.height); v.zoom = Math.round(v.zoom * 100) / 100;
+
+    const oldC = { w: CW, h: CH }, newC = canvasOf(v);
+    const scaleWidgets = (widgets) => {                                // Layout auf die neue Fläche umrechnen
+      const sx = newC.w / oldC.w, sy = newC.h / oldC.h, out = {};
+      ORDER.forEach((id) => { const s = widgets[id]; out[id] = Object.assign({}, s, { x: Math.round(s.x * sx), y: Math.round(s.y * sy), w: Math.round(s.w * sx), h: Math.round(s.h * sy) }); });
+      return out;
+    };
+    if (devMode === 'edit') {
+      Object.assign(cur, v);
+      cur.widgets = cleanWidgets(oldC.w === newC.w && oldC.h === newC.h ? cur.widgets : scaleWidgets(cur.widgets), newC);
+      use(cur.id);
+    } else {
+      const raw = Object.assign({}, v, { widgets: scaleWidgets(cur.widgets) });
+      const taken = { ids: new Set(doc.map((p) => p.id)), files: new Set(doc.map((p) => p.file)) };
+      const p = cleanProfile(raw, taken); p.file = v.file;
+      doc.push(p); use(p.id);
+    }
+    store.set(KEY_DRAFT, { profiles: doc }); refreshAll();
+    say(devMode === 'edit' ? 'Gerät gespeichert.' : 'Neues Gerät angelegt. Passe das Layout an und lade es hoch.', 'ok');
+  });
+  $('dDelete').addEventListener('click', () => {
+    if (!confirm(`Gerät „${cur.name}“ wirklich löschen? Die PNG-Datei ${cur.file} verschwindet beim nächsten Hochladen von GitHub.`)) return;
+    doc = doc.filter((p) => p !== cur); use(doc[0].id);
+    store.set(KEY_DRAFT, { profiles: doc }); $('dlgDev').close(); refreshAll(); say('Gerät gelöscht.', 'ok');
+  });
 
   /* ---------- GitHub ---------- */
   function ready() {
@@ -571,7 +845,6 @@
     say('Trage zuerst unter „GitHub-Zugang“ Benutzername, Repository und Token ein.', 'err');
     openSettings(); return false;
   }
-  const filePath = () => (cfg.path || 'layout.json').replace(/^\/+/, '');
   function gh(path, opts) {
     opts = opts || {};
     return fetch(`https://api.github.com/repos/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}/${path}`, Object.assign({}, opts, {
@@ -584,15 +857,15 @@
   function explain(res) {
     if (res.status === 401) return 'GitHub lehnt das Token ab (401). Ist es abgelaufen oder falsch kopiert?';
     if (res.status === 403) return 'Das Token darf hier nicht schreiben (403). Es braucht „Contents: Read and write“ für dieses Repository.';
-    if (res.status === 404) return 'Repository, Branch oder Datei nicht gefunden (404). Bei einem privaten Repo muss das Token Zugriff darauf haben.';
+    if (res.status === 404) return 'Repository oder Branch nicht gefunden (404). Bei einem privaten Repo muss das Token Zugriff darauf haben.';
     return 'GitHub antwortet mit Fehler ' + res.status + '.';
   }
   const refQ = () => (cfg.branch ? '?ref=' + encodeURIComponent(cfg.branch) : '');
   const b64dec = (s) => new TextDecoder().decode(Uint8Array.from(atob(s.replace(/\s/g, '')), (c) => c.charCodeAt(0)));
   const b64enc = (s) => { const b = new TextEncoder().encode(s); let r = ''; b.forEach((c) => { r += String.fromCharCode(c); }); return btoa(r); };
 
-  async function getRemote() {
-    const res = await gh('contents/' + filePath().split('/').map(encodeURIComponent).join('/') + refQ());
+  async function getRemote(path) {
+    const res = await gh('contents/' + path + refQ());
     if (res.status === 404) return { missing: true };
     if (!res.ok) throw new Error(explain(res));
     const j = await res.json();
@@ -604,11 +877,14 @@
     if (silent && !(cfg.owner && cfg.repo && cfg.token)) return;
     if (!silent && baseline !== serialize() && !confirm('Deine ungespeicherten Änderungen werden durch den Stand aus dem Repo ersetzt. Fortfahren?')) return;
     try {
-      say('Lade Layout aus dem Repo …');
-      const r = await getRemote();
-      if (r.missing) { say('Im Repo gibt es noch keine layout.json. Beim ersten Hochladen wird sie angelegt.'); return; }
-      state = clean(JSON.parse(r.text)); selected = null; baseline = serialize(); store.set(KEY_DRAFT, state); paint();
-      say('Layout aus dem Repo geladen.', 'ok');
+      say('Lade Einstellungen aus dem Repo …');
+      let r = await getRemote('profiles.json'), legacy = false;
+      if (r.missing) { r = await getRemote('layout.json'); legacy = true; }
+      if (r.missing) { say('Im Repo gibt es noch keine profiles.json. Beim ersten Hochladen wird sie angelegt.'); return; }
+      doc = docFromJson(JSON.parse(r.text)); use(cur ? cur.id : null);
+      baseline = legacy ? null : serialize();
+      store.set(KEY_DRAFT, { profiles: doc }); refreshAll();
+      say(legacy ? 'Alte layout.json geladen und als Gerät „Paperwhite 2“ übernommen. Zum Speichern im neuen Format bitte hochladen.' : 'Einstellungen aus dem Repo geladen.', 'ok');
     } catch (err) { say(err.message || 'Laden fehlgeschlagen. Ist das Netzwerk erreichbar?', 'err'); }
   }
 
@@ -617,17 +893,17 @@
     const btn = $('btnUpload'); btn.disabled = true;
     try {
       say('Lade hoch …');
-      ORDER.forEach((id) => { state[id] = cleanOne(id, state[id]); });
-      changed();
+      const keep = cur.id;
+      doc = cleanDoc(doc); use(keep); changed();                       // Eingaben vorher bereinigen
       const body = serialize();
       let result;
       for (let attempt = 0; attempt < 2; attempt++) {
-        const r = await getRemote();
-        const put = await gh('contents/' + filePath().split('/').map(encodeURIComponent).join('/'), {
+        const r = await getRemote('profiles.json');
+        const put = await gh('contents/profiles.json', {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(Object.assign({
-            message: 'Dashboard-Layout aktualisiert (Editor)',
+            message: 'Dashboard-Profile aktualisiert (Editor)',
             content: b64enc(body)
           }, r.sha ? { sha: r.sha } : {}, cfg.branch ? { branch: cfg.branch } : {}))
         });
@@ -637,7 +913,7 @@
       }
       if (!result) throw new Error('Die Datei wurde gleichzeitig geändert. Bitte noch einmal auf „Hochladen“ klicken.');
       baseline = body; updateState();
-      say('Hochgeladen. GitHub erzeugt jetzt das neue PNG.', 'ok');
+      say('Hochgeladen. GitHub erzeugt jetzt die PNG-Dateien.', 'ok');
       watchRun(result.commit && result.commit.sha);
     } catch (err) { say(err.message || 'Hochladen fehlgeschlagen. Ist das Netzwerk erreichbar?', 'err'); }
     finally { btn.disabled = false; }
@@ -647,7 +923,7 @@
   async function watchRun(sha) {
     if (!sha) return;
     const actions = { href: `https://github.com/${cfg.owner}/${cfg.repo}/actions`, text: 'Actions öffnen' };
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < 60; i++) {
       await new Promise((r) => setTimeout(r, i === 0 ? 4000 : 8000));
       try {
         const res = await gh('actions/runs?head_sha=' + sha);
@@ -656,27 +932,26 @@
         if (!runs.length) continue;
         const run = runs[0];
         if (run.status === 'completed') {
-          if (run.conclusion === 'success') say('Fertig. Das neue dashboard.png ist online und der Kindle holt es beim nächsten Abruf.', 'ok');
+          if (run.conclusion === 'success') say('Fertig. Die neuen PNG-Dateien sind online, die Kindles holen sie beim nächsten Abruf.', 'ok');
           else say('Der Workflow ist fehlgeschlagen.', 'err', { href: run.html_url, text: 'Protokoll ansehen' });
           return;
         }
-        say('GitHub erzeugt das PNG (' + (run.status === 'queued' ? 'wartet' : 'läuft') + ') …', '', actions);
+        say('GitHub erzeugt die PNG-Dateien (' + (run.status === 'queued' ? 'wartet' : 'läuft') + ') …', '', actions);
       } catch { return; }
     }
   }
 
-  /* ---------- Einstellungen ---------- */
+  /* ---------- GitHub-Zugang ---------- */
   function openSettings() {
-    $('cOwner').value = cfg.owner; $('cRepo').value = cfg.repo; $('cBranch').value = cfg.branch;
-    $('cPath').value = cfg.path; $('cToken').value = cfg.token;
+    $('cOwner').value = cfg.owner; $('cRepo').value = cfg.repo; $('cBranch').value = cfg.branch; $('cToken').value = cfg.token;
     $('dlg').showModal();
   }
   $('btnSettings').addEventListener('click', openSettings);
   $('cfgForm').addEventListener('submit', (e) => {
     if (e.submitter && e.submitter.value === 'save') {
       cfg.owner = $('cOwner').value.trim(); cfg.repo = $('cRepo').value.trim(); cfg.branch = $('cBranch').value.trim();
-      cfg.path = $('cPath').value.trim() || 'layout.json'; cfg.token = $('cToken').value.trim();
-      store.set(KEY_CFG, cfg);
+      cfg.token = $('cToken').value.trim();
+      store.set(KEY_CFG, cfg); paintInfo();
       say('GitHub-Zugang gespeichert.', 'ok');
     }
   });
@@ -689,8 +964,8 @@
   window.addEventListener('resize', fit);
   if (window.ResizeObserver) new ResizeObserver(fit).observe($('stage'));
 
-  applyGrid(); fit(); paint();
-  if (!draft) loadRemote(true);
+  applyGrid(); refreshAll();
+  if (!hasDraft) loadRemote(true);
 })();
 </script>
 </body>

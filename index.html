@@ -7,60 +7,58 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     html, body {
-      width: 1024px;
-      height: 758px;
       overflow: hidden;
       background: #ffffff;
       color: #000000;
-      font-family: sans-serif;
+      font-family: "DejaVu Sans", "Liberation Sans", Arial, sans-serif;
     }
     body { position: relative; }
 
-    /* Jedes Fenster wird per layout.json absolut positioniert */
-    .box {
-      position: absolute;
-      border: 4px solid #000;
-      background: #fff;
-      overflow: hidden;
-    }
+    /* Jedes Fenster wird per layout absolut positioniert */
+    .box { position: absolute; border: 4px solid #000; background: #fff; overflow: hidden; }
 
     /* Der Inhalt liegt in .rot und wird mittig gedreht (0, 90, 180, 270 Grad).
        Größe und Drehung setzt das Skript unten. */
     .rot { position: absolute; left: 50%; top: 50%; overflow: hidden; }
 
-    .weather {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      padding: 10px;
-    }
-    .weather h2 { flex: none; font-size: 26px; margin-bottom: 6px; }
-    .weather img {
-      flex: 1;
-      min-height: 0;
-      width: 100%;
-      object-fit: contain;
-      /* wttr.in liefert hell auf dunkel -> für E-Ink invertieren */
-      filter: invert(100%) grayscale(100%);
-    }
-
     .rot iframe { width: 100%; height: 100%; border: none; filter: grayscale(100%); }
 
-    .photo img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      padding: 5px;
-      filter: grayscale(100%);
+    .photo img { width: 100%; height: 100%; object-fit: contain; padding: 5px; filter: grayscale(100%); }
+
+    /* wttr.in als fertiges Bild (Quelle "wttr.in") */
+    .wttr { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 10px; }
+    .wttr h2 { flex: none; font-size: 26px; margin-bottom: 6px; }
+    .wttr img {
+      flex: 1; min-height: 0; width: 100%; object-fit: contain;
+      filter: invert(100%) grayscale(100%);       /* hell auf dunkel -> für E-Ink invertieren */
     }
+
+    /* Eigene Wetteranzeige (Open-Meteo, DWD, MET Norway) */
+    .wx { display: flex; flex-direction: column; }
+    .wx-head { flex: none; font-weight: 700; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .wx-cards { flex: 1; min-height: 0; display: flex; }
+    .wx-cards.col { flex-direction: column; }
+    .wx-card { flex: 1; min-width: 0; min-height: 0; overflow: hidden; display: flex; align-items: center; justify-content: space-evenly; }
+    .wx-card.v { flex-direction: column; }
+    .wx-card.h { flex-direction: row; }
+    .wx-cards.row .wx-card + .wx-card { border-left: 2px solid #000; }
+    .wx-cards.col .wx-card + .wx-card { border-top: 2px solid #000; }
+    .wx-day { font-weight: 700; }
+    .wx-temp { white-space: nowrap; }
+    .wx-temp b { font-weight: 700; }
+    .wx-temp span { color: #333; }
+    .wx-info { text-align: center; line-height: 1.3; }
+    .wx-info div { white-space: nowrap; }
+    .wx-credit { flex: none; text-align: right; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .wx-msg { margin: auto; text-align: center; padding: 14px; line-height: 1.35; }
   </style>
 </head>
 <body>
 <script>
-  // Standardlayout, falls keine layout.json übergeben wird (Querformat-Pixel, 1024x758)
+  // Standardwerte, falls kein Layout übergeben wird (Layout-Pixel, 1024x758)
   var DEFAULTS = {
-    weather:  { enabled: true, x: 15,  y: 15,  w: 489, h: 728, rotate: 0, location: 'Sundern' },
+    weather:  { enabled: true, x: 15,  y: 15,  w: 489, h: 728, rotate: 0,
+                source: 'openmeteo', location: 'Sundern', days: 3 },
     calendar: { enabled: true, x: 519, y: 15,  w: 490, h: 475, rotate: 0,
                 calendarId: 'family13776384795444561092@group.calendar.google.com' },
     agenda:   { enabled: true, x: 519, y: 505, w: 238, h: 238, rotate: 0, calendarId: '' },  // leer = wie Kalender
@@ -71,23 +69,18 @@
 
   var given = (window.LAYOUT && window.LAYOUT.widgets) || {};
 
-  function num(v, fallback) {
-    v = Number(v);
-    return isFinite(v) ? Math.round(v) : fallback;
-  }
+  function num(v, fallback) { v = Number(v); return isFinite(v) ? Math.round(v) : fallback; }
   function text(v, fallback) {
     v = typeof v === 'string' ? v.replace(/[\u0000-\u001f]/g, '').trim().slice(0, 300) : '';
     return v || fallback;
   }
-  // Kalender-ID: auch ein eingefügter Einbettungs-Link (…?src=ID) oder %40 statt @ ist okay
   function calendarId(v) {
     v = text(v, '');
     var m = v.match(/[?&]src=([^&]+)/);
     if (m) v = m[1];
-    try { v = decodeURIComponent(v); } catch (e) { /* unverändert lassen */ }
+    try { v = decodeURIComponent(v); } catch (e) { /* unverändert */ }
     return v.trim();
   }
-  // Drive-ID: auch ein Freigabe-Link (…/d/ID/… oder …?id=ID) ist okay
   function driveId(v) {
     v = text(v, '');
     var m = v.match(/\/d\/([\w-]+)/) || v.match(/[?&]id=([\w-]+)/);
@@ -98,23 +91,158 @@
       '&ctz=Europe%2FBerlin&showTitle=0&showPrint=0&showTabs=0&showCalendars=0&showTz=0&showNav=0' +
       '&mode=' + mode + (mode === 'AGENDA' ? '&showDate=0' : '');
   }
-  function make(tag, attrs) {
+  function make(tag, attrs, cls) {
     var e = document.createElement(tag);
     Object.keys(attrs || {}).forEach(function (k) { e.setAttribute(k, attrs[k]); });
+    if (cls) e.className = cls;
     return e;
+  }
+  function div(cls, txt) { var e = make('div', null, cls); if (txt != null) e.textContent = txt; return e; }
+  function clamp(v, a, b) { return Math.min(b, Math.max(a, v)); }
+
+  /* ---------- Wetter-Symbole (Linien, 64x64) ---------- */
+  var CLOUD = 'M18 46h28a10 10 0 0 0 1.5-19.9A15 15 0 0 0 19 29a8.5 8.5 0 0 0-1 17z';
+  var ICONS = {
+    clear:  '<circle cx="32" cy="32" r="11"/><path d="M32 8v8M32 48v8M8 32h8M48 32h8M15 15l5.7 5.7M43.3 43.3l5.7 5.7M49 15l-5.7 5.7M20.7 43.3L15 49"/>',
+    partly: '<circle cx="22" cy="22" r="8"/><path d="M22 6v4M22 34v4M6 22h4M34 22h4M10.7 10.7l2.8 2.8M33.3 10.7l-2.8 2.8"/>' +
+            '<path fill="#fff" transform="translate(6 6)" d="' + CLOUD + '"/>',
+    cloudy: '<path transform="translate(0 4)" d="' + CLOUD + '"/>',
+    fog:    '<path transform="translate(0 -4)" d="' + CLOUD + '"/><path d="M14 52h36M20 59h24"/>',
+    rain:   '<path transform="translate(0 -6)" d="' + CLOUD + '"/><path d="M24 46l-3 8M34 46l-3 8M44 46l-3 8"/>',
+    snow:   '<path transform="translate(0 -6)" d="' + CLOUD + '"/><path d="M23 48v7M19.5 51.5h7M33 51v7M29.5 54.5h7M43 48v7M39.5 51.5h7"/>',
+    thunder:'<path transform="translate(0 -6)" d="' + CLOUD + '"/><path d="M35 42l-8 11h8l-5 9"/>'
+  };
+  function icon(cat, size) {
+    var s = make('span'); s.style.display = 'block'; s.style.width = s.style.height = size + 'px';
+    s.innerHTML = '<svg viewBox="0 0 64 64" width="' + size + '" height="' + size + '" fill="none" stroke="#000" ' +
+      'stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round">' + (ICONS[cat] || ICONS.cloudy) + '</svg>';
+    return s;
+  }
+
+  function dayLabel(date, i, long) {
+    if (i === 0) return 'Heute';
+    if (i === 1) return 'Morgen';
+    var d = new Date(date + 'T12:00:00Z');
+    return d.toLocaleDateString('de-DE', { weekday: long ? 'long' : 'short', timeZone: 'UTC' });
+  }
+  function fmtMm(v) { return (Math.round(v * 10) / 10).toString().replace('.', ','); }
+
+  function fitText(el, fs) { el.style.fontSize = Math.max(9, Math.round(fs)) + 'px'; return el; }
+  // Schriftgröße so wählen, dass ein Text der Länge len in die Breite availW passt (fett ist breiter)
+  function fsFit(len, availW, maxByHeight, bold) {
+    return Math.min(maxByHeight, availW / (Math.max(len, 1) * (bold ? 0.68 : 0.6)));
+  }
+  function sized(el, w) { el.style.width = Math.round(w) + 'px'; el.style.textAlign = 'center'; return el; }
+
+  function dayTexts(day, i, cw) {
+    var lines = [];
+    var rain = day.pop != null ? 'Regen ' + day.pop + ' %' : (day.precip != null ? 'Regen ' + fmtMm(day.precip) + ' mm' : '');
+    if (rain) lines.push(rain);
+    if (day.wind != null) lines.push('Wind ' + day.wind + ' km/h');
+    return {
+      label: dayLabel(day.date, i, cw > 260),
+      hi: day.tmax == null ? '–' : day.tmax + '°',
+      lo: ' / ' + (day.tmin == null ? '–' : day.tmin + '°'),
+      lines: lines
+    };
+  }
+
+  /* Eine Wetterkarte (Tag). cw/ch = Kartengröße in Pixel, M = längste Texte aller Tage (für einheitliche Schrift). */
+  function weatherCard(day, i, cw, ch, M) {
+    var horiz = cw / ch >= 1.5;
+    var card = div('wx-card ' + (horiz ? 'h' : 'v'));
+    var T = dayTexts(day, i, cw);
+    var labelText = T.label, hiText = T.hi, loText = T.lo, lines = T.lines;
+    var infoLen = M.info, tempLen = M.temp;
+
+    // Breiten der Bausteine: nebeneinander (horiz) oder untereinander (vertikal)
+    var wl, wi, wt, wf, fl, fi, ft, ff, isize;
+    if (horiz) {
+      wl = cw * 0.27; wi = cw * 0.18; wt = cw * 0.26; wf = cw * 0.24;
+      fl = fsFit(M.label, wl, ch * 0.26, true);
+      isize = Math.min(wi, ch * 0.8);
+      ft = fsFit(tempLen, wt, ch * 0.34, true);
+      ff = fsFit(infoLen, wf, ch * 0.2, false);
+    } else {
+      wl = wt = wf = cw * 0.92; wi = cw * 0.6;
+      fl = fsFit(M.label, wl, ch * 0.10, true);
+      isize = Math.min(cw * 0.6, ch * 0.32);
+      ft = fsFit(tempLen, wt, ch * 0.13, true);
+      ff = fsFit(infoLen, wf, ch * 0.065, false);
+    }
+
+    var label = sized(fitText(div('wx-day', labelText), fl), wl);
+    var ic = icon(day.cat, Math.round(isize));
+    var temp = sized(fitText(div('wx-temp'), ft), wt);
+    var hi = make('b'); hi.textContent = hiText;
+    var lo = make('span'); lo.textContent = loText;
+    temp.appendChild(hi); temp.appendChild(lo);
+    var info = sized(fitText(div('wx-info'), ff), wf);
+    lines.forEach(function (l) { info.appendChild(div('', l)); });
+
+    card.appendChild(label); card.appendChild(ic); card.appendChild(temp); card.appendChild(info);
+    return card;
+  }
+
+  function renderWeather(root, data, n, W, H) {
+    root.className += ' wx';
+    var u = Math.min(W, H);
+    var headH = clamp(u * 0.075, 20, 40);
+    var credH = clamp(u * 0.04, 11, 15);
+    var head = fitText(div('wx-head', 'Wetter ' + data.place), headH * 0.72);
+    head.style.height = headH + 'px'; head.style.lineHeight = headH + 'px';
+    root.appendChild(head);
+
+    var days = data.days.slice(0, n);
+    var cnt = days.length;
+    var availW = W, availH = H - headH - credH - 4;
+    // Karten nebeneinander oder untereinander, je nachdem, was näher an "quadratisch" liegt
+    var aspRow = (availW / cnt) / availH, aspCol = availW / (availH / cnt);
+    var row = Math.abs(Math.log(aspRow)) <= Math.abs(Math.log(aspCol));
+    var cw = row ? availW / cnt : availW, ch = row ? availH : availH / cnt;
+
+    var M = { label: 1, temp: 1, info: 1 };
+    days.forEach(function (d, i) {
+      var t = dayTexts(d, i, cw);
+      M.label = Math.max(M.label, t.label.length);
+      M.temp = Math.max(M.temp, t.hi.length + t.lo.length);
+      t.lines.forEach(function (l) { M.info = Math.max(M.info, l.length); });
+    });
+    var wrap = div('wx-cards ' + (row ? 'row' : 'col'));
+    days.forEach(function (d, i) { wrap.appendChild(weatherCard(d, i, cw, ch, M)); });
+    root.appendChild(wrap);
+
+    var cred = fitText(div('wx-credit', data.credit || ''), credH * 0.8);
+    cred.style.height = credH + 'px'; cred.style.lineHeight = credH + 'px';
+    root.appendChild(cred);
+  }
+
+  function weatherMessage(root, msg) {
+    root.className += ' wx';
+    root.appendChild(div('wx-msg', 'Wetter nicht verfügbar' + (msg ? ': ' + msg : '')));
   }
 
   var mainCalendar = calendarId((given.calendar || {}).calendarId) || calendarId(DEFAULTS.calendar.calendarId);
 
   var BUILD = {
-    weather: function (root, s) {
+    weather: function (root, s, W, H) {
+      var source = ['openmeteo', 'dwd', 'metno', 'wttr'].indexOf(s.source) >= 0 ? s.source : 'openmeteo';
+      var n = clamp(num(s.days, 3), 1, 3);
       var place = text(s.location, DEFAULTS.weather.location);
-      root.className += ' weather';
-      var h = make('h2'); h.textContent = 'Wetter ' + place;
-      var img = make('img', { src: 'https://wttr.in/' + encodeURIComponent(place) + '.png?lang=de', alt: 'Wetter' });
-      root.appendChild(h); root.appendChild(img);
+      if (source === 'wttr') {
+        // wttr.in: fertiges Bild. Optionen: 1/2 = Tage (ohne Ziffer = 3 Tage), q = ohne "Weather report"-Zeile
+        root.className += ' wttr';
+        var h = make('h2'); h.textContent = 'Wetter ' + place;
+        var opts = (n < 3 ? String(n) : '') + 'q';
+        root.appendChild(h);
+        root.appendChild(make('img', { src: 'https://wttr.in/' + encodeURIComponent(place) + '_' + opts + '_lang=de.png', alt: 'Wetter' }));
+        return;
+      }
+      var data = window.WEATHER;
+      if (data && data.ok && data.days && data.days.length) renderWeather(root, data, n, W, H);
+      else weatherMessage(root, data && data.error);
     },
-    calendar: function (root, s) {
+    calendar: function (root) {
       root.appendChild(make('iframe', { src: calendarSrc(mainCalendar, 'MONTH'), scrolling: 'no' }));
     },
     agenda: function (root, s) {
@@ -127,6 +255,11 @@
       root.appendChild(make('img', { src: 'https://lh3.googleusercontent.com/d/' + encodeURIComponent(id), alt: 'Foto' }));
     }
   };
+
+  // Größe der Seite (Layout-Fläche) kommt vom Renderer, sonst 1024x758
+  var page = window.PAGE || { w: 1024, h: 758 };
+  document.documentElement.style.width = document.body.style.width = page.w + 'px';
+  document.documentElement.style.height = document.body.style.height = page.h + 'px';
 
   Object.keys(BUILD).forEach(function (id) {
     var d = DEFAULTS[id];
@@ -147,12 +280,13 @@
     // Nutzfläche innerhalb des Rahmens; bei 90/270 Grad Breite und Höhe tauschen
     var iw = w - 2 * BORDER, ih = h - 2 * BORDER;
     var swap = r === 90 || r === 270;
+    var rw = swap ? ih : iw, rh = swap ? iw : ih;
     var rot = make('div', { 'class': 'rot' });
-    rot.style.width = (swap ? ih : iw) + 'px';
-    rot.style.height = (swap ? iw : ih) + 'px';
+    rot.style.width = rw + 'px';
+    rot.style.height = rh + 'px';
     rot.style.transform = 'translate(-50%, -50%) rotate(' + r + 'deg)';
 
-    BUILD[id](rot, s);
+    BUILD[id](rot, s, rw, rh);
     box.appendChild(rot);
     document.body.appendChild(box);
   });

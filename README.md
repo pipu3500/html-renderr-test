@@ -1,34 +1,42 @@
 # kindle-dashboard
 
-Rendert `index.html` (Querformat 1024x758) per Puppeteer und erzeugt daraus
-`dashboard.png` für einen Kindle Paperwhite 2 (Gen 6):
+Erzeugt für jedes Kindle ein eigenes Dashboard-PNG (GitHub Actions, stündlich und bei jeder Änderung).
 
-- 758x1024 px, 8-Bit-Graustufen, 1 Kanal, kein Alpha
-- um 90° gedreht, damit das Dashboard quer erscheint
-  (Drehrichtung in `.github/workflows/render.yml` über `KINDLE_ROTATE` = 90 oder 270)
-- `preview.png` ist dieselbe Seite ungedreht zum Ansehen im Browser
+## Ablauf
 
-Veröffentlicht wird auf dem Branch `gh-pages`:
-`https://<DEIN-USER>.github.io/<REPO-NAME>/dashboard.png`
+1. `editor.html` (Browser, Windows/Android) öffnen, Geräte anlegen, Fenster anordnen, „Hochladen“.
+2. Der Editor schreibt `profiles.json` ins Repo.
+3. Der Workflow startet, `screenshot.js` erzeugt pro Gerät `public/<Dateiname>` und eine Vorschau `public/preview-<Dateiname>`.
+4. Jedes Kindle holt sich sein PNG von `https://<USER>.github.io/<REPO>/<Dateiname>`.
 
-## Layout-Editor
+Der Editor liegt nach dem ersten Lauf auch unter `https://<USER>.github.io/<REPO>/editor.html`.
 
-`editor.html` ist ein Browser-Tool (Windows, Android, jeder Browser): Fenster Wetter,
-Google Kalender, Google Termine und Google Drive an/aus schalten, auf dem simulierten
-Kindle-Display verschieben und skalieren, dann „Hochladen“. Der Editor schreibt `layout.json`
-ins Repo, der Workflow startet automatisch und erzeugt das neue `dashboard.png`.
+## Geräteprofil (profiles.json)
 
-Nach dem ersten Workflow-Lauf liegt der Editor auch unter
-`https://<DEIN-USER>.github.io/<REPO-NAME>/editor.html` (praktisch fürs Handy).
+| Feld | Bedeutung |
+|---|---|
+| `name`, `id` | Anzeigename und interner Name |
+| `file` | PNG-Dateiname, pro Gerät eindeutig |
+| `width`, `height` | Display-Auflösung im Hochformat, z. B. 758 × 1024 |
+| `rotate` | 90 = quer, Unterkante des Kindle rechts; 270 = quer, Unterkante links; 0 / 180 = Hochformat |
+| `zoom` | Layout-Fläche = Auflösung ÷ Zoom. Vorschlag: längste Seite ÷ 1024, dann sieht das Layout auf jedem Gerät ähnlich aus |
+| `widgets` | Wetter, Google Kalender, Google Termine, Google Drive (an/aus, Position, Größe, Drehung, Einstellungen) |
 
-### Einstellungen pro Fenster (layout.json, Version 2)
+Das PNG hat immer exakt die eingestellte Auflösung, 8 Bit, 1 Kanal (Graustufen), ohne Alpha.
+Alte `layout.json` (ein Gerät) wird automatisch als Gerät „Paperwhite 2“ mit `dashboard.png` übernommen.
 
-| Fenster | Feld | Bedeutung |
-|---|---|---|
-| alle | `rotate` | Inhalt drehen: 0, 90, 180 oder 270 Grad |
-| weather | `location` | Ortsname für wttr.in |
-| calendar | `calendarId` | Google-Kalender-ID (öffentlicher Kalender) |
-| agenda | `calendarId` | leer = derselbe Kalender wie `calendar` |
-| photo | `fileId` | Google-Drive-Datei-ID (Freigabe: Jeder mit dem Link) |
+## Wetterdienste
 
-Alte `layout.json` ohne diese Felder funktionieren weiter (es gelten die Standardwerte).
+| Dienst | Hinweis |
+|---|---|
+| `openmeteo` | Standard, weltweit, Anzeige mit eigenen Symbolen |
+| `dwd` | DWD-Daten über Bright Sky, für Deutschland |
+| `metno` | MET Norway (yr.no), weltweit |
+| `wttr` | wttr.in als fertiges Bild |
+
+Fällt ein Dienst aus, springt `screenshot.js` automatisch auf einen der anderen (Open-Meteo, MET Norway, DWD). Die Quelle steht unten im Wetterfenster.
+Orte werden über die Open-Meteo-Ortssuche gefunden; Koordinaten wie `51.33, 7.97` gehen direkt.
+
+## Wenn ein Gerät nicht rendert
+
+Ein Fehler in einem Profil (z. B. doppelter Dateiname) lässt den Lauf fehlschlagen, damit nichts halb Veröffentlichtes online geht. Das Protokoll unter „Actions“ nennt das betroffene Gerät.
