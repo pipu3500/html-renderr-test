@@ -20,3 +20,15 @@ ins Repo, der Workflow startet automatisch und erzeugt das neue `dashboard.png`.
 
 Nach dem ersten Workflow-Lauf liegt der Editor auch unter
 `https://<DEIN-USER>.github.io/<REPO-NAME>/editor.html` (praktisch fürs Handy).
+
+### Einstellungen pro Fenster (layout.json, Version 2)
+
+| Fenster | Feld | Bedeutung |
+|---|---|---|
+| alle | `rotate` | Inhalt drehen: 0, 90, 180 oder 270 Grad |
+| weather | `location` | Ortsname für wttr.in |
+| calendar | `calendarId` | Google-Kalender-ID (öffentlicher Kalender) |
+| agenda | `calendarId` | leer = derselbe Kalender wie `calendar` |
+| photo | `fileId` | Google-Drive-Datei-ID (Freigabe: Jeder mit dem Link) |
+
+Alte `layout.json` ohne diese Felder funktionieren weiter (es gelten die Standardwerte).

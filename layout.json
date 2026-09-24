@@ -1,33 +1,9 @@
 {
-  "version": 1,
+  "version": 2,
   "widgets": {
-    "weather": {
-      "enabled": true,
-      "x": 15,
-      "y": 15,
-      "w": 1009,
-      "h": 728
-    },
-    "calendar": {
-      "enabled": false,
-      "x": 519,
-      "y": 15,
-      "w": 490,
-      "h": 475
-    },
-    "agenda": {
-      "enabled": false,
-      "x": 519,
-      "y": 505,
-      "w": 238,
-      "h": 238
-    },
-    "photo": {
-      "enabled": false,
-      "x": 771,
-      "y": 505,
-      "w": 238,
-      "h": 238
-    }
+    "weather":  { "enabled": true, "x": 15,  "y": 15,  "w": 489, "h": 728, "rotate": 0, "location": "Sundern" },
+    "calendar": { "enabled": true, "x": 519, "y": 15,  "w": 490, "h": 475, "rotate": 0, "calendarId": "family13776384795444561092@group.calendar.google.com" },
+    "agenda":   { "enabled": true, "x": 519, "y": 505, "w": 238, "h": 238, "rotate": 0, "calendarId": "" },
+    "photo":    { "enabled": true, "x": 771, "y": 505, "w": 238, "h": 238, "rotate": 0, "fileId": "1WVXOZY6CS56w8VjM-qV2itM60bWrqALy" }
   }
 }
