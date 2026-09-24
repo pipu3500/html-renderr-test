@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "widgets": {
+    "weather":  { "enabled": true, "x": 15,  "y": 15,  "w": 489, "h": 728 },
+    "calendar": { "enabled": true, "x": 519, "y": 15,  "w": 490, "h": 475 },
+    "agenda":   { "enabled": true, "x": 519, "y": 505, "w": 238, "h": 238 },
+    "photo":    { "enabled": true, "x": 771, "y": 505, "w": 238, "h": 238 }
+  }
+}

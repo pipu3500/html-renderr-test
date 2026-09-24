@@ -4,108 +4,97 @@
   <meta charset="UTF-8">
   <title>Kindle Dashboard</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     html, body {
       width: 1024px;
       height: 758px;
       overflow: hidden;
-      background-color: #ffffff;
+      background: #ffffff;
       color: #000000;
       font-family: sans-serif;
     }
+    body { position: relative; }
 
-    body {
-      padding: 15px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 2fr 1fr;
-      gap: 15px;
+    /* Jedes Fenster wird per layout.json absolut positioniert */
+    .box {
+      position: absolute;
+      border: 4px solid #000;
+      background: #fff;
+      overflow: hidden;
     }
 
-    /* Grid-Layout */
-    .box { 
-      border: 4px solid black; 
-      padding: 10px; 
-      overflow: hidden; 
-      background: white; 
-    }
-
-    .weather { 
-      grid-column: 1 / 2; 
-      grid-row: 1 / 3; 
+    .weather {
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
       text-align: center;
+      padding: 10px;
+    }
+    .weather h2 { flex: none; font-size: 26px; margin-bottom: 6px; }
+    .weather img {
+      flex: 1;
+      min-height: 0;
+      width: 100%;
+      object-fit: contain;
+      /* wttr.in liefert hell auf dunkel -> für E-Ink invertieren */
+      filter: invert(100%) grayscale(100%);
     }
 
-    .cal-month { 
-      grid-column: 2 / 3; 
-      grid-row: 1 / 2; 
-      padding: 0; 
-    }
+    .box iframe { width: 100%; height: 100%; border: none; filter: grayscale(100%); }
 
-    .bottom-right { 
-      grid-column: 2 / 3; 
-      grid-row: 2 / 3; 
-      display: grid; 
-      grid-template-columns: 1fr 1fr; 
-      gap: 15px; 
-    }
-
-    .cal-next, .photo { 
-      border: 4px solid black; 
-      padding: 0; 
-      overflow: hidden; 
-      display: flex; 
-      justify-content: center; 
-      align-items: center; 
-    }
-    
-    /* Graustufen-Filter für E-Ink */
-    iframe, img { 
-      filter: grayscale(100%); 
-      width: 100%; 
-      height: 100%; 
-      border: none; 
-    }
-
-    .photo img { 
-      object-fit: contain; 
-      padding: 5px; 
+    .photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 5px;
+      filter: grayscale(100%);
     }
   </style>
 </head>
 <body>
+<script>
+  // Standardlayout, falls keine layout.json übergeben wird (Werte in Querformat-Pixeln, 1024x758)
+  var DEFAULTS = {
+    weather:  { enabled: true, x: 15,  y: 15,  w: 489, h: 728 },
+    calendar: { enabled: true, x: 519, y: 15,  w: 490, h: 475 },
+    agenda:   { enabled: true, x: 519, y: 505, w: 238, h: 238 },
+    photo:    { enabled: true, x: 771, y: 505, w: 238, h: 238 }
+  };
 
-  <!-- Linke Box: Wetter für Sundern -->
-  <div class="box weather">
-    <h2>Wetter Sundern</h2>
-    <img src="https://wttr.in/Sundern.png?lang=de" alt="Wetter" style="width: 100%; height: 85%; object-fit: contain; filter: invert(100%) grayscale(100%);">
-  </div>
+  var CAL = 'family13776384795444561092%40group.calendar.google.com';
+  var CAL_BASE = 'https://calendar.google.com/calendar/embed?src=' + CAL +
+    '&ctz=Europe%2FBerlin&showTitle=0&showPrint=0&showTabs=0&showCalendars=0&showTz=0&showNav=0';
 
-  <!-- Oben Rechts: Google Kalender Monatsübersicht -->
-  <div class="box cal-month">
-    <iframe src="https://calendar.google.com/calendar/embed?src=family13776384795444561092%40group.calendar.google.com&ctz=Europe%2FBerlin&mode=MONTH&showTitle=0&showPrint=0&showTabs=0&showCalendars=0&showTz=0&showNav=0" scrolling="no"></iframe>
-  </div>
+  var CONTENT = {
+    weather:  { cls: 'weather', html: '<h2>Wetter Sundern</h2><img src="https://wttr.in/Sundern.png?lang=de" alt="Wetter">' },
+    calendar: { cls: 'cal-month', html: '<iframe src="' + CAL_BASE + '&mode=MONTH" scrolling="no"></iframe>' },
+    agenda:   { cls: 'cal-next', html: '<iframe src="' + CAL_BASE + '&mode=AGENDA&showDate=0" scrolling="no"></iframe>' },
+    photo:    { cls: 'photo', html: '<img src="https://lh3.googleusercontent.com/d/1WVXOZY6CS56w8VjM-qV2itM60bWrqALy" alt="Kindle Foto">' }
+  };
 
-  <div class="bottom-right">
-    <!-- Unten Mitte: Google Kalender Nächster Termin -->
-    <div class="cal-next">
-      <iframe src="https://calendar.google.com/calendar/embed?src=family13776384795444561092%40group.calendar.google.com&ctz=Europe%2FBerlin&mode=AGENDA&showTitle=0&showPrint=0&showTabs=0&showCalendars=0&showTz=0&showNav=0&showDate=0" scrolling="no"></iframe>
-    </div>
-    
-    <!-- Unten Rechts: Google Photo -->
-    <div class="photo">
-      <img src="https://lh3.googleusercontent.com/d/1WVXOZY6CS56w8VjM-qV2itM60bWrqALy" alt="Kindle Foto">
-    </div>
-  </div>
+  function num(v, fallback) {
+    v = Number(v);
+    return isFinite(v) ? Math.round(v) : fallback;
+  }
 
+  var given = (window.LAYOUT && window.LAYOUT.widgets) || {};
+
+  Object.keys(CONTENT).forEach(function (id) {
+    var d = DEFAULTS[id];
+    var s = given[id] || {};
+    var enabled = typeof s.enabled === 'boolean' ? s.enabled : d.enabled;
+    if (!enabled) return;
+
+    var el = document.createElement('div');
+    el.className = 'box ' + CONTENT[id].cls;
+    el.style.left   = num(s.x, d.x) + 'px';
+    el.style.top    = num(s.y, d.y) + 'px';
+    el.style.width  = Math.max(40, num(s.w, d.w)) + 'px';
+    el.style.height = Math.max(40, num(s.h, d.h)) + 'px';
+    el.innerHTML = CONTENT[id].html;
+    document.body.appendChild(el);
+  });
+</script>
 </body>
 </html>

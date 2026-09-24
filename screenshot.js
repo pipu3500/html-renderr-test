@@ -37,6 +37,17 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     const page = await browser.newPage();
     await page.setViewport({ width: LANDSCAPE_W, height: LANDSCAPE_H, deviceScaleFactor: 1 });
 
+    // Layout aus layout.json (vom Editor) an die Seite übergeben
+    let layout = null;
+    try {
+      layout = JSON.parse(fs.readFileSync(path.join(__dirname, 'layout.json'), 'utf8'));
+      const on = Object.entries(layout.widgets || {}).filter(([, w]) => w.enabled).map(([id]) => id);
+      console.log('layout.json geladen, aktive Fenster:', on.join(', ') || '(keine)');
+    } catch (err) {
+      console.warn('layout.json nicht lesbar, Standardlayout wird benutzt:', err.message);
+    }
+    await page.evaluateOnNewDocument((l) => { window.LAYOUT = l; }, layout);
+
     try {
       // Google-Kalender-iFrames halten oft Verbindungen offen -> networkidle0
       // läuft dann in den Timeout. networkidle2 + feste Wartezeit ist robuster.

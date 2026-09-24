@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kindle-Dashboard einrichten</title>
+<style>
+  :root {
+    --desk: #cdd5dc;
+    --desk-dot: #b7c1ca;
+    --panel: #f5f7f9;
+    --ink: #181c20;
+    --muted: #59636d;
+    --line: #b4bec7;
+    --accent: #1f5eff;
+    --accent-ink: #ffffff;
+    --ok: #17703f;
+    --err: #b3261e;
+    --eink: #e8eae5;
+    --bezel: #23272c;
+    --inv: 1;          /* 1 / Zoomfaktor, damit Griffe gleich groß bleiben */
+    --hs: 13px;        /* Griffgröße in Bildschirm-Pixeln */
+    --bz: 26px;        /* Rahmenbreite des Kindle */
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    background: var(--desk);
+    color: var(--ink);
+    font: 15px/1.4 Bahnschrift, "Segoe UI Variable Text", "Segoe UI", Roboto, system-ui, sans-serif;
+  }
+  button, input, select { font: inherit; color: inherit; }
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+  /* ---------- Kopfleiste ---------- */
+  .bar {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px;
+    padding: 12px 20px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--line);
+  }
+  .bar h1 { margin: 0; font-size: 19px; font-weight: 600; letter-spacing: .01em; margin-right: 6px; }
+  .state {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 4px 10px; border-radius: 99px; font-size: 13px;
+    background: #e4e9ee; color: var(--muted);
+  }
+  .state::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+  .state.dirty { background: #fff0d6; color: #7a4a00; }
+  .state.dirty::before { background: #d98a00; }
+  .state.synced { background: #dcf1e5; color: var(--ok); }
+  .state.synced::before { background: var(--ok); }
+  .spacer { flex: 1 1 20px; }
+  .btn {
+    border: 1px solid var(--line); background: #fff; border-radius: 8px;
+    padding: 8px 14px; cursor: pointer; min-height: 40px;
+  }
+  .btn:hover { background: #eef2f6; }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 600; }
+  .btn.primary:hover { background: #1650e0; }
+  .btn:disabled { opacity: .55; cursor: progress; }
+
+  /* Statuszeile */
+  .status {
+    grid-column: 1 / -1;
+    margin: 0; padding: 9px 20px; font-size: 14px;
+    background: #fff; border-bottom: 1px solid var(--line);
+    display: none;
+  }
+  .status.show { display: block; }
+  .status.ok { color: var(--ok); }
+  .status.err { color: var(--err); }
+  .status a { color: inherit; font-weight: 600; }
+
+  /* ---------- Hauptbereich ---------- */
+  main { display: grid; grid-template-columns: 350px minmax(0, 1fr); min-height: 0; }
+  .panel {
+    background: var(--panel); border-right: 1px solid var(--line);
+    padding: 18px 18px 28px; overflow: auto;
+  }
+  .panel h2 { margin: 0 0 12px; font-size: 16px; font-weight: 600; }
+  .cards { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .card {
+    border: 1px solid var(--line); border-radius: 10px; background: #fff; padding: 12px;
+  }
+  .card.sel { border-color: var(--accent); box-shadow: 0 0 0 2px #1f5eff33; }
+  .sw { display: flex; gap: 12px; align-items: center; cursor: pointer; }
+  .sw input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .track {
+    flex: none; width: 46px; height: 26px; border-radius: 13px; background: #aab4be; position: relative;
+    transition: background .12s;
+  }
+  .track::after {
+    content: ""; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%;
+    background: #fff; transition: transform .12s;
+  }
+  .sw input:checked + .track { background: var(--accent); }
+  .sw input:checked + .track::after { transform: translateX(20px); }
+  .sw input:focus-visible + .track { outline: 3px solid var(--accent); outline-offset: 2px; }
+  .nm b { display: block; font-weight: 600; }
+  .nm small { color: var(--muted); }
+  .nums { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 10px; margin-top: 12px; }
+  .card:not(.on) .nums { display: none; }
+  .nums label { display: grid; gap: 3px; font-size: 13px; color: var(--muted); }
+  .nums input {
+    width: 100%; padding: 7px 8px; border: 1px solid var(--line); border-radius: 6px;
+    background: #fff; color: var(--ink); font-variant-numeric: tabular-nums;
+  }
+  .tools { margin-top: 18px; display: grid; gap: 10px; }
+  .tools label { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .tools select { padding: 7px 8px; border: 1px solid var(--line); border-radius: 6px; background: #fff; }
+  .linkbtn {
+    background: none; border: 0; padding: 4px 0; text-align: left; color: var(--accent);
+    cursor: pointer; text-decoration: underline; text-underline-offset: 3px;
+  }
+  .note { color: var(--muted); font-size: 13px; margin: 14px 0 0; }
+
+  /* ---------- Bühne mit Kindle ---------- */
+  .stage {
+    padding: 24px; display: flex; flex-direction: column; align-items: center; gap: 14px;
+    background-image: radial-gradient(var(--desk-dot) 1px, transparent 1px);
+    background-size: 22px 22px;
+    min-width: 0;
+  }
+  .device {
+    padding: var(--bz); border-radius: calc(var(--bz) * .9); background: var(--bezel);
+    box-shadow: inset 0 1px 0 #ffffff26, 0 22px 44px #0000003a;
+  }
+  .frame { position: relative; overflow: hidden; background: var(--eink); box-shadow: inset 0 0 0 1px #0004; }
+  .screen {
+    position: absolute; left: 0; top: 0; width: 1024px; height: 758px;
+    transform-origin: 0 0; user-select: none; -webkit-user-select: none;
+    background: var(--eink);
+  }
+  .screen.grid {
+    background-image:
+      linear-gradient(#0000000d 1px, transparent 1px),
+      linear-gradient(90deg, #0000000d 1px, transparent 1px);
+    background-size: var(--gs) var(--gs);
+  }
+  .w {
+    position: absolute; border: 4px solid #111; cursor: move; touch-action: none;
+    background: repeating-linear-gradient(135deg, #dcdfd9 0 2px, #eef0eb 2px 11px);
+    display: grid; place-items: center; overflow: visible;
+  }
+  .w[hidden] { display: none; }
+  .w .lbl {
+    display: grid; justify-items: center; gap: 4px; text-align: center; padding: 6px;
+    background: #f9faf7; border: 2px solid #111; pointer-events: none;
+    font-size: 22px; line-height: 1.15;
+  }
+  .w .lbl svg { width: 34px; height: 34px; fill: none; stroke: #111; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .w .lbl span { font-size: 17px; color: #444; font-variant-numeric: tabular-nums; }
+  .w.sel { outline: calc(3px * var(--inv)) solid var(--accent); outline-offset: calc(3px * var(--inv)); z-index: 5; }
+  .h {
+    display: none; position: absolute; width: calc(var(--hs) * var(--inv)); height: calc(var(--hs) * var(--inv));
+    background: var(--accent); border: calc(2px * var(--inv)) solid #fff; border-radius: calc(3px * var(--inv));
+    touch-action: none; z-index: 6;
+  }
+  .w.sel .h { display: block; }
+  .h-nw { left: calc(var(--hs) * var(--inv) / -2 - 4px); top: calc(var(--hs) * var(--inv) / -2 - 4px); cursor: nwse-resize; }
+  .h-n  { left: calc(50% - var(--hs) * var(--inv) / 2); top: calc(var(--hs) * var(--inv) / -2 - 4px); cursor: ns-resize; }
+  .h-ne { right: calc(var(--hs) * var(--inv) / -2 - 4px); top: calc(var(--hs) * var(--inv) / -2 - 4px); cursor: nesw-resize; }
+  .h-e  { right: calc(var(--hs) * var(--inv) / -2 - 4px); top: calc(50% - var(--hs) * var(--inv) / 2); cursor: ew-resize; }
+  .h-se { right: calc(var(--hs) * var(--inv) / -2 - 4px); bottom: calc(var(--hs) * var(--inv) / -2 - 4px); cursor: nwse-resize; }
+  .h-s  { left: calc(50% - var(--hs) * var(--inv) / 2); bottom: calc(var(--hs) * var(--inv) / -2 - 4px); cursor: ns-resize; }
+  .h-sw { left: calc(var(--hs) * var(--inv) / -2 - 4px); bottom: calc(var(--hs) * var(--inv) / -2 - 4px); cursor: nesw-resize; }
+  .h-w  { left: calc(var(--hs) * var(--inv) / -2 - 4px); top: calc(50% - var(--hs) * var(--inv) / 2); cursor: ew-resize; }
+  .hint { margin: 0; color: var(--muted); font-size: 13px; text-align: center; max-width: 60ch; }
+
+  /* ---------- Dialog ---------- */
+  dialog {
+    border: 1px solid var(--line); border-radius: 12px; padding: 0; width: min(520px, calc(100vw - 24px));
+    background: var(--panel); color: var(--ink);
+  }
+  dialog::backdrop { background: #0a121a80; }
+  dialog form { display: grid; gap: 12px; padding: 20px; }
+  dialog h2 { margin: 0; font-size: 18px; }
+  dialog label { display: grid; gap: 4px; font-size: 14px; }
+  dialog input[type=text], dialog input[type=password] {
+    padding: 9px 10px; border: 1px solid var(--line); border-radius: 6px; background: #fff;
+  }
+  dialog .two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  dialog p { margin: 0; color: var(--muted); font-size: 13px; }
+  dialog .row { display: flex; flex-direction: row-reverse; gap: 10px; justify-content: flex-start; margin-top: 4px; }
+
+  /* ---------- Schmale Bildschirme (Android) ---------- */
+  @media (max-width: 900px) {
+    :root { --bz: 12px; --hs: 15px; }
+    main { grid-template-columns: 1fr; }
+    .stage { order: -1; padding: 14px 8px; }
+    .panel { border-right: 0; border-top: 1px solid var(--line); }
+    .bar { padding: 10px 12px; }
+  }
+  @media (pointer: coarse) { :root { --hs: 26px; } }
+  @media (prefers-reduced-motion: reduce) { .track, .track::after { transition: none; } }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <h1>Kindle-Dashboard</h1>
+  <span class="state" id="state">Entwurf</span>
+  <span class="spacer"></span>
+  <button class="btn" id="btnLoad" type="button">Vom Repo laden</button>
+  <button class="btn" id="btnReset" type="button">Standardlayout</button>
+  <button class="btn" id="btnSettings" type="button">GitHub-Zugang</button>
+  <button class="btn primary" id="btnUpload" type="button">Hochladen</button>
+</header>
+<p class="status" id="status" role="status" aria-live="polite"></p>
+
+<main>
+  <aside class="panel">
+    <h2>Fenster</h2>
+    <ul class="cards" id="cards"></ul>
+
+    <div class="tools">
+      <label>Raster
+        <select id="grid">
+          <option value="1">Aus</option>
+          <option value="5" selected>5 px</option>
+          <option value="10">10 px</option>
+          <option value="15">15 px</option>
+          <option value="20">20 px</option>
+        </select>
+      </label>
+      <button class="linkbtn" id="btnExport" type="button">layout.json speichern</button>
+      <button class="linkbtn" id="btnImport" type="button">layout.json öffnen</button>
+      <input type="file" id="file" accept=".json,application/json" hidden>
+    </div>
+    <p class="note">Die Größe des simulierten Displays entspricht dem Querformat 1024 × 758 px. Das Drehen ins Hochformat übernimmt GitHub beim Erzeugen des PNG.</p>
+  </aside>
+
+  <section class="stage" id="stage">
+    <div class="device">
+      <div class="frame" id="frame"><div class="screen grid" id="screen" tabindex="0" aria-label="Simuliertes Kindle-Display"></div></div>
+    </div>
+    <p class="hint">Fenster ziehen zum Verschieben, Griffe an Rand und Ecken zum Vergrößern. Mit den Pfeiltasten geht es pixelgenau, mit Umschalt in 10er-Schritten.</p>
+  </section>
+</main>
+
+<dialog id="dlg">
+  <form method="dialog" id="cfgForm">
+    <h2>GitHub-Zugang</h2>
+    <div class="two">
+      <label>Benutzername <input type="text" id="cOwner" autocomplete="off" placeholder="dein-name"></label>
+      <label>Repository <input type="text" id="cRepo" autocomplete="off" placeholder="html-renderr-test"></label>
+    </div>
+    <div class="two">
+      <label>Branch <input type="text" id="cBranch" autocomplete="off" placeholder="leer = Standard-Branch"></label>
+      <label>Datei <input type="text" id="cPath" autocomplete="off" placeholder="layout.json"></label>
+    </div>
+    <label>Zugriffstoken
+      <input type="password" id="cToken" autocomplete="off" placeholder="github_pat_…">
+    </label>
+    <p>Lege unter <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">GitHub → Fine-grained tokens</a> ein Token nur für dieses Repository an: <b>Contents: Read and write</b>, optional <b>Actions: Read-only</b>, damit du siehst, wann das PNG fertig ist. Das Token bleibt in diesem Browser gespeichert und wird nur an api.github.com gesendet.</p>
+    <div class="row">
+      <button class="btn primary" value="save" id="cfgSave" type="submit">Speichern</button>
+      <button class="btn" value="cancel" type="submit">Abbrechen</button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+(() => {
+  'use strict';
+
+  const SW = 1024, SH = 758, MIN = 60;
+  const ORDER = ['weather', 'calendar', 'agenda', 'photo'];
+  const META = {
+    weather:  { name: 'Wetter',          hint: 'Wetter für Sundern',
+                icon: '<path d="M7 18h10a4 4 0 0 0 .5-8A6 6 0 0 0 6 11a3.5 3.5 0 0 0 1 7z"/>' },
+    calendar: { name: 'Google Kalender', hint: 'Monatsübersicht',
+                icon: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>' },
+    agenda:   { name: 'Google Termine',  hint: 'Nächste Termine als Liste',
+                icon: '<path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/>' },
+    photo:    { name: 'Google Drive',    hint: 'Foto aus Google Drive',
+                icon: '<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="m21 16-5-5-8 9"/>' }
+  };
+  const DEFAULT = {
+    weather:  { enabled: true, x: 15,  y: 15,  w: 489, h: 728 },
+    calendar: { enabled: true, x: 519, y: 15,  w: 490, h: 475 },
+    agenda:   { enabled: true, x: 519, y: 505, w: 238, h: 238 },
+    photo:    { enabled: true, x: 771, y: 505, w: 238, h: 238 }
+  };
+  const KEY_DRAFT = 'kd-editor-draft', KEY_CFG = 'kd-editor-config';
+
+  const $ = (id) => document.getElementById(id);
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+  const store = {
+    get(k) { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* egal */ } }
+  };
+
+  /* ---------- Zustand ---------- */
+  function cleanOne(id, s) {
+    s = s || {};
+    const d = DEFAULT[id];
+    const n = (v, f) => (v === null || v === '' || !Number.isFinite(Number(v))) ? f : Math.round(Number(v));
+    const w = clamp(n(s.w, d.w), MIN, SW), h = clamp(n(s.h, d.h), MIN, SH);
+    return {
+      enabled: typeof s.enabled === 'boolean' ? s.enabled : d.enabled,
+      x: clamp(n(s.x, d.x), 0, SW - w), y: clamp(n(s.y, d.y), 0, SH - h), w, h
+    };
+  }
+  function clean(src) {
+    const wid = (src && src.widgets) || {};
+    const out = {};
+    ORDER.forEach((id) => { out[id] = cleanOne(id, wid[id]); });
+    return out;
+  }
+  const serialize = () => JSON.stringify({ version: 1, widgets: state }, null, 2) + '\n';
+
+  let cfg = Object.assign({ owner: '', repo: '', branch: '', path: 'layout.json', token: '', grid: 5 }, store.get(KEY_CFG) || {});
+  if (!cfg.owner && /\.github\.io$/.test(location.hostname)) {           // auf GitHub Pages: Repo erkennen
+    cfg.owner = location.hostname.split('.')[0];
+    cfg.repo = location.pathname.split('/')[1] || '';
+  }
+  const draft = store.get(KEY_DRAFT);
+  let state = clean(draft ? { widgets: draft } : { widgets: DEFAULT });
+  let baseline = draft ? null : serialize();     // null = Stand im Repo unbekannt
+  let selected = null;
+  let scale = 1;
+
+  /* ---------- Aufbau ---------- */
+  const screen = $('screen'), frame = $('frame'), cards = $('cards');
+  const nodes = {}, cardEls = {};
+
+  ORDER.forEach((id) => {
+    const m = META[id];
+    const el = document.createElement('div');
+    el.className = 'w'; el.dataset.id = id;
+    el.innerHTML = `<div class="lbl"><svg viewBox="0 0 24 24">${m.icon}</svg><b>${m.name}</b><span></span></div>` +
+      ['nw', 'n', 'ne', 'e', 'se', 's', 'sw', 'w'].map((d) => `<i class="h h-${d}" data-dir="${d}"></i>`).join('');
+    screen.appendChild(el);
+    nodes[id] = el;
+
+    const li = document.createElement('li');
+    li.className = 'card'; li.dataset.id = id;
+    li.innerHTML = `
+      <label class="sw"><input type="checkbox" role="switch" data-k="enabled"><span class="track"></span>
+        <span class="nm"><b>${m.name}</b><small>${m.hint}</small></span></label>
+      <div class="nums">
+        <label>X (px)<input type="number" inputmode="numeric" data-k="x"></label>
+        <label>Y (px)<input type="number" inputmode="numeric" data-k="y"></label>
+        <label>Breite (px)<input type="number" inputmode="numeric" data-k="w"></label>
+        <label>Höhe (px)<input type="number" inputmode="numeric" data-k="h"></label>
+      </div>`;
+    cards.appendChild(li);
+    cardEls[id] = li;
+  });
+
+  /* ---------- Darstellung ---------- */
+  function paint() {
+    ORDER.forEach((id) => {
+      const s = state[id], el = nodes[id], c = cardEls[id];
+      el.hidden = !s.enabled;
+      el.style.left = s.x + 'px'; el.style.top = s.y + 'px';
+      el.style.width = s.w + 'px'; el.style.height = s.h + 'px';
+      el.classList.toggle('sel', selected === id && s.enabled);
+      el.querySelector('.lbl span').textContent = `${s.w} × ${s.h}`;
+      c.classList.toggle('on', s.enabled);
+      c.classList.toggle('sel', selected === id);
+      c.querySelector('[data-k=enabled]').checked = s.enabled;
+      c.querySelectorAll('.nums input').forEach((inp) => {
+        if (document.activeElement !== inp) inp.value = s[inp.dataset.k];
+      });
+    });
+    updateState();
+  }
+  function updateState() {
+    const el = $('state');
+    const dirty = baseline === null || baseline !== serialize();
+    el.className = 'state ' + (dirty ? 'dirty' : 'synced');
+    el.textContent = dirty ? 'Noch nicht hochgeladen' : 'Entspricht dem Repo';
+  }
+  function changed() { store.set(KEY_DRAFT, state); paint(); }
+
+  function fit() {
+    const stage = $('stage');
+    const cs = getComputedStyle(document.documentElement);
+    const bz = parseFloat(cs.getPropertyValue('--bz')) || 0;
+    const pad = parseFloat(getComputedStyle(stage).paddingLeft) || 0;
+    const wide = window.matchMedia('(min-width: 901px)').matches;
+    let s = (stage.clientWidth - 2 * pad - 2 * bz) / SW;
+    if (wide) s = Math.min(s, Math.max(0.5, (window.innerHeight - 190) / SH));
+    scale = clamp(s, 0.25, 1.25);
+    frame.style.width = SW * scale + 'px';
+    frame.style.height = SH * scale + 'px';
+    screen.style.transform = `scale(${scale})`;
+    document.documentElement.style.setProperty('--inv', String(1 / scale));
+  }
+  function applyGrid() {
+    const g = Number(cfg.grid) || 1;
+    screen.classList.toggle('grid', g > 1);
+    // Bei feinem Raster nur jede n-te Linie zeigen, damit das Display ruhig bleibt
+    screen.style.setProperty('--gs', (g > 1 ? g * Math.ceil(15 / g) : 15) + 'px');
+    $('grid').value = String(g);
+  }
+
+  function select(id) { selected = id; paint(); }
+
+  /* ---------- Ziehen und Skalieren ---------- */
+  let drag = null;
+  const snap = (v) => { const g = Number(cfg.grid) || 1; return g > 1 ? Math.round(v / g) * g : Math.round(v); };
+
+  screen.addEventListener('pointerdown', (e) => {
+    const w = e.target.closest('.w');
+    if (!w) { screen.focus({ preventScroll: true }); select(null); return; }
+    const id = w.dataset.id, h = e.target.closest('.h');
+    screen.focus({ preventScroll: true });      // Fokus aus Zahlenfeldern holen, damit die Pfeiltasten das Fenster bewegen
+    select(id);
+    drag = { id, dir: h ? h.dataset.dir : 'move', sx: e.clientX, sy: e.clientY, s: Object.assign({}, state[id]), pid: e.pointerId };
+    screen.setPointerCapture(e.pointerId);
+    e.preventDefault();
+  });
+  screen.addEventListener('pointermove', (e) => {
+    if (!drag || e.pointerId !== drag.pid) return;
+    const dx = (e.clientX - drag.sx) / scale, dy = (e.clientY - drag.sy) / scale;
+    const s = drag.s, t = state[drag.id];
+    if (drag.dir === 'move') {
+      t.x = clamp(snap(s.x + dx), 0, SW - s.w);
+      t.y = clamp(snap(s.y + dy), 0, SH - s.h);
+    } else {
+      let L = s.x, R = s.x + s.w, T = s.y, B = s.y + s.h;
+      if (drag.dir.includes('e')) R = clamp(snap(R + dx), L + MIN, SW);
+      if (drag.dir.includes('w')) L = clamp(snap(L + dx), 0, R - MIN);
+      if (drag.dir.includes('s')) B = clamp(snap(B + dy), T + MIN, SH);
+      if (drag.dir.includes('n')) T = clamp(snap(T + dy), 0, B - MIN);
+      t.x = L; t.y = T; t.w = R - L; t.h = B - T;
+    }
+    changed();
+  });
+  const endDrag = (e) => { if (drag && e.pointerId === drag.pid) drag = null; };
+  screen.addEventListener('pointerup', endDrag);
+  screen.addEventListener('pointercancel', endDrag);
+
+  document.addEventListener('keydown', (e) => {
+    if (!selected || !state[selected].enabled) return;
+    if (/^(INPUT|SELECT|TEXTAREA)$/.test(document.activeElement.tagName)) return;
+    const step = e.shiftKey ? 10 : 1;
+    const d = { ArrowLeft: [-step, 0], ArrowRight: [step, 0], ArrowUp: [0, -step], ArrowDown: [0, step] }[e.key];
+    if (!d) return;
+    const t = state[selected];
+    t.x = clamp(t.x + d[0], 0, SW - t.w); t.y = clamp(t.y + d[1], 0, SH - t.h);
+    e.preventDefault(); changed();
+  });
+
+  /* ---------- Seitenleiste ---------- */
+  cards.addEventListener('change', (e) => {
+    const card = e.target.closest('.card'); if (!card) return;
+    const id = card.dataset.id, k = e.target.dataset.k;
+    if (k === 'enabled') { state[id].enabled = e.target.checked; if (e.target.checked) selected = id; }
+    else { state[id][k] = Number(e.target.value); state[id] = cleanOne(id, state[id]); e.target.blur(); }
+    changed();
+  });
+  cards.addEventListener('input', (e) => {
+    const card = e.target.closest('.card'); if (!card || !e.target.matches('.nums input')) return;
+    const v = Number(e.target.value);
+    if (e.target.value === '' || !Number.isFinite(v)) return;
+    state[card.dataset.id][e.target.dataset.k] = Math.round(v);
+    paint();
+  });
+  cards.addEventListener('click', (e) => {
+    const card = e.target.closest('.card');
+    if (card && !e.target.closest('.sw')) select(card.dataset.id);
+  });
+  $('grid').addEventListener('change', (e) => { cfg.grid = Number(e.target.value); store.set(KEY_CFG, cfg); applyGrid(); });
+
+  $('btnReset').addEventListener('click', () => {
+    if (!confirm('Alle Fenster auf das Standardlayout zurücksetzen?')) return;
+    state = clean({ widgets: DEFAULT }); selected = null; changed(); say('Standardlayout geladen. Zum Übernehmen noch hochladen.', 'ok');
+  });
+
+  /* Datei-Export/Import */
+  $('btnExport').addEventListener('click', () => {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([serialize()], { type: 'application/json' }));
+    a.download = 'layout.json'; a.click(); URL.revokeObjectURL(a.href);
+  });
+  $('btnImport').addEventListener('click', () => $('file').click());
+  $('file').addEventListener('change', async (e) => {
+    const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+    try { state = clean(JSON.parse(await f.text())); selected = null; changed(); say('layout.json geöffnet.', 'ok'); }
+    catch { say('Die Datei ist keine gültige layout.json.', 'err'); }
+  });
+
+  /* ---------- Statusmeldungen ---------- */
+  function say(msg, kind, link) {
+    const el = $('status');
+    el.className = 'status show ' + (kind || '');
+    el.textContent = msg;
+    if (link) { el.append(' '); const a = document.createElement('a'); a.href = link.href; a.target = '_blank'; a.rel = 'noopener'; a.textContent = link.text; el.append(a); }
+  }
+
+  /* ---------- GitHub ---------- */
+  function ready() {
+    if (cfg.owner && cfg.repo && cfg.token) return true;
+    say('Trage zuerst unter „GitHub-Zugang“ Benutzername, Repository und Token ein.', 'err');
+    openSettings(); return false;
+  }
+  const filePath = () => (cfg.path || 'layout.json').replace(/^\/+/, '');
+  function gh(path, opts) {
+    opts = opts || {};
+    return fetch(`https://api.github.com/repos/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}/${path}`, Object.assign({}, opts, {
+      cache: 'no-store',
+      headers: Object.assign({
+        Accept: 'application/vnd.github+json', Authorization: 'Bearer ' + cfg.token, 'X-GitHub-Api-Version': '2022-11-28'
+      }, opts.headers || {})
+    }));
+  }
+  function explain(res) {
+    if (res.status === 401) return 'GitHub lehnt das Token ab (401). Ist es abgelaufen oder falsch kopiert?';
+    if (res.status === 403) return 'Das Token darf hier nicht schreiben (403). Es braucht „Contents: Read and write“ für dieses Repository.';
+    if (res.status === 404) return 'Repository, Branch oder Datei nicht gefunden (404). Bei einem privaten Repo muss das Token Zugriff darauf haben.';
+    return 'GitHub antwortet mit Fehler ' + res.status + '.';
+  }
+  const refQ = () => (cfg.branch ? '?ref=' + encodeURIComponent(cfg.branch) : '');
+  const b64dec = (s) => new TextDecoder().decode(Uint8Array.from(atob(s.replace(/\s/g, '')), (c) => c.charCodeAt(0)));
+  const b64enc = (s) => { const b = new TextEncoder().encode(s); let r = ''; b.forEach((c) => { r += String.fromCharCode(c); }); return btoa(r); };
+
+  async function getRemote() {
+    const res = await gh('contents/' + filePath().split('/').map(encodeURIComponent).join('/') + refQ());
+    if (res.status === 404) return { missing: true };
+    if (!res.ok) throw new Error(explain(res));
+    const j = await res.json();
+    return { sha: j.sha, text: b64dec(j.content) };
+  }
+
+  async function loadRemote(silent) {
+    if (!silent && !ready()) return;
+    if (silent && !(cfg.owner && cfg.repo && cfg.token)) return;
+    if (!silent && baseline !== serialize() && !confirm('Deine ungespeicherten Änderungen werden durch den Stand aus dem Repo ersetzt. Fortfahren?')) return;
+    try {
+      say('Lade Layout aus dem Repo …');
+      const r = await getRemote();
+      if (r.missing) { say('Im Repo gibt es noch keine layout.json. Beim ersten Hochladen wird sie angelegt.'); return; }
+      state = clean(JSON.parse(r.text)); selected = null; baseline = serialize(); store.set(KEY_DRAFT, state); paint();
+      say('Layout aus dem Repo geladen.', 'ok');
+    } catch (err) { say(err.message || 'Laden fehlgeschlagen. Ist das Netzwerk erreichbar?', 'err'); }
+  }
+
+  async function upload() {
+    if (!ready()) return;
+    const btn = $('btnUpload'); btn.disabled = true;
+    try {
+      say('Lade hoch …');
+      const body = serialize();
+      let result;
+      for (let attempt = 0; attempt < 2; attempt++) {
+        const r = await getRemote();
+        const put = await gh('contents/' + filePath().split('/').map(encodeURIComponent).join('/'), {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(Object.assign({
+            message: 'Dashboard-Layout aktualisiert (Editor)',
+            content: b64enc(body)
+          }, r.sha ? { sha: r.sha } : {}, cfg.branch ? { branch: cfg.branch } : {}))
+        });
+        if (put.ok) { result = await put.json(); break; }
+        if (put.status === 409 || put.status === 422) continue;     // Datei hat sich zwischenzeitlich geändert -> neu versuchen
+        throw new Error(explain(put));
+      }
+      if (!result) throw new Error('Die Datei wurde gleichzeitig geändert. Bitte noch einmal auf „Hochladen“ klicken.');
+      baseline = body; updateState();
+      say('Hochgeladen. GitHub erzeugt jetzt das neue PNG.', 'ok');
+      watchRun(result.commit && result.commit.sha);
+    } catch (err) { say(err.message || 'Hochladen fehlgeschlagen. Ist das Netzwerk erreichbar?', 'err'); }
+    finally { btn.disabled = false; }
+  }
+
+  /* Wartet auf den Workflow-Lauf (nur mit Actions-Leserecht des Tokens möglich) */
+  async function watchRun(sha) {
+    if (!sha) return;
+    const actions = { href: `https://github.com/${cfg.owner}/${cfg.repo}/actions`, text: 'Actions öffnen' };
+    for (let i = 0; i < 40; i++) {
+      await new Promise((r) => setTimeout(r, i === 0 ? 4000 : 8000));
+      try {
+        const res = await gh('actions/runs?head_sha=' + sha);
+        if (!res.ok) return;                                    // kein Leserecht: still aufhören
+        const runs = (await res.json()).workflow_runs || [];
+        if (!runs.length) continue;
+        const run = runs[0];
+        if (run.status === 'completed') {
+          if (run.conclusion === 'success') say('Fertig. Das neue dashboard.png ist online und der Kindle holt es beim nächsten Abruf.', 'ok');
+          else say('Der Workflow ist fehlgeschlagen.', 'err', { href: run.html_url, text: 'Protokoll ansehen' });
+          return;
+        }
+        say('GitHub erzeugt das PNG (' + (run.status === 'queued' ? 'wartet' : 'läuft') + ') …', '', actions);
+      } catch { return; }
+    }
+  }
+
+  /* ---------- Einstellungen ---------- */
+  function openSettings() {
+    $('cOwner').value = cfg.owner; $('cRepo').value = cfg.repo; $('cBranch').value = cfg.branch;
+    $('cPath').value = cfg.path; $('cToken').value = cfg.token;
+    $('dlg').showModal();
+  }
+  $('btnSettings').addEventListener('click', openSettings);
+  $('cfgForm').addEventListener('submit', (e) => {
+    if (e.submitter && e.submitter.value === 'save') {
+      cfg.owner = $('cOwner').value.trim(); cfg.repo = $('cRepo').value.trim(); cfg.branch = $('cBranch').value.trim();
+      cfg.path = $('cPath').value.trim() || 'layout.json'; cfg.token = $('cToken').value.trim();
+      store.set(KEY_CFG, cfg);
+      say('GitHub-Zugang gespeichert.', 'ok');
+    }
+  });
+
+  $('btnLoad').addEventListener('click', () => loadRemote(false));
+  $('btnUpload').addEventListener('click', upload);
+  window.addEventListener('beforeunload', (e) => {
+    if (baseline !== serialize() && baseline !== null) { e.preventDefault(); e.returnValue = ''; }
+  });
+  window.addEventListener('resize', fit);
+  if (window.ResizeObserver) new ResizeObserver(fit).observe($('stage'));
+
+  applyGrid(); fit(); paint();
+  if (!draft) loadRemote(true);
+})();
+</script>
+</body>
+</html>
