@@ -1,0 +1,103 @@
+{
+  "version": 3,
+  "profiles": [
+    {
+      "name": "Paperwhite 2",
+      "id": "paperwhite-2",
+      "file": "dashboard.png",
+      "width": 758,
+      "height": 1024,
+      "rotate": 90,
+      "zoom": 1,
+      "widgets": {
+        "weather": {
+          "enabled": true,
+          "x": 15,
+          "y": 15,
+          "w": 1009,
+          "h": 728,
+          "rotate": 0,
+          "source": "openmeteo",
+          "location": "Sundern",
+          "days": 3
+        },
+        "calendar": {
+          "enabled": false,
+          "x": 519,
+          "y": 15,
+          "w": 490,
+          "h": 475,
+          "rotate": 0,
+          "calendarId": "family13776384795444561092@group.calendar.google.com"
+        },
+        "agenda": {
+          "enabled": true,
+          "x": 100,
+          "y": 110,
+          "w": 238,
+          "h": 238,
+          "rotate": 270,
+          "calendarId": ""
+        },
+        "photo": {
+          "enabled": true,
+          "x": 610,
+          "y": 365,
+          "w": 238,
+          "h": 238,
+          "rotate": 90,
+          "fileId": "1WVXOZY6CS56w8VjM-qV2itM60bWrqALy"
+        }
+      }
+    },
+    {
+      "name": "Paperwhite 1 1",
+      "id": "paperwhite-1-1",
+      "file": "dashboard-paperwhite-1-1.png",
+      "width": 758,
+      "height": 1024,
+      "rotate": 90,
+      "zoom": 1,
+      "widgets": {
+        "weather": {
+          "enabled": true,
+          "x": 15,
+          "y": 15,
+          "w": 1009,
+          "h": 728,
+          "rotate": 0,
+          "source": "openmeteo",
+          "location": "Sundern",
+          "days": 3
+        },
+        "calendar": {
+          "enabled": true,
+          "x": 690,
+          "y": 15,
+          "w": 319,
+          "h": 340,
+          "rotate": 0,
+          "calendarId": "family13776384795444561092@group.calendar.google.com"
+        },
+        "agenda": {
+          "enabled": true,
+          "x": 100,
+          "y": 420,
+          "w": 238,
+          "h": 238,
+          "rotate": 270,
+          "calendarId": ""
+        },
+        "photo": {
+          "enabled": true,
+          "x": 730,
+          "y": 455,
+          "w": 238,
+          "h": 238,
+          "rotate": 90,
+          "fileId": "1WVXOZY6CS56w8VjM-qV2itM60bWrqALy"
+        }
+      }
+    }
+  ]
+}
