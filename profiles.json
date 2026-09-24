@@ -12,40 +12,40 @@
       "widgets": {
         "weather": {
           "enabled": true,
-          "x": 15,
-          "y": 15,
-          "w": 1009,
-          "h": 728,
+          "x": 0,
+          "y": 0,
+          "w": 535,
+          "h": 758,
           "rotate": 0,
           "source": "openmeteo",
           "location": "Sundern",
           "days": 3
         },
         "calendar": {
-          "enabled": false,
-          "x": 519,
-          "y": 15,
+          "enabled": true,
+          "x": 534,
+          "y": 0,
           "w": 490,
-          "h": 475,
+          "h": 425,
           "rotate": 0,
           "calendarId": "family13776384795444561092@group.calendar.google.com"
         },
         "agenda": {
           "enabled": true,
-          "x": 100,
-          "y": 110,
-          "w": 238,
-          "h": 238,
-          "rotate": 270,
+          "x": 535,
+          "y": 425,
+          "w": 250,
+          "h": 333,
+          "rotate": 0,
           "calendarId": ""
         },
         "photo": {
           "enabled": true,
-          "x": 610,
-          "y": 365,
+          "x": 786,
+          "y": 425,
           "w": 238,
-          "h": 238,
-          "rotate": 90,
+          "h": 333,
+          "rotate": 0,
           "fileId": "1WVXOZY6CS56w8VjM-qV2itM60bWrqALy"
         }
       }
