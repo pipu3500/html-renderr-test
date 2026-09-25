@@ -54,7 +54,11 @@
   </style>
 </head>
 <body>
+<script src="verses.js"></script>
 <script>
+  window.__ready = false;
+  var pending = [];   // Arbeiten, die erst nach dem Einfügen ins Dokument gehen (Textanpassung)
+
   // Standardwerte, falls kein Layout übergeben wird (Layout-Pixel, 1024x758)
   var DEFAULTS = {
     weather:  { enabled: true, x: 15,  y: 15,  w: 489, h: 728, rotate: 0,
@@ -63,7 +67,8 @@
                 calendarId: 'family13776384795444561092@group.calendar.google.com' },
     agenda:   { enabled: true, x: 519, y: 505, w: 238, h: 238, rotate: 0, calendarId: '' },  // leer = wie Kalender
     photo:    { enabled: true, x: 771, y: 505, w: 238, h: 238, rotate: 0,
-                fileId: '1WVXOZY6CS56w8VjM-qV2itM60bWrqALy' }
+                fileId: '1WVXOZY6CS56w8VjM-qV2itM60bWrqALy' },
+    verse:    { enabled: false, x: 519, y: 505, w: 490, h: 238, rotate: 0 }   // Text kommt fertig vom Renderer (window.VERSE)
   };
   var BORDER = 4;
 
@@ -249,6 +254,11 @@
       var id = calendarId(s.calendarId) || mainCalendar;
       root.appendChild(make('iframe', { src: calendarSrc(id, 'AGENDA'), scrolling: 'no' }));
     },
+    verse: function (root, s, W, H) {
+      var v = window.VERSE;
+      if (!v || !v.ok) { root.className += ' wx'; root.appendChild(div('wx-msg', (v && v.error) || 'Kein Text vorhanden')); return; }
+      pending.push(function () { return Verses.renderVerse(root, v, s, W, H); });
+    },
     photo: function (root, s) {
       root.className += ' photo';
       var id = driveId(s.fileId) || DEFAULTS.photo.fileId;
@@ -290,6 +300,14 @@
     box.appendChild(rot);
     document.body.appendChild(box);
   });
+
+  // Textfenster einpassen (Schrift laden, größte passende Größe suchen), danach ist die Seite fertig
+  (function () {
+    var done = false;
+    function finish() { if (!done) { done = true; window.__ready = true; } }
+    setTimeout(finish, 15000);
+    Promise.all(pending.map(function (f) { try { return f(); } catch (e) { return null; } })).then(finish, finish);
+  })();
 </script>
 </body>
 </html>

@@ -11,9 +11,12 @@ const sharp = require('sharp');
 const fs = require('fs');
 const path = require('path');
 const { createWeather } = require('./weather');
+const Verses = require('./verses');
 
 const OUT_DIR = path.join(__dirname, 'public');
 const FILE_RE = /^[a-z0-9][a-z0-9._-]{0,60}\.png$/;
+// NOW nur für Tests überschreibbar (KD_NOW=2026-09-25T10:00:00Z)
+const NOW = process.env.KD_NOW ? Date.parse(process.env.KD_NOW) : Date.now();
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const num = (v, lo, hi, fallback) => { v = Number(v); return Number.isFinite(v) ? Math.min(hi, Math.max(lo, v)) : fallback; };
 
@@ -23,10 +26,13 @@ function readJson(name) {
   return JSON.parse(fs.readFileSync(p, 'utf8'));
 }
 
-function loadProfiles() {
+function loadDoc() {
   let list;
   const doc = readJson('profiles.json');
+  let collections = [], updateMinutes = Verses.DEFAULT_SYNC_MINUTES;
   if (doc) {
+    collections = Array.isArray(doc.collections) ? doc.collections : [];
+    if (doc.settings && Number(doc.settings.updateMinutes) > 0) updateMinutes = Math.min(1440, Math.floor(Number(doc.settings.updateMinutes)));
     list = doc.profiles;
     if (!Array.isArray(list) || !list.length) throw new Error('profiles.json enthält keine Profile');
   } else {
@@ -36,7 +42,7 @@ function loadProfiles() {
               rotate: Number(process.env.KINDLE_ROTATE || 90), zoom: 1, widgets: legacy ? legacy.widgets : {} }];
   }
   const used = new Set();
-  return list.map((p, i) => {
+  const profiles = list.map((p, i) => {
     const file = typeof p.file === 'string' && FILE_RE.test(p.file) ? p.file : 'dashboard-' + (i + 1) + '.png';
     if (used.has(file)) throw new Error('Dateiname mehrfach vergeben: ' + file);
     used.add(file);
@@ -50,6 +56,20 @@ function loadProfiles() {
       widgets: p.widgets && typeof p.widgets === 'object' ? p.widgets : {}
     };
   });
+  return { profiles, collections, updateMinutes };
+}
+
+// Wählt den Text, der jetzt dran ist (ohne gespeicherten Zustand: nur Startzeit, Wechselzeit und Uhrzeit zählen)
+function verseFor(p, docInfo) {
+  const cfg = p.widgets.verse;
+  if (!cfg || cfg.enabled !== true) return null;
+  const col = docInfo.collections.find((c) => c && c.id === cfg.collection);
+  if (!col) return { ok: false, error: 'Keine Textsammlung ausgewählt' };
+  const items = (Array.isArray(col.items) ? col.items : []).filter((i) => i && typeof i.t === 'string' && i.t.trim());
+  if (!items.length) return { ok: false, error: 'Die Sammlung „' + col.name + '“ ist leer' };
+  const pk = Verses.pick(cfg, items.length, NOW, docInfo.updateMinutes);
+  const it = items[pk.index];
+  return { ok: true, text: it.t, ref: typeof it.r === 'string' ? it.r : '', index: pk.index, total: items.length, slot: pk.slot };
 }
 
 const weather = createWeather();
@@ -61,7 +81,7 @@ function weatherFor(cfg) {
   return weatherCache.get(key);
 }
 
-async function render(browser, p) {
+async function render(browser, p, docInfo) {
   const portrait = p.rotate === 0 || p.rotate === 180;
   const nativeW = portrait ? p.width : p.height;      // Größe des Bildes vor dem Drehen
   const nativeH = portrait ? p.height : p.width;
@@ -71,19 +91,24 @@ async function render(browser, p) {
   const wx = await weatherFor(p.widgets.weather);
   if (wx) console.log('  Wetter:', wx.ok ? wx.place + ' über ' + wx.source : 'Fehler: ' + wx.error);
 
+  const verse = verseFor(p, docInfo);
+  if (verse) console.log('  Text:', verse.ok ? 'Nr. ' + (verse.index + 1) + ' von ' + verse.total + ' (Wechsel ' + verse.slot + ')' : 'Fehler: ' + verse.error);
+
   const page = await browser.newPage();
   let shot;
   try {
     await page.setViewport({ width: pageW, height: pageH, deviceScaleFactor: p.zoom });
-    await page.evaluateOnNewDocument((layout, w, size) => {
-      window.LAYOUT = layout; window.WEATHER = w; window.PAGE = size;
-    }, { widgets: p.widgets }, wx, { w: pageW, h: pageH });
+    await page.evaluateOnNewDocument((layout, w, size, v) => {
+      window.LAYOUT = layout; window.WEATHER = w; window.PAGE = size; window.VERSE = v;
+    }, { widgets: p.widgets }, wx, { w: pageW, h: pageH }, verse);
     try {
       // Google-Kalender-iFrames halten oft Verbindungen offen -> networkidle0 läuft dann in den Timeout
       await page.goto('file://' + path.join(__dirname, 'index.html'), { waitUntil: 'networkidle2', timeout: 60000 });
     } catch (err) {
       console.warn('  Seite nicht vollständig "idle", Screenshot wird trotzdem gemacht:', err.message);
     }
+    // Textfenster: warten, bis Schrift geladen und Größe eingepasst ist
+    await page.waitForFunction('window.__ready === true', { timeout: 20000 }).catch(() => console.warn('  Textfenster nicht rechtzeitig fertig'));
     await sleep(5000);                                 // Kalender-Inhalte nachladen lassen
     shot = Buffer.from(await page.screenshot({ type: 'png' }));
   } finally {
@@ -116,7 +141,8 @@ async function render(browser, p) {
 }
 
 (async () => {
-  const profiles = loadProfiles();
+  const docInfo = loadDoc();
+  const profiles = docInfo.profiles;
   fs.mkdirSync(OUT_DIR, { recursive: true });
   const browser = await puppeteer.launch({
     args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
@@ -125,7 +151,7 @@ async function render(browser, p) {
   try {
     for (const p of profiles) {
       console.log('Profil "' + p.name + '"');
-      try { await render(browser, p); }
+      try { await render(browser, p, docInfo); }
       catch (err) { console.error('  FEHLER:', err.message); failed.push(p.name); }
     }
   } finally {

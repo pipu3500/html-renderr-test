@@ -221,6 +221,86 @@
   }
   @media (pointer: coarse) { :root { --hs: 26px; } }
   @media (prefers-reduced-motion: reduce) { .track, .track::after { transition: none; } }
+  [hidden] { display: none !important; }
+
+  /* ---------- Textfenster ---------- */
+  .vg { display: grid; gap: 8px; padding: 10px 0 2px; border-top: 1px solid #e3e8ed; }
+  .vg:first-child { border-top: 0; padding-top: 0; }
+  .vh { font-size: 12px; font-weight: 600; letter-spacing: .04em; color: var(--muted); text-transform: uppercase; }
+  .vrow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 13px; color: var(--muted); justify-content: space-between; }
+  .vrow .vcount { color: var(--ink); font-weight: 600; }
+  .btn.sm { padding: 5px 10px; min-height: 32px; font-size: 13px; }
+  .fld.sm, .sm[type=number] { width: 84px; padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; background: #fff; color: var(--ink); }
+  .vrow select.fld { width: auto; }
+  .checks { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 10px; font-size: 13px; color: var(--ink); }
+  .checks label { display: flex; align-items: center; gap: 7px; cursor: pointer; min-height: 30px; }
+  .checks input { width: 18px; height: 18px; }
+  .vlist { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .vlist button {
+    width: 100%; text-align: left; border: 1px solid var(--line); background: #fff; border-radius: 8px;
+    padding: 7px 9px; cursor: pointer; display: grid; gap: 2px; font-size: 13px;
+  }
+  .vlist button:hover { background: #eef2f6; }
+  .vlist button.pv { border-color: var(--accent); box-shadow: 0 0 0 2px #1f5eff33; }
+  .vlist .t { color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .vlist .m { color: var(--muted); font-size: 12px; }
+  .vlist b.now { color: var(--accent); }
+  .vlist .end { color: #7a4a00; }
+  .w .vprev { display: none; position: absolute; left: 0; top: 0; right: 0; bottom: 0; background: #fff; overflow: hidden; pointer-events: none; }
+  .w .vrot { position: absolute; left: 50%; top: 50%; overflow: hidden; }
+  .w.has-preview .vprev { display: block; }
+  .w.has-preview .lbl { display: none; }
+  .w.has-preview { background: #fff; }
+
+  /* ---------- Textverwaltung ---------- */
+  dialog.big { width: min(1000px, calc(100vw - 16px)); height: min(92vh, 900px); max-height: 92vh; }
+  dialog.big[open] { display: flex; }
+  .libwrap { display: flex; flex-direction: column; gap: 10px; padding: 16px 18px; width: 100%; min-height: 0; }
+  .libhead { display: flex; align-items: center; gap: 10px; }
+  .libhead h2 { margin: 0; font-size: 19px; }
+  .libcoll, .libtools, .libbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; }
+  .libcoll label { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--muted); }
+  .libcoll select { padding: 7px 10px; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: var(--ink); min-height: 34px; max-width: 260px; font-weight: 600; }
+  .libtools input[type=search] { flex: 1 1 220px; min-width: 0; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: var(--ink); min-height: 36px; }
+  .libbar { font-size: 13px; color: var(--muted); }
+  .libbar label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+  .libbar #lCount { margin-left: auto; color: var(--ink); font-weight: 600; }
+  .lmsg { margin: 0; min-height: 1.3em; font-size: 13px; color: var(--ok); }
+  .lmsg.err { color: var(--err); }
+  .libl { list-style: none; margin: 0; padding: 0; overflow: auto; flex: 1 1 auto; min-height: 120px; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
+  .lrow { display: grid; grid-template-columns: auto 44px 1fr auto; gap: 10px; align-items: start; padding: 10px 12px; border-bottom: 1px solid #e6ebf0; }
+  .lrow:last-child { border-bottom: 0; }
+  .lrow:hover { background: #f7f9fb; }
+  .lchk { padding-top: 2px; }
+  .lchk input { width: 18px; height: 18px; }
+  .lnr { color: var(--muted); font-variant-numeric: tabular-nums; text-align: right; padding-top: 1px; font-size: 13px; }
+  .lt { white-space: pre-wrap; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .lr { color: var(--muted); font-size: 13px; margin-top: 3px; font-weight: 600; }
+  .lact { display: flex; flex-wrap: nowrap; gap: 4px; justify-content: flex-end; }
+  .lact button { border: 1px solid var(--line); background: #fff; border-radius: 6px; padding: 4px 8px; min-height: 30px; cursor: pointer; font-size: 13px; }
+  .lact button:hover:not(:disabled) { background: #eef2f6; }
+  .lact button:disabled { opacity: .35; cursor: default; }
+  .lact button.del { color: var(--err); }
+  .lrow.editing { display: block; background: #f3f7ff; }
+  .ledit { display: grid; gap: 8px; }
+  .ledit textarea, .ledit input { width: 100%; padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; background: #fff; color: var(--ink); font: inherit; }
+  .ledit textarea { resize: vertical; min-height: 84px; }
+  .lbtns { display: flex; gap: 8px; }
+  .lempty { padding: 26px 16px; color: var(--muted); text-align: center; line-height: 1.5; }
+  .libpager { display: flex; align-items: center; justify-content: center; gap: 14px; font-size: 13px; color: var(--muted); }
+  .libpager button { border: 1px solid var(--line); background: #fff; border-radius: 8px; padding: 6px 12px; cursor: pointer; min-height: 34px; }
+  .libpager button:disabled { opacity: .4; cursor: default; }
+  #dlgBulk textarea { width: 100%; min-height: 200px; padding: 10px; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: var(--ink); font: inherit; resize: vertical; }
+  .bopts { display: grid; gap: 6px; font-size: 14px; }
+  .bopts label { display: flex; align-items: center; gap: 8px; }
+  #bPrev { color: var(--ink); background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; min-height: 40px; white-space: pre-wrap; }
+  @media (max-width: 700px) {
+    .lrow { grid-template-columns: auto auto 1fr; gap: 6px 10px; }
+    .lnr { text-align: left; }
+    .lbody { grid-column: 1 / -1; }
+    .lact { grid-column: 1 / -1; justify-content: flex-start; flex-wrap: wrap; }
+  }
+
 
   /* ---------- Geräte (Profile) ---------- */
   .devsel { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--muted); }
@@ -284,6 +364,7 @@
           <option value="20">20 px</option>
         </select>
       </label>
+      <button class="linkbtn" id="btnLib" type="button">Textsammlungen verwalten</button>
       <button class="linkbtn" id="btnExport" type="button">profiles.json speichern</button>
       <button class="linkbtn" id="btnImport" type="button">profiles.json öffnen</button>
       <input type="file" id="file" accept=".json,application/json" hidden>
@@ -356,12 +437,324 @@
   </form>
 </dialog>
 
+<dialog id="dlgLib" class="big">
+  <div class="libwrap">
+    <div class="libhead">
+      <h2>Texte verwalten</h2>
+      <span class="spacer"></span>
+      <button class="btn primary" type="button" id="lClose">Fertig</button>
+    </div>
+    <div class="libcoll">
+      <label>Sammlung <select id="lColl" aria-label="Sammlung wählen"></select></label>
+      <button class="btn sm" type="button" id="lCollNew">Neue Sammlung</button>
+      <button class="btn sm" type="button" id="lCollRen">Umbenennen</button>
+      <button class="btn sm danger" type="button" id="lCollDel">Löschen</button>
+    </div>
+    <div class="libtools">
+      <input type="search" id="lSearch" placeholder="Suchen in Text und Stelle …" autocomplete="off" aria-label="Texte durchsuchen">
+      <button class="btn sm primary" type="button" id="lAdd">+ Text</button>
+      <button class="btn sm" type="button" id="lBulk">Mehrere einfügen …</button>
+      <button class="btn sm" type="button" id="lImport">Datei laden …</button>
+      <button class="btn sm" type="button" id="lExport">Exportieren</button>
+      <input type="file" id="lFile" accept=".txt,.json,text/plain,application/json" hidden>
+    </div>
+    <div class="libbar">
+      <label><input type="checkbox" id="lAll"> Alle auf dieser Seite</label>
+      <button class="btn sm danger" type="button" id="lDelSel" hidden></button>
+      <span id="lCount"></span>
+    </div>
+    <p class="lmsg" id="lMsg" role="status" aria-live="polite"></p>
+    <ul class="libl" id="lList"></ul>
+    <div class="libpager"><button type="button" id="lPrev">‹ Zurück</button><span id="lPage"></span><button type="button" id="lNext">Weiter ›</button></div>
+  </div>
+</dialog>
+
+<dialog id="dlgBulk">
+  <form method="dialog" id="bulkForm">
+    <h2>Mehrere Texte einfügen</h2>
+    <p>Ein Text pro Zeile. Oder mehrere Zeilen pro Text, dann die Texte durch eine Leerzeile trennen. Die Bibelstelle steht am Ende: nach „ | “, nach „ — “, in Klammern (Psalm 23,1) oder als letzte Zeile mit „— Psalm 23,1“.</p>
+    <textarea id="bText" placeholder="Der HERR ist mein Hirte, mir wird nichts mangeln. | Psalm 23,1&#10;Ein sanftes Wort stillt den Zorn. (Sprüche 15,1)"></textarea>
+    <div class="bopts">
+      <label><input type="radio" name="bMode" value="append" checked> Am Ende der Sammlung anhängen</label>
+      <label><input type="radio" name="bMode" value="replace"> Alle bestehenden Texte ersetzen</label>
+      <label><input type="checkbox" id="bBrackets" checked> Klammer am Zeilenende als Bibelstelle erkennen</label>
+    </div>
+    <p id="bPrev" aria-live="polite"></p>
+    <div class="row">
+      <button class="btn primary" value="add" type="submit" id="bAdd">Hinzufügen</button>
+      <button class="btn" value="cancel" type="submit" formnovalidate>Abbrechen</button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+/*VERSES-BEGIN*/
+/* Textfenster (Bibelverse und andere Texte): Auswahl, Schriften und Darstellung.
+   Wird vom Renderer (Node und index.html) und vom Editor benutzt, damit beide dasselbe zeigen.
+   Kein Zustand nötig: Welcher Text dran ist, ergibt sich allein aus Startzeit, Wechselzeit und Uhrzeit. */
+(function (root, factory) {
+  if (typeof module === 'object' && module.exports) module.exports = factory();
+  else root.Verses = factory();
+})(typeof self !== 'undefined' ? self : this, function () {
+  'use strict';
+
+  var TZ = 'Europe/Berlin';
+  var DEFAULT_SYNC_MINUTES = 60;
+
+  /* ---------- Schriften ---------- */
+  var SYS_SERIF = '"DejaVu Serif","Liberation Serif",Georgia,"Times New Roman",serif';
+  var SYS_SANS = '"DejaVu Sans","Liberation Sans",Arial,sans-serif';
+  var FONTS = {
+    serif:  { label: 'Serif (Standard)', css: SYS_SERIF },
+    sans:   { label: 'Sans (Standard)', css: SYS_SANS },
+    mono:   { label: 'Monospace', css: '"DejaVu Sans Mono","Liberation Mono",monospace' },
+    lora:   { label: 'Lora (Serif)', google: 'Lora', ital: true, fallback: SYS_SERIF },
+    merri:  { label: 'Merriweather (Serif)', google: 'Merriweather', ital: true, fallback: SYS_SERIF },
+    garamond: { label: 'EB Garamond (Serif)', google: 'EB Garamond', ital: true, fallback: SYS_SERIF },
+    crimson:  { label: 'Crimson Text (Serif)', google: 'Crimson Text', ital: true, fallback: SYS_SERIF },
+    slab:   { label: 'Roboto Slab (Serif)', google: 'Roboto Slab', ital: false, fallback: SYS_SERIF },
+    opensans: { label: 'Open Sans (Sans)', google: 'Open Sans', ital: true, fallback: SYS_SANS },
+    roboto: { label: 'Roboto (Sans)', google: 'Roboto', ital: true, fallback: SYS_SANS },
+    caveat: { label: 'Caveat (Handschrift)', google: 'Caveat', ital: false, fallback: SYS_SERIF }
+  };
+  function fontList() { return Object.keys(FONTS).map(function (k) { return [k, FONTS[k].label]; }); }
+  function fontCss(key) {
+    var f = FONTS[key] || FONTS.serif;
+    return f.google ? '"' + f.google + '",' + f.fallback : f.css;
+  }
+  function fontUrl(key, italic) {
+    var f = FONTS[key];
+    if (!f || !f.google) return null;
+    var fam = f.google.replace(/ /g, '+');
+    if (italic && f.ital) return 'https://fonts.googleapis.com/css2?family=' + fam + ':ital,wght@0,400;0,700;1,400;1,700&display=swap';
+    return 'https://fonts.googleapis.com/css2?family=' + fam + ':wght@400;700&display=swap';
+  }
+  /* Lädt die Schrift (Google Fonts). Ist sie nicht erreichbar, bleibt die Ersatzschrift. Löst immer auf. */
+  function loadFont(key, italic) {
+    var url = fontUrl(key, !!italic);
+    if (!url || typeof document === 'undefined') return Promise.resolve();
+    return new Promise(function (resolve) {
+      var finished = false;
+      function fin() { if (!finished) { finished = true; resolve(); } }
+      setTimeout(fin, 9000);
+      var fam = '"' + FONTS[key].google + '"';
+      function afterLink() {
+        var jobs = [document.fonts.load('400 20px ' + fam), document.fonts.load('700 20px ' + fam)];
+        if (italic && FONTS[key].ital) {
+          jobs.push(document.fonts.load('italic 400 20px ' + fam), document.fonts.load('italic 700 20px ' + fam));
+        }
+        Promise.all(jobs).then(fin, fin);
+      }
+      var link = document.querySelector('link[data-vfont="' + url + '"]');
+      if (link) {
+        if (link.getAttribute('data-loaded')) afterLink(); else { link.addEventListener('load', afterLink); link.addEventListener('error', fin); }
+        return;
+      }
+      link = document.createElement('link');
+      link.rel = 'stylesheet'; link.href = url; link.setAttribute('data-vfont', url);
+      link.onload = function () { link.setAttribute('data-loaded', '1'); afterLink(); };
+      link.onerror = fin;
+      document.head.appendChild(link);
+    });
+  }
+
+  /* ---------- Zeit ---------- */
+  function ymd(ms) {
+    return new Intl.DateTimeFormat('sv-SE', { timeZone: TZ, year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(ms));
+  }
+  function dayNum(ms) {                       // laufende Tageszahl nach Datum in Berlin
+    var p = ymd(ms).split('-');
+    return Math.floor(Date.UTC(+p[0], +p[1] - 1, +p[2]) / 86400000);
+  }
+  function tzOffset(ms) {
+    var parts = {};
+    new Intl.DateTimeFormat('en-US', { timeZone: TZ, hourCycle: 'h23', year: 'numeric', month: 'numeric', day: 'numeric',
+      hour: 'numeric', minute: 'numeric', second: 'numeric' }).formatToParts(new Date(ms)).forEach(function (x) { parts[x.type] = x.value; });
+    var asUtc = Date.UTC(+parts.year, +parts.month - 1, +parts.day, +parts.hour % 24, +parts.minute, +parts.second);
+    return asUtc - Math.floor(ms / 1000) * 1000;
+  }
+  function localMidnight(dn) {
+    var u = dn * 86400000, g = u - tzOffset(u);
+    return u - tzOffset(g);
+  }
+
+  /* ---------- Einstellungen ---------- */
+  function normalize(c) {
+    c = c || {};
+    return {
+      mode: c.mode === 'random' ? 'random' : 'seq',
+      repeats: c.repeats === 'yes' ? 'yes' : 'no',
+      atEnd: c.atEnd === 'pause' ? 'pause' : 'restart',
+      change: c.change === 'interval' ? 'interval' : 'sync',
+      every: Math.max(1, Math.min(9999, Math.floor(Number(c.every)) || 1)),
+      unit: c.unit === 'minutes' || c.unit === 'hours' ? c.unit : 'days',
+      startAt: Date.parse(c.startAt),
+      seed: (Math.floor(Number(c.seed)) >>> 0) || 1
+    };
+  }
+  function syncLen(sm) { return Math.max(1, Math.min(1440, Math.floor(Number(sm)) || DEFAULT_SYNC_MINUTES)) * 60000; }
+
+  /* Nummer des aktuellen Wechsels (0 = erster Text) */
+  function slotIndex(c, now, sm) {
+    var start = isFinite(c.startAt) ? c.startAt : now;
+    var k;
+    if (c.change === 'sync') {
+      var len = syncLen(sm);
+      k = Math.floor(now / len) - Math.floor(start / len);
+    } else if (c.unit === 'days') {
+      k = Math.floor((dayNum(now) - dayNum(start)) / c.every);
+    } else {
+      var u = c.unit === 'hours' ? 3600000 : 60000;
+      k = Math.floor((Math.floor(now / u) - Math.floor(start / u)) / c.every);
+    }
+    return Math.max(0, k);
+  }
+  /* Beginn eines Wechsels in ms */
+  function slotStart(c, slot, now, sm) {
+    var start = isFinite(c.startAt) ? c.startAt : now;
+    if (c.change === 'sync') { var len = syncLen(sm); return (Math.floor(start / len) + slot) * len; }
+    if (c.unit === 'days') return localMidnight(dayNum(start) + slot * c.every);
+    var u = c.unit === 'hours' ? 3600000 : 60000;
+    return (Math.floor(start / u) + slot * c.every) * u;
+  }
+
+  /* ---------- Zufall (nachvollziehbar, aus Startwert) ---------- */
+  function mulberry32(a) {
+    return function () {
+      a |= 0; a = a + 0x6D2B79F5 | 0;
+      var t = Math.imul(a ^ a >>> 15, 1 | a);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+  function rnd32(seed, i) { return Math.floor(mulberry32((seed ^ Math.imul(i + 1, 2654435761)) >>> 0)() * 4294967296); }
+  function shuffled(n, seed, cycle) {
+    var a = [], i, r = mulberry32((seed ^ Math.imul(cycle + 7, 2246822519)) >>> 0);
+    for (i = 0; i < n; i++) a.push(i);
+    for (i = n - 1; i > 0; i--) { var j = Math.floor(r() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; }
+    return a;
+  }
+
+  /* Welcher Text (Nummer ab 0) gehört zum Wechsel k? */
+  function indexForSlot(c, n, k) {
+    if (n <= 1) return 0;
+    if (c.mode === 'seq') return k < n ? k : (c.atEnd === 'pause' ? n - 1 : k % n);
+    if (c.repeats === 'yes') {                       // zufällig, Wiederholungen erlaubt (nie zweimal direkt hintereinander)
+      var idx = rnd32(c.seed, 0) % n;
+      for (var i = 1; i <= k; i++) idx = (idx + 1 + rnd32(c.seed, i) % (n - 1)) % n;
+      return idx;
+    }
+    var cycle = Math.floor(k / n), pos = k % n;      // zufällig ohne Wiederholung: gemischter Stapel
+    if (c.atEnd === 'pause' && cycle >= 1) { cycle = 0; pos = n - 1; }
+    var prevLast = -1, p = null;
+    for (var cc = 0; cc <= cycle; cc++) {
+      p = shuffled(n, c.seed, cc);
+      if (cc > 0 && p[0] === prevLast) { var s = p[0]; p[0] = p[1]; p[1] = s; }   // kein Text doppelt an der Stapelgrenze
+      prevLast = p[n - 1];
+    }
+    return p[pos];
+  }
+
+  /* Letzter Wechsel, bevor bei "stehen bleiben" nichts mehr passiert (oder -1 = endlos) */
+  function lastSlot(c, n) {
+    if (c.atEnd !== 'pause') return -1;
+    if (c.mode === 'seq' || c.repeats === 'no') return Math.max(0, n - 1);
+    return -1;
+  }
+
+  function pick(cfg, total, now, syncMinutes) {
+    if (!(total > 0)) return null;
+    var c = normalize(cfg), k = slotIndex(c, now, syncMinutes);
+    return { slot: k, index: indexForSlot(c, total, k) };
+  }
+  /* Die nächsten Texte samt Beginn (für die Vorschau im Editor) */
+  function upcoming(cfg, total, now, count, syncMinutes) {
+    if (!(total > 0)) return [];
+    var c = normalize(cfg), k0 = slotIndex(c, now, syncMinutes), last = lastSlot(c, total), out = [];
+    for (var i = 0; i < count; i++) {
+      var k = k0 + i;
+      if (last >= 0 && k > last) { if (i > 0 || k0 > last) { break; } }
+      out.push({ slot: k, index: indexForSlot(c, total, k), start: slotStart(c, k, now, syncMinutes), isNow: i === 0,
+                 final: last >= 0 && k >= last });
+      if (last >= 0 && k >= last) break;
+    }
+    return out;
+  }
+
+  /* ---------- Darstellung ---------- */
+  function displayOptions(o) {
+    o = o || {};
+    var clamp = function (v, a, b) { return Math.min(b, Math.max(a, v)); };
+    return {
+      font: FONTS[o.font] ? o.font : 'serif',
+      sizeMode: o.sizeMode === 'fixed' ? 'fixed' : 'auto',
+      size: clamp(Math.round(Number(o.size)) || 36, 8, 300),
+      maxSize: clamp(Math.round(Number(o.maxSize)) || 72, 10, 300),
+      bold: !!o.bold, italic: !!o.italic,
+      align: o.align === 'left' ? 'left' : 'center',
+      showRef: o.showRef !== false, quotes: !!o.quotes
+    };
+  }
+  /* Zeichnet den Text in das Element root (Größe W x H, muss im Dokument hängen).
+     Bei "Automatisch" wird die größte Schrift gewählt, bei der alles hineinpasst. */
+  function renderVerse(root, v, opts, W, H) {
+    var o = displayOptions(opts);
+    while (root.firstChild) root.removeChild(root.firstChild);
+    root.setAttribute('lang', 'de');
+    var pad = Math.max(10, Math.min(30, Math.round(Math.min(W, H) * 0.05)));
+    var inner = document.createElement('div');
+    inner.style.cssText = 'position:absolute;left:0;top:0;right:0;bottom:0;display:flex;flex-direction:column;' +
+      'justify-content:center;overflow:hidden;box-sizing:border-box;color:#000;padding:' + pad + 'px;' +
+      'text-align:' + o.align + ';font-family:' + fontCss(o.font) + ';line-height:1.3;';
+    var text = document.createElement('div');
+    text.style.cssText = 'white-space:pre-wrap;overflow-wrap:break-word;hyphens:auto;-webkit-hyphens:auto;' +
+      'font-weight:' + (o.bold ? 700 : 400) + ';font-style:' + (o.italic ? 'italic' : 'normal') + ';';
+    text.textContent = o.quotes ? '\u201E' + v.text + '\u201C' : v.text;
+    inner.appendChild(text);
+    var ref = null;
+    if (o.showRef && v.ref) {
+      ref = document.createElement('div');
+      ref.style.cssText = 'margin-top:0.6em;font-weight:700;font-style:normal;';
+      ref.textContent = '\u2014 ' + v.ref;
+      inner.appendChild(ref);
+    }
+    root.appendChild(inner);
+
+    function apply(px) {
+      text.style.fontSize = px + 'px';
+      if (ref) ref.style.fontSize = Math.max(10, Math.round(px * 0.62)) + 'px';
+    }
+    function fits() { return inner.scrollHeight <= inner.clientHeight && text.scrollWidth <= text.clientWidth + 1; }
+    function fit() {
+      if (o.sizeMode === 'fixed') { apply(o.size); return; }
+      var lo = 8, hi = Math.max(8, Math.min(o.maxSize, H));
+      apply(lo);
+      while (lo < hi) {
+        var mid = Math.ceil((lo + hi) / 2);
+        apply(mid);
+        if (fits()) lo = mid; else hi = mid - 1;
+      }
+      apply(lo);
+    }
+    apply(o.sizeMode === 'fixed' ? o.size : Math.min(o.maxSize, 40));
+    return loadFont(o.font, o.italic).then(fit, fit);
+  }
+
+  return {
+    TZ: TZ, DEFAULT_SYNC_MINUTES: DEFAULT_SYNC_MINUTES,
+    normalize: normalize, slotIndex: slotIndex, slotStart: slotStart, indexForSlot: indexForSlot,
+    pick: pick, upcoming: upcoming, fontList: fontList, fontCss: fontCss, fontUrl: fontUrl, loadFont: loadFont,
+    displayOptions: displayOptions, renderVerse: renderVerse, dayNum: dayNum, localMidnight: localMidnight
+  };
+});
+/*VERSES-END*/
+</script>
 <script>
 (() => {
   'use strict';
 
   const MIN = 60;
-  const ORDER = ['weather', 'calendar', 'agenda', 'photo'];
+  const ORDER = ['weather', 'calendar', 'agenda', 'photo', 'verse'];
   const FILE_RE = /^[a-z0-9][a-z0-9._-]{0,60}\.png$/;
   const SRC = {
     openmeteo: { name: 'Open-Meteo',        help: 'Sehr zuverlässig, weltweit, kostenlos. Schlichte Anzeige mit Symbolen (empfohlen).' },
@@ -390,14 +783,39 @@
     photo:    { name: 'Google Drive', hint: 'Foto aus Google Drive',
                 icon: '<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="m21 16-5-5-8 9"/>',
                 fields: [{ key: 'fileId', type: 'text', label: 'Datei-ID oder Freigabe-Link', ph: '1WVXOZY6CS56w8VjM-qV2itM60bWrqALy',
-                           help: 'Die Datei braucht die Freigabe „Jeder mit dem Link“. Den Link kannst du direkt einfügen.' }] }
+                           help: 'Die Datei braucht die Freigabe „Jeder mit dem Link“. Den Link kannst du direkt einfügen.' }] },
+    verse:    { name: 'Bibelvers', hint: 'Bibelverse und andere Texte, wechselnd', custom: true,
+                icon: '<path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H12v16H5.5A1.5 1.5 0 0 1 4 18.5z"/><path d="M12 4h6.5A1.5 1.5 0 0 1 20 5.5v13a1.5 1.5 0 0 1-1.5 1.5H12"/>',
+                fields: [
+                  { key: 'collection', type: 'id' },
+                  { key: 'mode', type: 'select', options: [['seq', 'Der Reihe nach'], ['random', 'Zufällig']] },
+                  { key: 'repeats', type: 'select', options: [['no', 'Nein, erst alle Texte zeigen'], ['yes', 'Ja, Wiederholungen erlaubt']] },
+                  { key: 'atEnd', type: 'select', options: [['restart', 'Von vorn beginnen (bei Zufall neu mischen)'], ['pause', 'Beim letzten Text stehen bleiben']] },
+                  { key: 'change', type: 'select', options: [['sync', 'Bei jedem PNG-Update'], ['interval', 'Nach fester Zeit']] },
+                  { key: 'every', type: 'number', min: 1, max: 9999 },
+                  { key: 'unit', type: 'select', options: [['minutes', 'Minuten'], ['hours', 'Stunden'], ['days', 'Tage']] },
+                  { key: 'startAt', type: 'iso' },
+                  { key: 'seed', type: 'int' },
+                  { key: 'font', type: 'select', options: Verses.fontList() },
+                  { key: 'sizeMode', type: 'select', options: [['auto', 'Automatisch (so groß wie möglich)'], ['fixed', 'Feste Größe']] },
+                  { key: 'size', type: 'number', min: 8, max: 300 },
+                  { key: 'maxSize', type: 'number', min: 10, max: 300 },
+                  { key: 'bold', type: 'bool' },
+                  { key: 'italic', type: 'bool' },
+                  { key: 'align', type: 'select', options: [['center', 'Zentriert'], ['left', 'Linksbündig']] },
+                  { key: 'showRef', type: 'bool' },
+                  { key: 'quotes', type: 'bool' }
+                ] }
   };
   // Grundlayout für eine Layout-Fläche von 1024 x 758 (wird bei anderen Flächen mitskaliert)
   const BASE = {
     weather:  { x: 15,  y: 15,  w: 489, h: 728, source: 'openmeteo', location: 'Sundern', days: 3 },
     calendar: { x: 519, y: 15,  w: 490, h: 475, calendarId: 'family13776384795444561092@group.calendar.google.com' },
     agenda:   { x: 519, y: 505, w: 238, h: 238, calendarId: '' },
-    photo:    { x: 771, y: 505, w: 238, h: 238, fileId: '1WVXOZY6CS56w8VjM-qV2itM60bWrqALy' }
+    photo:    { x: 771, y: 505, w: 238, h: 238, fileId: '1WVXOZY6CS56w8VjM-qV2itM60bWrqALy' },
+    verse:    { enabled: false, x: 519, y: 505, w: 490, h: 238, collection: '', mode: 'seq', repeats: 'no', atEnd: 'restart',
+                change: 'sync', every: 1, unit: 'days', startAt: null, seed: null, font: 'serif', sizeMode: 'auto',
+                size: 36, maxSize: 72, bold: false, italic: false, align: 'center', showRef: true, quotes: false }
   };
   const PRESETS = [
     { id: 'k600',  w: 600,  h: 800,  name: 'Kindle Basic (bis 10. Gen), Touch' },
@@ -437,12 +855,24 @@
     return v;
   }
   function cleanField(f, raw, def, id) {
-    if (f.type === 'select') {
-      const v = f.numeric ? Number(raw) : String(raw);
-      return f.options.some((o) => o[0] === v) ? v : def;
+    switch (f.type) {
+      case 'select': {
+        const v = f.numeric ? Number(raw) : String(raw);
+        return f.options.some((o) => o[0] === v) ? v : def;
+      }
+      case 'bool': return typeof raw === 'boolean' ? raw : def;
+      case 'number': {
+        const n = Math.round(Number(raw));
+        return (raw === '' || raw === null || raw === undefined || !Number.isFinite(n)) ? def : clamp(n, f.min, f.max);
+      }
+      case 'iso': { const t = Date.parse(raw); return Number.isFinite(t) ? new Date(t).toISOString() : new Date().toISOString(); }
+      case 'int': { const n = Math.floor(Number(raw)); return (Number.isFinite(n) && n >= 0) ? n % 2147483647 : Math.floor(Math.random() * 2147483647); }
+      case 'id': return String(raw || '').toLowerCase().replace(/[^a-z0-9-]/g, '').slice(0, 40);
+      default: {
+        const o = normOpt(f.key, raw);
+        return (!o && !(id === 'agenda')) ? def : o;
+      }
     }
-    const o = normOpt(f.key, raw);
-    return (!o && !(id === 'agenda')) ? def : o;
   }
   function cleanOne(id, s, dims) {
     s = s || {};
@@ -452,7 +882,7 @@
     const n = (v, f) => (v === null || v === '' || v === undefined || !Number.isFinite(Number(v))) ? f : Math.round(Number(v));
     const w = clamp(n(s.w, dflt.w), MIN, dims.w), h = clamp(n(s.h, dflt.h), MIN, dims.h);
     const out = {
-      enabled: typeof s.enabled === 'boolean' ? s.enabled : true,
+      enabled: typeof s.enabled === 'boolean' ? s.enabled : b.enabled !== false,
       x: clamp(n(s.x, dflt.x), 0, dims.w - w), y: clamp(n(s.y, dflt.y), 0, dims.h - h), w, h,
       rotate: [0, 90, 180, 270].includes(Number(s.rotate)) ? Number(s.rotate) : 0
     };
@@ -488,12 +918,42 @@
     return list.length ? list : [cleanProfile({ name: 'Paperwhite 2', file: 'dashboard.png', width: 758, height: 1024, rotate: 90, zoom: 1 }, { ids: new Set(), files: new Set() })];
   }
   const legacyProfile = (widgets) => ({ name: 'Paperwhite 2', file: 'dashboard.png', width: 758, height: 1024, rotate: 90, zoom: 1, widgets });
-  function docFromJson(obj) {
-    if (obj && Array.isArray(obj.profiles)) return cleanDoc(obj.profiles);
-    if (obj && obj.widgets) return cleanDoc([legacyProfile(obj.widgets)]);        // alte layout.json
-    throw new Error('Format nicht erkannt');
+  /* ---------- Textsammlungen und Einstellungen ---------- */
+  const T_MAX = 1000, R_MAX = 120, ITEMS_MAX = 5000;
+  function cleanItems(list) {
+    const out = [];
+    (Array.isArray(list) ? list : []).forEach((it) => {
+      if (typeof it === 'string') it = { t: it, r: '' };
+      if (!it || typeof it.t !== 'string') return;
+      const t = it.t.replace(/\r\n?/g, '\n').replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/g, '').trim().slice(0, T_MAX);
+      if (!t) return;
+      out.push({ t, r: typeof it.r === 'string' ? it.r.replace(/[\u0000-\u001f]/g, ' ').trim().slice(0, R_MAX) : '' });
+    });
+    return out.slice(0, ITEMS_MAX);
   }
-  const serialize = () => JSON.stringify({ version: 3, profiles: doc }, null, 2) + '\n';
+  function cleanLib(raw) {
+    const ids = new Set(), out = [];
+    (Array.isArray(raw) ? raw : []).forEach((c) => {
+      if (!c) return;
+      const name = String(c.name || '').replace(/[\u0000-\u001f]/g, '').trim().slice(0, 40) || 'Sammlung';
+      const base = slug(c.id || name); let id = base, k = 2;
+      while (ids.has(id)) id = base + '-' + (k++);
+      ids.add(id); out.push({ id, name, items: cleanItems(c.items) });
+    });
+    return out;
+  }
+  function cleanSettings(raw) {
+    const n = Math.floor(Number(raw && raw.updateMinutes));
+    return { updateMinutes: Number.isFinite(n) && n >= 1 ? Math.min(1440, n) : 60 };
+  }
+  function parseDoc(obj) {
+    let profiles;
+    if (obj && Array.isArray(obj.profiles)) profiles = cleanDoc(obj.profiles);
+    else if (obj && obj.widgets) profiles = cleanDoc([legacyProfile(obj.widgets)]);      // alte layout.json
+    else throw new Error('Format nicht erkannt');
+    return { profiles, lib: cleanLib(obj.collections), settings: cleanSettings(obj.settings) };
+  }
+  const serialize = () => JSON.stringify({ version: 3, settings, profiles: doc, collections: lib }, null, 2) + '\n';
 
   /* ---------- Zustand ---------- */
   let cfg = Object.assign({ owner: '', repo: '', branch: '', token: '', grid: 5 }, store.get(KEY_CFG) || {});
@@ -501,9 +961,11 @@
     cfg.owner = location.hostname.split('.')[0];
     cfg.repo = location.pathname.split('/')[1] || '';
   }
-  let doc, cur, state, CW = 1024, CH = 758, baseline = null, selected = null, scale = 1;
+  let doc, lib = [], settings = cleanSettings(), cur, state, CW = 1024, CH = 758, baseline = null, selected = null, scale = 1;
   const draft = store.get(KEY_DRAFT), oldDraft = store.get(KEY_OLD_DRAFT);
-  if (draft && Array.isArray(draft.profiles)) { doc = cleanDoc(draft.profiles); baseline = null; }
+  if (draft && Array.isArray(draft.profiles)) {
+    doc = cleanDoc(draft.profiles); lib = cleanLib(draft.collections); settings = cleanSettings(draft.settings); baseline = null;
+  }
   else if (oldDraft) { doc = cleanDoc([legacyProfile(oldDraft)]); baseline = null; }
   else { doc = cleanDoc([]); baseline = serialize(); }
   const hasDraft = !!(draft || oldDraft);
@@ -511,14 +973,70 @@
     cur = doc.find((p) => p.id === id) || doc[0];
     state = cur.widgets;
     const c = canvasOf(cur); CW = c.w; CH = c.h;
-    selected = null;
+    selected = null; verseOverride = null; vpKey = '';
     store.set('kd-editor-current', cur.id);
   }
+  let vpKey = '', vpToken = 0, vpTimer = 0, verseOverride = null;
+  let draftTimer = 0;
+  function saveDraft(now) {
+    clearTimeout(draftTimer);
+    const run = () => store.set(KEY_DRAFT, { profiles: doc, collections: lib, settings });
+    if (now) run(); else draftTimer = setTimeout(run, 250);
+  }
+  window.addEventListener('pagehide', () => saveDraft(true));
   use(store.get('kd-editor-current'));
 
   /* ---------- Aufbau der Seitenleiste und Bühne ---------- */
   const screen = $('screen'), frame = $('frame'), cards = $('cards'), deviceFrame = $('device-frame');
   const nodes = {}, cardEls = {};
+
+  const fldOptions = (k, options) => `<select class="fld" data-k="${k}">${options.map((o) => `<option value="${o[0]}">${o[1]}</option>`).join('')}</select>`;
+  function verseOptionsHtml() {
+    const S = (k) => fldOptions(k, META.verse.fields.find((f) => f.key === k).options);
+    return `
+      <div class="vg">
+        <div class="vh">Texte</div>
+        <label class="optf">Sammlung <select class="fld" data-k="collection"></select></label>
+        <div class="vrow"><span class="vcount"></span><button type="button" class="btn sm" data-act="lib">Texte verwalten …</button></div>
+      </div>
+      <div class="vg">
+        <div class="vh">Reihenfolge</div>
+        <label class="optf">Reihenfolge ${S('mode')}</label>
+        <label class="optf" data-show="random">Wiederholungen ${S('repeats')}</label>
+        <small class="help" data-show="random">Ja: Texte können mehrmals vorkommen, aber nie zweimal direkt hintereinander. Nein: Jeder Text kommt genau einmal dran, bevor eine neue Runde beginnt.</small>
+        <label class="optf" data-show="ends">Nach dem letzten Text ${S('atEnd')}</label>
+        <div class="vrow" data-show="random"><span>Startwert der Zufallsfolge</span><button type="button" class="btn sm" data-act="reshuffle">Neu mischen</button></div>
+      </div>
+      <div class="vg">
+        <div class="vh">Wechsel</div>
+        <label class="optf">Nächster Text erscheint ${S('change')}</label>
+        <div class="vrow" data-show="interval"><span>Alle</span><input type="number" class="fld sm" data-k="every" min="1" max="9999" inputmode="numeric">${S('unit')}</div>
+        <div class="vrow" data-show="sync"><span>PNG-Update alle</span><span><input type="number" id="vUpdate" class="sm" min="1" max="1440" inputmode="numeric"> Min.</span></div>
+        <small class="help vtime"></small>
+        <div class="vrow"><span>Beginnt beim ersten Text</span><button type="button" class="btn sm" data-act="restart">Wiedergabe neu starten</button></div>
+      </div>
+      <div class="vg">
+        <div class="vh">Darstellung</div>
+        <label class="optf">Schriftart ${S('font')}</label>
+        <label class="optf">Schriftgröße ${S('sizeMode')}</label>
+        <div class="vrow" data-show="auto"><span>Höchstens</span><span><input type="number" class="fld sm" data-k="maxSize" min="10" max="300" inputmode="numeric"> px</span></div>
+        <div class="vrow" data-show="fixed"><span>Größe</span><span><input type="number" class="fld sm" data-k="size" min="8" max="300" inputmode="numeric"> px</span></div>
+        <label class="optf">Ausrichtung ${S('align')}</label>
+        <div class="checks">
+          <label><input type="checkbox" class="fld" data-k="bold"> Fett</label>
+          <label><input type="checkbox" class="fld" data-k="italic"> Kursiv</label>
+          <label><input type="checkbox" class="fld" data-k="showRef"> Bibelstelle zeigen</label>
+          <label><input type="checkbox" class="fld" data-k="quotes"> Anführungszeichen</label>
+        </div>
+      </div>
+      <div class="vg">
+        <div class="vh">Reihenfolge und Zeitpunkte</div>
+        <ol class="vlist"></ol>
+        <small class="help">Ein Klick auf einen Eintrag zeigt ihn im Fenster. Die Zeiten sind der frühestmögliche Wechsel, sichtbar wird er mit dem nächsten PNG-Update.</small>
+      </div>`;
+  }
+  const fldValue = (el) => el.type === 'checkbox' ? el.checked : (el.type === 'number' ? Number(el.value) : el.value);
+  const setFld = (el, v) => { if (el.type === 'checkbox') el.checked = !!v; else el.value = v; };
 
   ORDER.forEach((id) => {
     const m = META[id];
@@ -526,10 +1044,11 @@
     el.className = 'w'; el.dataset.id = id;
     el.innerHTML = `<div class="lbl"><svg viewBox="0 0 24 24">${m.icon}</svg><b>${m.name}</b><span></span><span class="sub"></span></div>` +
       ['nw', 'n', 'ne', 'e', 'se', 's', 'sw', 'w'].map((d) => `<i class="h h-${d}" data-dir="${d}"></i>`).join('');
+    if (id === 'verse') el.insertAdjacentHTML('afterbegin', '<div class="vprev"><div class="vrot"></div></div>');
     screen.appendChild(el);
     nodes[id] = el;
 
-    const fieldsHtml = m.fields.map((f) => {
+    const fieldsHtml = m.custom ? verseOptionsHtml() : m.fields.map((f) => {
       const inner = f.type === 'select'
         ? `<select class="fld" data-k="${f.key}">${f.options.map((o) => `<option value="${o[0]}">${o[1]}</option>`).join('')}</select>`
         : `<input type="text" class="fld" data-k="${f.key}" placeholder="${f.ph || ''}" spellcheck="false" autocomplete="off" autocapitalize="off">`;
@@ -580,17 +1099,83 @@
       el.style.width = s.w + 'px'; el.style.height = s.h + 'px';
       el.classList.toggle('sel', selected === id && s.enabled);
       el.querySelector('.lbl span').textContent = `${s.w} × ${s.h}`;
-      el.querySelector('.lbl .sub').textContent = id === 'weather' ? `${s.location}, ${SRC[s.source].name}, ${s.days} ${s.days === 1 ? 'Tag' : 'Tage'}` : '';
+      el.querySelector('.lbl .sub').textContent = id === 'weather' ? `${s.location}, ${SRC[s.source].name}, ${s.days} ${s.days === 1 ? 'Tag' : 'Tage'}`
+        : (id === 'verse' ? `${(lib.find((x) => x.id === s.collection) || { name: 'keine Sammlung' }).name}, ${s.mode === 'random' ? 'zufällig' : 'der Reihe nach'}` : '');
       el.querySelector('.lbl').style.transform = `rotate(${s.rotate}deg)`;
       c.classList.toggle('on', s.enabled);
       c.classList.toggle('sel', selected === id);
       c.querySelector('[data-k=enabled]').checked = s.enabled;
       c.querySelectorAll('[data-rot]').forEach((b) => b.setAttribute('aria-pressed', String(Number(b.dataset.rot) === s.rotate)));
-      c.querySelectorAll('.fld').forEach((f) => { if (document.activeElement !== f) f.value = s[f.dataset.k]; });
+      if (id === 'verse') paintVerseOptions(s, c);
+      c.querySelectorAll('.fld').forEach((f) => { if (document.activeElement !== f) setFld(f, s[f.dataset.k]); });
+      if (id === 'verse') paintVerseInfo(s, c);
       const help = c.querySelector('[data-help=source]'); if (help) help.textContent = SRC[s.source].help;
       c.querySelectorAll('.nums input').forEach((inp) => { if (document.activeElement !== inp) inp.value = s[inp.dataset.k]; });
     });
+    scheduleVersePreview();
     updateState();
+  }
+
+  /* ---------- Textfenster: Optionen, Vorschau ---------- */
+  const itemsOf = (id) => { const c = lib.find((x) => x.id === id); return c ? c.items : []; };
+  function paintVerseOptions(s, c) {
+    const sel = c.querySelector('[data-k=collection]');
+    const key = lib.map((x) => x.id + ':' + x.name).join('|');
+    if (sel.dataset.key !== key) {
+      sel.innerHTML = '<option value="">(keine gewählt)</option>' + lib.map((x) => `<option value="${x.id}">${x.name.replace(/</g, '&lt;')}</option>`).join('');
+      sel.dataset.key = key;
+    }
+    const show = new Set([s.mode === 'random' ? 'random' : 'seq', s.change, s.sizeMode === 'fixed' ? 'fixed' : 'auto']);
+    if (s.mode !== 'random' || s.repeats !== 'yes') show.add('ends');
+    c.querySelectorAll('[data-show]').forEach((el) => { el.hidden = !show.has(el.dataset.show); });
+    const u = c.querySelector('#vUpdate'); if (document.activeElement !== u) u.value = settings.updateMinutes;
+  }
+  const fmtWhen = (ms) => new Date(ms).toLocaleString('de-DE', { weekday: 'short', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Berlin' });
+  let vlKey = '';
+  function paintVerseInfo(s, c) {
+    const items = itemsOf(s.collection), col = lib.find((x) => x.id === s.collection), N = items.length;
+    c.querySelector('.vcount').textContent = col ? `${N} ${N === 1 ? 'Text' : 'Texte'}` : 'Keine Sammlung gewählt';
+    // Hinweis zur Wechselzeit
+    let help;
+    if (s.change === 'sync') help = `Bei jedem PNG-Update kommt der nächste Text. Standard ist stündlich (Zeitplan in .github/workflows/render.yml). Ändert sich der Zeitplan, hier denselben Takt eintragen.`;
+    else {
+      const mins = Math.max(1, Number(s.every) || 1) * ({ minutes: 1, hours: 60, days: 1440 }[s.unit] || 1440);
+      help = mins < settings.updateMinutes
+        ? `Achtung: Das PNG wird nur alle ${settings.updateMinutes} Min. neu erzeugt. Ein kürzerer Wechsel wird erst mit dem nächsten Update sichtbar, dazwischen entfallen Texte. Für kürzere Zeiten den Zeitplan in render.yml anpassen.`
+        : (s.unit === 'days' ? 'Der neue Text beginnt um Mitternacht (Berlin) und erscheint mit dem nächsten PNG-Update.' : 'Der neue Text beginnt zum jeweiligen Zeitpunkt und erscheint mit dem nächsten PNG-Update.');
+    }
+    c.querySelector('.vtime').textContent = help;
+    // Reihenfolge-Vorschau (nur neu berechnen, wenn sich etwas Relevantes ändert)
+    const minute = Math.floor(Date.now() / 60000);
+    const key = JSON.stringify([s.mode, s.repeats, s.atEnd, s.change, s.every, s.unit, s.startAt, s.seed, settings.updateMinutes, s.collection, N, lib.length ? lib.reduce((a, x) => a + x.items.length, 0) : 0, verseOverride, minute]);
+    if (key === vlKey) return;
+    vlKey = key;
+    const list = c.querySelector('.vlist');
+    if (!N) { list.innerHTML = '<li class="help">Noch keine Texte in dieser Sammlung.</li>'; return; }
+    const up = Verses.upcoming(s, N, Date.now(), 6, settings.updateMinutes);
+    list.innerHTML = up.map((u) => {
+      const it = items[u.index], txt = it.t.replace(/\s+/g, ' ');
+      return `<li><button type="button" data-prev="${u.index}" data-now="${u.isNow ? 1 : 0}" class="${verseOverride === u.index ? 'pv' : ''}">` +
+        `<span class="t">${u.isNow ? '<b class="now">Jetzt</b> ' : ''}Nr. ${u.index + 1}: ${txt.slice(0, 70).replace(/</g, '&lt;')}${txt.length > 70 ? '…' : ''}</span>` +
+        `<span class="m">${u.isNow ? 'seit ' : 'ab '}${fmtWhen(u.start)}${u.final ? ' <span class="end">danach bleibt dieser Text stehen</span>' : ''}</span></button></li>`;
+    }).join('');
+  }
+  function scheduleVersePreview() { clearTimeout(vpTimer); vpTimer = setTimeout(versePreview, 60); }
+  function versePreview() {
+    const s = state.verse, el = nodes.verse, rot = el.querySelector('.vrot');
+    const items = itemsOf(s.collection);
+    if (!s.enabled || !items.length) { el.classList.remove('has-preview'); vpKey = ''; return; }
+    const idx = (verseOverride !== null && verseOverride < items.length) ? verseOverride : Verses.pick(s, items.length, Date.now(), settings.updateMinutes).index;
+    const v = { text: items[idx].t, ref: items[idx].r };
+    const swap = s.rotate === 90 || s.rotate === 270;
+    const iw = s.w - 8, ih = s.h - 8, rw = swap ? ih : iw, rh = swap ? iw : ih;
+    const key = JSON.stringify([v, rw, rh, s.rotate, Verses.displayOptions(s)]);
+    if (key === vpKey) return;
+    vpKey = key; vpToken++;
+    el.classList.add('has-preview');
+    rot.style.width = rw + 'px'; rot.style.height = rh + 'px';
+    rot.style.transform = `translate(-50%, -50%) rotate(${s.rotate}deg)`;
+    Verses.renderVerse(rot, v, s, rw, rh);
   }
   function updateState() {
     const el = $('state');
@@ -598,7 +1183,7 @@
     el.className = 'state ' + (dirty ? 'dirty' : 'synced');
     el.textContent = dirty ? 'Noch nicht hochgeladen' : 'Entspricht dem Repo';
   }
-  function changed() { store.set(KEY_DRAFT, { profiles: doc }); paint(); }
+  function changed() { saveDraft(); paint(); }
 
   /* Gehäuse: die Unterkante des Kindle ist breiter (bei 90° rechts, bei 270° links, hochkant unten/oben) */
   function fit() {
@@ -685,19 +1270,30 @@
   cards.addEventListener('change', (e) => {
     const card = e.target.closest('.card'); if (!card) return;
     const id = card.dataset.id, k = e.target.dataset.k;
-    if (k === 'enabled') { state[id].enabled = e.target.checked; if (e.target.checked) selected = id; }
+    if (e.target.id === 'vUpdate') { settings = cleanSettings({ updateMinutes: e.target.value }); e.target.value = settings.updateMinutes; vlKey = ''; changed(); return; }
+    if (k === 'enabled') {
+      state[id].enabled = e.target.checked;
+      if (e.target.checked) { selected = id; if (id === 'verse') state.verse.startAt = new Date().toISOString(); }
+    }
     else if (e.target.classList.contains('fld')) {
-      state[id][k] = e.target.value;
+      state[id][k] = fldValue(e.target);
       state[id] = cleanOne(id, state[id], { w: CW, h: CH });
-      e.target.value = state[id][k];
+      setFld(e.target, state[id][k]);
+      if (id === 'verse' && k === 'collection') verseOverride = null;
     }
     else { state[id][k] = Number(e.target.value); state[id] = cleanOne(id, state[id], { w: CW, h: CH }); e.target.blur(); }
     changed();
   });
   cards.addEventListener('input', (e) => {
     const card = e.target.closest('.card'); if (!card) return;
-    if (e.target.classList.contains('fld') && e.target.tagName === 'INPUT') {    // Text sofort übernehmen, aufräumen beim Verlassen
-      state[card.dataset.id][e.target.dataset.k] = e.target.value; store.set(KEY_DRAFT, { profiles: doc }); paint(); return;
+    if (e.target.id === 'vUpdate') { settings = cleanSettings({ updateMinutes: e.target.value }); vlKey = ''; saveDraft(); paint(); return; }
+    if (e.target.classList.contains('fld') && e.target.type === 'text') {         // Text sofort übernehmen, aufräumen beim Verlassen
+      state[card.dataset.id][e.target.dataset.k] = e.target.value; saveDraft(); paint(); return;
+    }
+    if (e.target.classList.contains('fld') && e.target.type === 'number') {
+      const n = Number(e.target.value);
+      if (e.target.value !== '' && Number.isFinite(n)) { state[card.dataset.id][e.target.dataset.k] = n; saveDraft(); paint(); }
+      return;
     }
     if (!e.target.matches('.nums input')) return;
     const v = Number(e.target.value);
@@ -709,6 +1305,15 @@
     const card = e.target.closest('.card'); if (!card) return;
     const rb = e.target.closest('[data-rot]');
     if (rb) { state[card.dataset.id].rotate = Number(rb.dataset.rot); selected = card.dataset.id; changed(); return; }
+    const pv = e.target.closest('[data-prev]');
+    if (pv) { const i = Number(pv.dataset.prev); verseOverride = (pv.dataset.now === '1' || verseOverride === i) ? null : i; vlKey = ''; vpKey = ''; selected = 'verse'; paint(); return; }
+    const act = e.target.closest('[data-act]');
+    if (act) {
+      selected = card.dataset.id;
+      if (act.dataset.act === 'lib') { openLib(); return; }
+      if (act.dataset.act === 'reshuffle') { state.verse.seed = Math.floor(Math.random() * 2147483647); verseOverride = null; vlKey = ''; changed(); say('Zufallsfolge neu gemischt. Zum Übernehmen hochladen.', 'ok'); return; }
+      if (act.dataset.act === 'restart') { state.verse.startAt = new Date().toISOString(); verseOverride = null; vlKey = ''; changed(); say('Die Wiedergabe beginnt wieder beim ersten Text. Zum Übernehmen hochladen.', 'ok'); return; }
+    }
     if (!e.target.closest('.sw')) select(card.dataset.id);
   });
   $('grid').addEventListener('change', (e) => { cfg.grid = Number(e.target.value); store.set(KEY_CFG, cfg); applyGrid(); });
@@ -730,7 +1335,7 @@
   $('btnImport').addEventListener('click', () => $('file').click());
   $('file').addEventListener('change', async (e) => {
     const f = e.target.files[0]; e.target.value = ''; if (!f) return;
-    try { doc = docFromJson(JSON.parse(await f.text())); use(cur.id); store.set(KEY_DRAFT, { profiles: doc }); refreshAll(); say('Datei geöffnet.', 'ok'); }
+    try { const d = parseDoc(JSON.parse(await f.text())); doc = d.profiles; lib = d.lib; settings = d.settings; use(cur.id); saveDraft(); refreshAll(); say('Datei geöffnet.', 'ok'); }
     catch { say('Die Datei ist keine gültige profiles.json oder layout.json.', 'err'); }
   });
 
@@ -830,14 +1435,210 @@
       const p = cleanProfile(raw, taken); p.file = v.file;
       doc.push(p); use(p.id);
     }
-    store.set(KEY_DRAFT, { profiles: doc }); refreshAll();
+    saveDraft(); refreshAll();
     say(devMode === 'edit' ? 'Gerät gespeichert.' : 'Neues Gerät angelegt. Passe das Layout an und lade es hoch.', 'ok');
   });
   $('dDelete').addEventListener('click', () => {
     if (!confirm(`Gerät „${cur.name}“ wirklich löschen? Die PNG-Datei ${cur.file} verschwindet beim nächsten Hochladen von GitHub.`)) return;
     doc = doc.filter((p) => p !== cur); use(doc[0].id);
-    store.set(KEY_DRAFT, { profiles: doc }); $('dlgDev').close(); refreshAll(); say('Gerät gelöscht.', 'ok');
+    saveDraft(); $('dlgDev').close(); refreshAll(); say('Gerät gelöscht.', 'ok');
   });
+
+  /* ---------- Textverwaltung ---------- */
+  const PAGE = 30;
+  let libSel = '', libPage = 0, libEdit = null, libQuery = '';
+  const libChecked = new Set();
+  const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const curColl = () => lib.find((c) => c.id === libSel);
+  const uniqueColl = (base) => { let id = base, k = 2; while (lib.some((c) => c.id === id)) id = base + '-' + (k++); return id; };
+  function libSay(msg, err) { const m = $('lMsg'); m.textContent = msg || ''; m.className = 'lmsg' + (err ? ' err' : ''); }
+
+  /* Texte erkennen: eine Zeile pro Text oder Blöcke mit Leerzeile; Bibelstelle nach " | ", " — ", in Klammern oder als letzte Zeile "— Stelle" */
+  function parseOne(block, brackets) {
+    const lines = block.split('\n').map((l) => l.trim()).filter(Boolean);
+    if (!lines.length) return null;
+    let r = '';
+    if (lines.length > 1) { const m = lines[lines.length - 1].match(/^[\u2014\u2013-]\s*(.+)$/); if (m) { r = m[1]; lines.pop(); } }
+    let t = lines.join('\n');
+    if (!r) { const i = t.lastIndexOf(' | '); if (i > 0) { r = t.slice(i + 3).trim(); t = t.slice(0, i).trim(); } }
+    if (!r) { const m = t.match(/^([\s\S]*\S)\s+[\u2014\u2013]\s+([^\u2014\u2013\n]{2,60})$/); if (m) { t = m[1]; r = m[2].trim(); } }
+    if (!r && brackets) { const m = t.match(/^([\s\S]*\S)\s*[(\[]([^()\[\]\n]{2,60})[)\]]$/); if (m) { t = m[1]; r = m[2].trim(); } }
+    return t ? { t, r } : null;
+  }
+  function parseTexts(input, brackets) {
+    const src = String(input || '').replace(/\r\n?/g, '\n').trim();
+    if (!src) return [];
+    let blocks = src.split(/\n[ \t]*\n+/);
+    if (blocks.length === 1 && src.includes('\n')) blocks = src.split('\n');        // eine Zeile pro Text
+    return cleanItems(blocks.map((b) => parseOne(b, brackets)).filter(Boolean));
+  }
+  const toBlocks = (items) => items.map((i) => i.t + (i.r ? '\n\u2014 ' + i.r : '')).join('\n\n') + '\n';
+
+  function ensureColl() { if (!lib.length) lib.push({ id: 'bibelverse', name: 'Bibelverse', items: [] }); }
+  function openLib() {
+    ensureColl();
+    libSel = (lib.find((c) => c.id === state.verse.collection) || lib[0]).id;
+    if (!state.verse.collection) state.verse.collection = libSel;
+    libPage = 0; libEdit = null; libQuery = ''; libChecked.clear(); $('lSearch').value = ''; libSay('');
+    renderLib(); changed();
+    if (!$('dlgLib').open) $('dlgLib').showModal();
+  }
+  function filteredIdx() {
+    const col = curColl(); if (!col) return [];
+    const q = libQuery.trim().toLowerCase(), out = [];
+    col.items.forEach((it, i) => { if (!q || it.t.toLowerCase().includes(q) || it.r.toLowerCase().includes(q)) out.push(i); });
+    return out;
+  }
+  function editRow(t, r, title, i) {
+    return `<li class="lrow editing" data-i="${i === undefined ? 'new' : i}"><div class="ledit"><b>${title}</b>` +
+      `<textarea rows="4" maxlength="${T_MAX}" placeholder="Text">${esc(t)}</textarea>` +
+      `<input type="text" maxlength="${R_MAX}" placeholder="Bibelstelle (optional), z. B. Psalm 23,1" value="${esc(r)}">` +
+      `<div class="lbtns"><button type="button" class="btn sm primary" data-a="save">Speichern</button><button type="button" class="btn sm" data-a="cancel">Abbrechen</button></div></div></li>`;
+  }
+  function renderLib(keepScroll) {
+    const list = $('lList'), top = list.scrollTop;
+    $('lColl').innerHTML = lib.map((c) => `<option value="${esc(c.id)}">${esc(c.name)} (${c.items.length})</option>`).join('');
+    $('lColl').value = libSel;
+    const col = curColl(), idxs = filteredIdx();
+    const pages = Math.max(1, Math.ceil(idxs.length / PAGE));
+    libPage = clamp(libPage, 0, pages - 1);
+    const shown = idxs.slice(libPage * PAGE, libPage * PAGE + PAGE), canMove = !libQuery.trim(), n = col.items.length;
+    let html = libEdit === 'new' ? editRow('', '', 'Neuer Text (wird am Ende angehängt)') : '';
+    shown.forEach((i) => {
+      const it = col.items[i];
+      if (libEdit === i) { html += editRow(it.t, it.r, 'Nr. ' + (i + 1) + ' bearbeiten', i); return; }
+      html += `<li class="lrow" data-i="${i}"><label class="lchk"><input type="checkbox" data-c aria-label="Nr. ${i + 1} auswählen"${libChecked.has(i) ? ' checked' : ''}></label>` +
+        `<span class="lnr">${i + 1}</span><div class="lbody"><div class="lt">${esc(it.t)}</div>${it.r ? `<div class="lr">${esc(it.r)}</div>` : ''}</div>` +
+        `<div class="lact"><button type="button" data-a="edit">Ändern</button>` +
+        `<button type="button" data-a="up" title="Nach oben"${canMove && i > 0 ? '' : ' disabled'}>↑</button>` +
+        `<button type="button" data-a="down" title="Nach unten"${canMove && i < n - 1 ? '' : ' disabled'}>↓</button>` +
+        `<button type="button" data-a="move" title="An eine Position verschieben"${canMove ? '' : ' disabled'}>Nr. …</button>` +
+        `<button type="button" class="del" data-a="del">Löschen</button></div></li>`;
+    });
+    if (!html) html = `<li class="lempty">${n ? 'Keine Treffer.' : 'Noch keine Texte in dieser Sammlung.<br>Mit „+ Text“ einen einzelnen Text anlegen oder mit „Mehrere einfügen …“ viele auf einmal.'}</li>`;
+    list.innerHTML = html;
+    if (keepScroll) list.scrollTop = top;
+    $('lCount').textContent = `${n} ${n === 1 ? 'Text' : 'Texte'}` + (libQuery.trim() ? `, ${idxs.length} Treffer` : '');
+    $('lPage').textContent = `Seite ${libPage + 1} von ${pages}`;
+    $('lPrev').disabled = libPage === 0; $('lNext').disabled = libPage >= pages - 1;
+    const c = libChecked.size; $('lDelSel').hidden = !c; $('lDelSel').textContent = `${c} ausgewählte löschen`;
+    $('lAll').checked = shown.length > 0 && shown.every((i) => libChecked.has(i));
+    if (libEdit !== null) { const ta = list.querySelector('textarea'); if (ta) ta.focus({ preventScroll: false }); }
+  }
+  function libChanged() { vlKey = ''; vpKey = ''; saveDraft(); renderLib(true); paint(); }
+  const openSame = () => { libEdit = null; };
+
+  $('btnLib').addEventListener('click', openLib);
+  $('lClose').addEventListener('click', () => $('dlgLib').close());
+  $('lColl').addEventListener('change', (e) => { libSel = e.target.value; libPage = 0; libEdit = null; libChecked.clear(); libSay(''); renderLib(); });
+  $('lCollNew').addEventListener('click', () => {
+    const name = (prompt('Name der neuen Sammlung:', '') || '').trim().slice(0, 40); if (!name) return;
+    const id = uniqueColl(slug(name)); lib.push({ id, name, items: [] });
+    libSel = id; libPage = 0; libEdit = null; libChecked.clear(); libSay('Sammlung angelegt.'); libChanged();
+  });
+  $('lCollRen').addEventListener('click', () => {
+    const c = curColl(); const name = (prompt('Neuer Name der Sammlung:', c.name) || '').trim().slice(0, 40); if (!name) return;
+    c.name = name; libChanged();
+  });
+  $('lCollDel').addEventListener('click', () => {
+    const c = curColl();
+    if (!confirm(`Sammlung „${c.name}“ mit ${c.items.length} Texten wirklich löschen? Fenster, die sie nutzen, zeigen danach keinen Text mehr.`)) return;
+    lib = lib.filter((x) => x !== c);
+    doc.forEach((p) => { if (p.widgets.verse.collection === c.id) p.widgets.verse.collection = ''; });
+    ensureColl(); libSel = lib[0].id; libPage = 0; libEdit = null; libChecked.clear(); libSay('Sammlung gelöscht.'); libChanged();
+  });
+  $('lSearch').addEventListener('input', (e) => { libQuery = e.target.value; libPage = 0; libEdit = null; renderLib(); });
+  $('lPrev').addEventListener('click', () => { libPage--; renderLib(); $('lList').scrollTop = 0; });
+  $('lNext').addEventListener('click', () => { libPage++; renderLib(); $('lList').scrollTop = 0; });
+  $('lAdd').addEventListener('click', () => { libEdit = 'new'; libQuery = ''; $('lSearch').value = ''; libPage = 0; renderLib(); $('lList').scrollTop = 0; });
+  $('lAll').addEventListener('change', (e) => {
+    const shown = filteredIdx().slice(libPage * PAGE, libPage * PAGE + PAGE);
+    shown.forEach((i) => { if (e.target.checked) libChecked.add(i); else libChecked.delete(i); });
+    renderLib(true);
+  });
+  $('lDelSel').addEventListener('click', () => {
+    const col = curColl(), n = libChecked.size;
+    if (!n || !confirm(`${n} ausgewählte Texte wirklich löschen?`)) return;
+    col.items = col.items.filter((_, i) => !libChecked.has(i)); libChecked.clear(); libEdit = null;
+    libSay(`${n} Texte gelöscht.`); libChanged();
+  });
+
+  $('lList').addEventListener('click', (e) => {
+    const row = e.target.closest('.lrow'); if (!row) return;
+    const col = curColl();
+    if (e.target.matches('[data-c]')) { const i = Number(row.dataset.i); if (e.target.checked) libChecked.add(i); else libChecked.delete(i); renderLib(true); return; }
+    const b = e.target.closest('[data-a]'); if (!b) return;
+    const a = b.dataset.a, i = row.dataset.i === 'new' ? -1 : Number(row.dataset.i);
+    if (a === 'edit') { libEdit = i; renderLib(true); }
+    else if (a === 'cancel') { libEdit = null; renderLib(true); }
+    else if (a === 'save') {
+      const t = row.querySelector('textarea').value, r = row.querySelector('input').value;
+      const item = cleanItems([{ t, r }])[0];
+      if (!item) { row.querySelector('textarea').focus(); return; }
+      if (i < 0) { col.items.push(item); libPage = Math.floor((col.items.length - 1) / PAGE); libSay(`Als Nr. ${col.items.length} am Ende hinzugefügt.`); }
+      else { col.items[i] = item; libSay(`Nr. ${i + 1} gespeichert.`); }
+      libEdit = null; libChanged();
+    }
+    else if (a === 'del') { col.items.splice(i, 1); libChecked.clear(); libSay(`Nr. ${i + 1} gelöscht.`); libChanged(); }
+    else if (a === 'up' || a === 'down') {
+      const j = a === 'up' ? i - 1 : i + 1; if (j < 0 || j >= col.items.length) return;
+      [col.items[i], col.items[j]] = [col.items[j], col.items[i]]; libChecked.clear();
+      libPage = Math.floor(j / PAGE); libChanged();
+    }
+    else if (a === 'move') {
+      const to = parseInt(prompt(`Neue Position für Nr. ${i + 1} (1 bis ${col.items.length}):`, String(i + 1)), 10);
+      if (!Number.isFinite(to)) return;
+      const j = clamp(to, 1, col.items.length) - 1; if (j === i) return;
+      const [it] = col.items.splice(i, 1); col.items.splice(j, 0, it); libChecked.clear();
+      libPage = Math.floor(j / PAGE); libSay(`Nr. ${i + 1} steht jetzt auf Position ${j + 1}.`); libChanged();
+    }
+  });
+
+  /* Mehrere Texte einfügen, Datei laden, Exportieren */
+  function bulkPreview() {
+    const items = parseTexts($('bText').value, $('bBrackets').checked);
+    $('bAdd').disabled = !items.length;
+    if (!items.length) { $('bPrev').textContent = 'Noch nichts erkannt.'; return; }
+    const ex = items.slice(0, 3).map((it) => `• ${it.t.replace(/\s+/g, ' ').slice(0, 80)}${it.t.length > 80 ? '…' : ''}${it.r ? '  [' + it.r + ']' : '  [ohne Stelle]'}`).join('\n');
+    $('bPrev').textContent = `Erkannt: ${items.length} ${items.length === 1 ? 'Text' : 'Texte'}\n${ex}${items.length > 3 ? '\n…' : ''}`;
+  }
+  function openBulk(text) { $('bText').value = text || ''; bulkPreview(); $('dlgBulk').showModal(); $('bText').focus(); }
+  $('lBulk').addEventListener('click', () => openBulk(''));
+  $('bText').addEventListener('input', bulkPreview);
+  $('bBrackets').addEventListener('change', bulkPreview);
+  $('bulkForm').addEventListener('submit', (e) => {
+    if (!e.submitter || e.submitter.value !== 'add') return;
+    const items = parseTexts($('bText').value, $('bBrackets').checked), col = curColl();
+    if (!items.length) { e.preventDefault(); return; }
+    const replace = document.querySelector('input[name=bMode]:checked').value === 'replace';
+    if (replace && col.items.length && !confirm(`Alle ${col.items.length} bestehenden Texte durch die neuen ersetzen?`)) { e.preventDefault(); return; }
+    const before = col.items.length;
+    col.items = replace ? items : col.items.concat(items);
+    const added = col.items.length - (replace ? 0 : before);
+    libQuery = ''; $('lSearch').value = ''; libEdit = null; libChecked.clear(); libPage = replace ? 0 : Math.floor(before / PAGE);
+    libSay(`${added} ${added === 1 ? 'Text' : 'Texte'} ${replace ? 'übernommen' : 'hinzugefügt'}` + (items.length > added ? ` (Grenze von ${ITEMS_MAX} Texten erreicht)` : '') + '.');
+    libChanged();
+  });
+  $('lImport').addEventListener('click', () => $('lFile').click());
+  $('lFile').addEventListener('change', async (e) => {
+    const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+    let text = await f.text();
+    if (/^\s*[\[{]/.test(text)) {
+      try {
+        const j = JSON.parse(text), arr = Array.isArray(j) ? j : (j.items || (j.collections && j.collections[0] && j.collections[0].items) || []);
+        text = toBlocks(cleanItems(arr.map((x) => typeof x === 'string' ? x : { t: x.t || x.text || x.vers || '', r: x.r || x.ref || x.stelle || '' })));
+      } catch { /* als Text behandeln */ }
+    }
+    openBulk(text);
+  });
+  $('lExport').addEventListener('click', () => {
+    const col = curColl(); if (!col.items.length) { libSay('Diese Sammlung ist noch leer.', true); return; }
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([toBlocks(col.items)], { type: 'text/plain;charset=utf-8' }));
+    a.download = col.id + '.txt'; a.click(); URL.revokeObjectURL(a.href);
+    libSay(`${col.items.length} Texte exportiert (Datei ${col.id}.txt). Sie lassen sich über „Datei laden …“ wieder einlesen.`);
+  });
+  $('dlgLib').addEventListener('close', () => { vlKey = ''; saveDraft(true); paint(); });
 
   /* ---------- GitHub ---------- */
   function ready() {
@@ -881,9 +1682,10 @@
       let r = await getRemote('profiles.json'), legacy = false;
       if (r.missing) { r = await getRemote('layout.json'); legacy = true; }
       if (r.missing) { say('Im Repo gibt es noch keine profiles.json. Beim ersten Hochladen wird sie angelegt.'); return; }
-      doc = docFromJson(JSON.parse(r.text)); use(cur ? cur.id : null);
+      { const d = parseDoc(JSON.parse(r.text)); doc = d.profiles; lib = d.lib; settings = d.settings; }
+      use(cur ? cur.id : null);
       baseline = legacy ? null : serialize();
-      store.set(KEY_DRAFT, { profiles: doc }); refreshAll();
+      saveDraft(); refreshAll();
       say(legacy ? 'Alte layout.json geladen und als Gerät „Paperwhite 2“ übernommen. Zum Speichern im neuen Format bitte hochladen.' : 'Einstellungen aus dem Repo geladen.', 'ok');
     } catch (err) { say(err.message || 'Laden fehlgeschlagen. Ist das Netzwerk erreichbar?', 'err'); }
   }
@@ -894,7 +1696,7 @@
     try {
       say('Lade hoch …');
       const keep = cur.id;
-      doc = cleanDoc(doc); use(keep); changed();                       // Eingaben vorher bereinigen
+      doc = cleanDoc(doc); lib = cleanLib(lib); settings = cleanSettings(settings); use(keep); changed();                       // Eingaben vorher bereinigen
       const body = serialize();
       let result;
       for (let attempt = 0; attempt < 2; attempt++) {

@@ -40,3 +40,22 @@ Orte werden über die Open-Meteo-Ortssuche gefunden; Koordinaten wie `51.33, 7.9
 ## Wenn ein Gerät nicht rendert
 
 Ein Fehler in einem Profil (z. B. doppelter Dateiname) lässt den Lauf fehlschlagen, damit nichts halb Veröffentlichtes online geht. Das Protokoll unter „Actions“ nennt das betroffene Gerät.
+
+## Textfenster (Bibelverse und andere Texte)
+
+Ein weiteres Fenster wie die anderen (an/aus, Position, Größe, Drehung). Die Texte liegen in **Sammlungen** in `profiles.json` (`collections`) und werden im Editor unter „Texte verwalten“ gepflegt: einzeln, per Einfügen vieler Texte auf einmal, per Datei, mit Suche, Sortierung und Mehrfachauswahl.
+
+| Einstellung | Möglichkeiten |
+|---|---|
+| Reihenfolge | der Reihe nach oder zufällig |
+| Zufällig: Wiederholungen | Nein (jeder Text einmal pro Runde) oder Ja (nie zweimal direkt hintereinander) |
+| Nach dem letzten Text | von vorn beginnen (bei Zufall neu mischen) oder beim letzten Text stehen bleiben |
+| Wechsel | bei jedem PNG-Update oder alle N Minuten, Stunden, Tage (Tage wechseln um Mitternacht Berlin) |
+| Schrift | System-Schriften und Google Fonts, Größe automatisch (so groß wie möglich, mit Höchstwert) oder fest, fett, kursiv, Ausrichtung |
+
+Es wird nichts zwischen den Läufen gespeichert: Welcher Text dran ist, ergibt sich aus Startzeit („Wiedergabe neu starten“), Wechselzeit, Zufalls-Startwert und Uhrzeit. Ein Layout-Upload zwischen zwei Wechseln ändert den Text deshalb nicht.
+Das PNG entsteht nur so oft, wie der Workflow läuft (Standard stündlich). Kürzere Wechselzeiten wirken erst mit dem nächsten Lauf.
+
+Import-Format („Mehrere einfügen“): ein Text pro Zeile, oder mehrere Zeilen pro Text mit Leerzeile dazwischen. Bibelstelle nach ` | `, nach ` — `, in Klammern am Ende oder als letzte Zeile `— Psalm 23,1`.
+
+`verses.js` steckt auch als Kopie im `editor.html`. Beide müssen zusammen aktualisiert werden.
