@@ -1,5 +1,8 @@
 {
   "version": 3,
+  "settings": {
+    "updateMinutes": 60
+  },
   "profiles": [
     {
       "name": "Paperwhite 2 1",
@@ -15,7 +18,7 @@
           "x": 0,
           "y": 0,
           "w": 535,
-          "h": 758,
+          "h": 425,
           "rotate": 0,
           "source": "openmeteo",
           "location": "Sundern",
@@ -47,6 +50,32 @@
           "h": 333,
           "rotate": 0,
           "fileId": "1WVXOZY6CS56w8VjM-qV2itM60bWrqALy"
+        },
+        "verse": {
+          "enabled": true,
+          "x": 0,
+          "y": 425,
+          "w": 535,
+          "h": 333,
+          "rotate": 0,
+          "collection": "bibelverse",
+          "mode": "random",
+          "repeats": "no",
+          "atEnd": "restart",
+          "change": "sync",
+          "every": 1,
+          "unit": "days",
+          "startAt": "2026-09-25T05:49:26.944Z",
+          "seed": 1443217963,
+          "font": "serif",
+          "sizeMode": "auto",
+          "size": 36,
+          "maxSize": 72,
+          "bold": false,
+          "italic": false,
+          "align": "center",
+          "showRef": false,
+          "quotes": false
         }
       }
     },
@@ -96,6 +125,32 @@
           "h": 238,
           "rotate": 90,
           "fileId": "1WVXOZY6CS56w8VjM-qV2itM60bWrqALy"
+        },
+        "verse": {
+          "enabled": false,
+          "x": 519,
+          "y": 505,
+          "w": 490,
+          "h": 238,
+          "rotate": 0,
+          "collection": "",
+          "mode": "seq",
+          "repeats": "no",
+          "atEnd": "restart",
+          "change": "sync",
+          "every": 1,
+          "unit": "days",
+          "startAt": "2026-09-25T05:49:12.173Z",
+          "seed": 881896859,
+          "font": "serif",
+          "sizeMode": "auto",
+          "size": 36,
+          "maxSize": 72,
+          "bold": false,
+          "italic": false,
+          "align": "center",
+          "showRef": true,
+          "quotes": false
         }
       }
     },
@@ -145,6 +200,32 @@
           "h": 333,
           "rotate": 0,
           "fileId": "1WVXOZY6CS56w8VjM-qV2itM60bWrqALy"
+        },
+        "verse": {
+          "enabled": false,
+          "x": 519,
+          "y": 505,
+          "w": 490,
+          "h": 238,
+          "rotate": 0,
+          "collection": "",
+          "mode": "seq",
+          "repeats": "no",
+          "atEnd": "restart",
+          "change": "sync",
+          "every": 1,
+          "unit": "days",
+          "startAt": "2026-09-25T05:49:12.174Z",
+          "seed": 659881992,
+          "font": "serif",
+          "sizeMode": "auto",
+          "size": 36,
+          "maxSize": 72,
+          "bold": false,
+          "italic": false,
+          "align": "center",
+          "showRef": true,
+          "quotes": false
         }
       }
     },
@@ -194,8 +275,59 @@
           "h": 333,
           "rotate": 0,
           "fileId": "1WVXOZY6CS56w8VjM-qV2itM60bWrqALy"
+        },
+        "verse": {
+          "enabled": false,
+          "x": 519,
+          "y": 505,
+          "w": 490,
+          "h": 238,
+          "rotate": 0,
+          "collection": "",
+          "mode": "seq",
+          "repeats": "no",
+          "atEnd": "restart",
+          "change": "sync",
+          "every": 1,
+          "unit": "days",
+          "startAt": "2026-09-25T05:49:12.174Z",
+          "seed": 143791608,
+          "font": "serif",
+          "sizeMode": "auto",
+          "size": 36,
+          "maxSize": 72,
+          "bold": false,
+          "italic": false,
+          "align": "center",
+          "showRef": true,
+          "quotes": false
         }
       }
+    }
+  ],
+  "collections": [
+    {
+      "id": "bibelverse",
+      "name": "Bibelverse",
+      "items": []
+    },
+    {
+      "id": "test",
+      "name": "Test",
+      "items": [
+        {
+          "t": "Der HERR ist mein Hirte; \nmir wird nichts mangeln. \nEr weidet mich auf grünen Auen \nund führt mich zu stillen Wassern. \nEr erquickt meine Seele; \ner führt mich auf rechter Straße \num seines Namens willen. \nUnd wenn ich auch wanderte durchs Tal der Todesschatten, \nso fürchte ich kein Unglück, \ndenn du bist bei mir; \ndein Stecken und dein Stab, die trösten mich. \nDu bereitest vor mir einen Tisch \nangesichts meiner Feinde; \ndu hast mein Haupt mit Öl gesalbt, \nmein Becher fließt über. \nNur Güte und Gnade werden mir folgen mein Leben lang, \nund ich werde bleiben im Haus des HERRN immerdar.",
+          "r": "Ps 23,1–6"
+        },
+        {
+          "t": "Lobe den HERRN, meine Seele! \nHERR, mein Gott, du bist sehr groß; \nmit Pracht und Majestät bist du bekleidet, \ndu, der sich in Licht hüllt wie in ein Gewand, \nder den Himmel ausspannt wie eine Zeltbahn, \nder sich seine Obergemächer zimmert in den Wassern, \nder Wolken zu seinem Wagen macht \nund einherfährt auf den Flügeln des Windes, \nder seine Engel zu Winden macht, \nseine Diener zu Feuerflammen.",
+          "r": "Ps 104,1–4"
+        },
+        {
+          "t": "Lobe den HERRN, meine Seele!",
+          "r": "Ps 104,1"
+        }
+      ]
     }
   ]
 }
