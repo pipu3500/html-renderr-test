@@ -65,7 +65,7 @@
           "change": "sync",
           "every": 1,
           "unit": "days",
-          "startAt": "2026-09-25T05:49:26.944Z",
+          "startAt": "2026-09-25T06:03:59.940Z",
           "seed": 1443217963,
           "font": "serif",
           "sizeMode": "auto",
@@ -74,7 +74,7 @@
           "bold": false,
           "italic": false,
           "align": "center",
-          "showRef": false,
+          "showRef": true,
           "quotes": false
         }
       }
@@ -309,7 +309,20 @@
     {
       "id": "bibelverse",
       "name": "Bibelverse",
-      "items": []
+      "items": [
+        {
+          "t": "Der HERR ist mein Hirte;\nmir wird nichts mangeln.\nEr weidet mich auf grünen Auen\nund führt mich zu stillen Wassern.\nEr erquickt meine Seele;\ner führt mich auf rechter Straße\num seines Namens willen.\nUnd wenn ich auch wanderte durchs Tal der Todesschatten,\nso fürchte ich kein Unglück,\ndenn du bist bei mir;\ndein Stecken und dein Stab, die trösten mich.\nDu bereitest vor mir einen Tisch\nangesichts meiner Feinde;\ndu hast mein Haupt mit Öl gesalbt,\nmein Becher fließt über.\nNur Güte und Gnade werden mir folgen mein Leben lang,\nund ich werde bleiben im Haus des HERRN immerdar.",
+          "r": "Ps 23,1–6"
+        },
+        {
+          "t": "Lobe den HERRN, meine Seele!\nHERR, mein Gott, du bist sehr groß;\nmit Pracht und Majestät bist du bekleidet,\ndu, der sich in Licht hüllt wie in ein Gewand,\nder den Himmel ausspannt wie eine Zeltbahn,\nder sich seine Obergemächer zimmert in den Wassern,\nder Wolken zu seinem Wagen macht\nund einherfährt auf den Flügeln des Windes,\nder seine Engel zu Winden macht,\nseine Diener zu Feuerflammen.",
+          "r": "Ps 104,1–4"
+        },
+        {
+          "t": "Lobe den HERRN, meine Seele!",
+          "r": "Ps 104,1"
+        }
+      ]
     },
     {
       "id": "test",
