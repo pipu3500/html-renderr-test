@@ -89,7 +89,7 @@
       "zoom": 1,
       "widgets": {
         "weather": {
-          "enabled": true,
+          "enabled": false,
           "x": 15,
           "y": 15,
           "w": 1009,
@@ -100,7 +100,7 @@
           "days": 3
         },
         "calendar": {
-          "enabled": true,
+          "enabled": false,
           "x": 690,
           "y": 15,
           "w": 319,
@@ -109,7 +109,7 @@
           "calendarId": "family13776384795444561092@group.calendar.google.com"
         },
         "agenda": {
-          "enabled": true,
+          "enabled": false,
           "x": 100,
           "y": 420,
           "w": 238,
@@ -118,7 +118,7 @@
           "calendarId": ""
         },
         "photo": {
-          "enabled": true,
+          "enabled": false,
           "x": 730,
           "y": 455,
           "w": 238,
@@ -127,20 +127,20 @@
           "fileId": "1WVXOZY6CS56w8VjM-qV2itM60bWrqALy"
         },
         "verse": {
-          "enabled": false,
-          "x": 519,
-          "y": 505,
-          "w": 490,
-          "h": 238,
+          "enabled": true,
+          "x": 0,
+          "y": 0,
+          "w": 1024,
+          "h": 758,
           "rotate": 0,
-          "collection": "",
+          "collection": "test",
           "mode": "seq",
           "repeats": "no",
           "atEnd": "restart",
           "change": "sync",
           "every": 1,
           "unit": "days",
-          "startAt": "2026-09-25T05:49:12.173Z",
+          "startAt": "2026-09-25T07:33:09.718Z",
           "seed": 881896859,
           "font": "serif",
           "sizeMode": "auto",
