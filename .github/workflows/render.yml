@@ -1,11 +1,11 @@
 name: Generate Kindle Dashboard
 on:
   schedule:
-    - cron: '0 * * * *' # jede Stunde
+    - cron: '0 * * * *' # jede Stunde. Kürzere Abstände (z. B. '*/15 * * * *') gehen, dann im Editor beim Textfenster den PNG-Update-Takt anpassen
   workflow_dispatch:     # manuell per Klick startbar
   push:                  # neu rendern, wenn der Editor die Profile hochlädt
     branches-ignore: [gh-pages]
-    paths: [profiles.json, layout.json, index.html, screenshot.js, weather.js, editor.html, package.json]
+    paths: [profiles.json, layout.json, index.html, screenshot.js, weather.js, verses.js, editor.html, package.json]
 
 concurrency:
   group: dashboard
