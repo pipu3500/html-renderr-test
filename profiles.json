@@ -273,7 +273,7 @@
           "y": 0,
           "w": 525,
           "h": 758,
-          "rotate": 0,
+          "rotate": 270,
           "fileId": "1WVXOZY6CS56w8VjM-qV2itM60bWrqALy"
         },
         "verse": {
@@ -282,7 +282,7 @@
           "y": 0,
           "w": 499,
           "h": 758,
-          "rotate": 0,
+          "rotate": 270,
           "collection": "bibelverse",
           "mode": "seq",
           "repeats": "no",
