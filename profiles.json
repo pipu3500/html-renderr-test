@@ -239,7 +239,7 @@
       "zoom": 1,
       "widgets": {
         "weather": {
-          "enabled": true,
+          "enabled": false,
           "x": 524,
           "y": 0,
           "w": 500,
@@ -250,7 +250,7 @@
           "days": 3
         },
         "calendar": {
-          "enabled": true,
+          "enabled": false,
           "x": 0,
           "y": 0,
           "w": 525,
@@ -259,7 +259,7 @@
           "calendarId": "family13776384795444561092@group.calendar.google.com"
         },
         "agenda": {
-          "enabled": true,
+          "enabled": false,
           "x": 255,
           "y": 425,
           "w": 270,
@@ -270,18 +270,18 @@
         "photo": {
           "enabled": true,
           "x": 0,
-          "y": 425,
-          "w": 255,
-          "h": 333,
+          "y": 0,
+          "w": 525,
+          "h": 758,
           "rotate": 0,
           "fileId": "1WVXOZY6CS56w8VjM-qV2itM60bWrqALy"
         },
         "verse": {
           "enabled": true,
           "x": 525,
-          "y": 300,
+          "y": 0,
           "w": 499,
-          "h": 458,
+          "h": 758,
           "rotate": 0,
           "collection": "bibelverse",
           "mode": "seq",
