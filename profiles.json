@@ -5,9 +5,9 @@
   },
   "profiles": [
     {
-      "name": "Paperwhite 2 1",
+      "name": "Paperwhite 2",
       "id": "paperwhite-2",
-      "file": "dashboard-paperwhite-2-1.png",
+      "file": "dashboard.png",
       "width": 758,
       "height": 1024,
       "rotate": 90,
@@ -15,10 +15,10 @@
       "widgets": {
         "weather": {
           "enabled": true,
-          "x": 549,
-          "y": 0,
-          "w": 475,
-          "h": 260,
+          "x": 15,
+          "y": 15,
+          "w": 489,
+          "h": 728,
           "rotate": 0,
           "source": "openmeteo",
           "location": "Sundern",
@@ -26,47 +26,59 @@
         },
         "calendar": {
           "enabled": true,
-          "x": 0,
-          "y": 0,
-          "w": 550,
-          "h": 430,
+          "x": 519,
+          "y": 15,
+          "w": 490,
+          "h": 475,
           "rotate": 0,
           "calendarId": "family13776384795444561092@group.calendar.google.com"
         },
         "agenda": {
           "enabled": true,
-          "x": 0,
-          "y": 425,
-          "w": 305,
-          "h": 333,
+          "x": 519,
+          "y": 505,
+          "w": 238,
+          "h": 238,
           "rotate": 0,
           "calendarId": ""
         },
         "photo": {
           "enabled": true,
-          "x": 305,
-          "y": 425,
-          "w": 245,
-          "h": 333,
+          "x": 771,
+          "y": 505,
+          "w": 238,
+          "h": 238,
           "rotate": 0,
-          "fileId": "1WVXOZY6CS56w8VjM-qV2itM60bWrqALy"
-        },
-        "verse": {
-          "enabled": true,
-          "x": 550,
-          "y": 260,
-          "w": 474,
-          "h": 498,
-          "rotate": 0,
-          "collection": "bibelverse",
+          "items": [
+            {
+              "id": "1WVXOZY6CS56w8VjM-qV2itM60bWrqALy"
+            }
+          ],
           "mode": "seq",
           "repeats": "no",
           "atEnd": "restart",
           "change": "sync",
           "every": 1,
           "unit": "days",
-          "startAt": "2026-09-25T15:57:36.728Z",
-          "seed": 1443217963,
+          "startAt": "2026-10-07T05:37:07.326Z",
+          "seed": 1800958791
+        },
+        "verse": {
+          "enabled": false,
+          "x": 519,
+          "y": 505,
+          "w": 490,
+          "h": 238,
+          "rotate": 0,
+          "collection": "",
+          "mode": "seq",
+          "repeats": "no",
+          "atEnd": "restart",
+          "change": "sync",
+          "every": 1,
+          "unit": "days",
+          "startAt": "2026-10-07T05:37:07.326Z",
+          "seed": 2036375546,
           "font": "serif",
           "sizeMode": "auto",
           "size": 36,
@@ -90,209 +102,74 @@
       "widgets": {
         "weather": {
           "enabled": true,
-          "x": 520,
+          "x": 0,
           "y": 0,
           "w": 504,
-          "h": 230,
+          "h": 485,
           "rotate": 0,
-          "source": "openmeteo",
+          "source": "dwd",
           "location": "Sundern",
           "days": 3
         },
         "calendar": {
           "enabled": true,
-          "x": 0,
+          "x": 500,
           "y": 0,
-          "w": 520,
-          "h": 430,
+          "w": 524,
+          "h": 485,
           "rotate": 0,
           "calendarId": "family13776384795444561092@group.calendar.google.com"
         },
         "agenda": {
           "enabled": true,
           "x": 0,
-          "y": 430,
-          "w": 285,
-          "h": 328,
+          "y": 485,
+          "w": 275,
+          "h": 273,
           "rotate": 0,
           "calendarId": ""
         },
         "photo": {
           "enabled": true,
-          "x": 285,
-          "y": 430,
-          "w": 235,
-          "h": 328,
+          "x": 270,
+          "y": 485,
+          "w": 754,
+          "h": 273,
           "rotate": 0,
-          "fileId": "1WVXOZY6CS56w8VjM-qV2itM60bWrqALy"
-        },
-        "verse": {
-          "enabled": true,
-          "x": 520,
-          "y": 230,
-          "w": 504,
-          "h": 528,
-          "rotate": 0,
-          "collection": "bibelverse",
+          "items": [
+            {
+              "id": "1WVXOZY6CS56w8VjM-qV2itM60bWrqALy"
+            },
+            {
+              "id": "1WPy49RRCnHZUtHHk_FfEgwzRAyHsvsaT"
+            }
+          ],
           "mode": "seq",
           "repeats": "no",
           "atEnd": "restart",
           "change": "sync",
           "every": 1,
           "unit": "days",
-          "startAt": "2026-09-25T16:01:19.699Z",
-          "seed": 881896859,
-          "font": "opensans",
-          "sizeMode": "auto",
-          "size": 36,
-          "maxSize": 72,
-          "bold": false,
-          "italic": false,
-          "align": "center",
-          "showRef": true,
-          "quotes": false
-        }
-      }
-    },
-    {
-      "name": "Paperwhite 2 2",
-      "id": "paperwhite-2-2",
-      "file": "dashboard-paperwhite-2-2.png",
-      "width": 758,
-      "height": 1024,
-      "rotate": 90,
-      "zoom": 1,
-      "widgets": {
-        "weather": {
-          "enabled": false,
-          "x": 0,
-          "y": 0,
-          "w": 505,
-          "h": 325,
-          "rotate": 0,
-          "source": "openmeteo",
-          "location": "Sundern",
-          "days": 3
-        },
-        "calendar": {
-          "enabled": false,
-          "x": 505,
-          "y": 0,
-          "w": 519,
-          "h": 425,
-          "rotate": 0,
-          "calendarId": "family13776384795444561092@group.calendar.google.com"
-        },
-        "agenda": {
-          "enabled": false,
-          "x": 505,
-          "y": 425,
-          "w": 280,
-          "h": 333,
-          "rotate": 0,
-          "calendarId": ""
-        },
-        "photo": {
-          "enabled": true,
-          "x": 515,
-          "y": 0,
-          "w": 509,
-          "h": 758,
-          "rotate": 270,
-          "fileId": "1WVXOZY6CS56w8VjM-qV2itM60bWrqALy"
+          "startAt": "2026-10-07T05:37:07.326Z",
+          "seed": 1800958791
         },
         "verse": {
-          "enabled": true,
-          "x": 0,
-          "y": 0,
-          "w": 515,
-          "h": 758,
-          "rotate": 270,
-          "collection": "bibelverse",
+          "enabled": false,
+          "x": 519,
+          "y": 505,
+          "w": 490,
+          "h": 238,
+          "rotate": 0,
+          "collection": "",
           "mode": "seq",
           "repeats": "no",
           "atEnd": "restart",
           "change": "sync",
           "every": 1,
           "unit": "days",
-          "startAt": "2026-09-25T15:48:54.018Z",
-          "seed": 659881992,
-          "font": "garamond",
-          "sizeMode": "auto",
-          "size": 36,
-          "maxSize": 72,
-          "bold": false,
-          "italic": false,
-          "align": "center",
-          "showRef": true,
-          "quotes": false
-        }
-      }
-    },
-    {
-      "name": "Paperwhite 2 3",
-      "id": "paperwhite-2-3",
-      "file": "dashboard-paperwhite-2-3.png",
-      "width": 758,
-      "height": 1024,
-      "rotate": 90,
-      "zoom": 1,
-      "widgets": {
-        "weather": {
-          "enabled": false,
-          "x": 524,
-          "y": 0,
-          "w": 500,
-          "h": 300,
-          "rotate": 0,
-          "source": "openmeteo",
-          "location": "Sundern",
-          "days": 3
-        },
-        "calendar": {
-          "enabled": false,
-          "x": 0,
-          "y": 0,
-          "w": 525,
-          "h": 425,
-          "rotate": 0,
-          "calendarId": "family13776384795444561092@group.calendar.google.com"
-        },
-        "agenda": {
-          "enabled": false,
-          "x": 255,
-          "y": 425,
-          "w": 270,
-          "h": 333,
-          "rotate": 0,
-          "calendarId": ""
-        },
-        "photo": {
-          "enabled": true,
-          "x": 0,
-          "y": 0,
-          "w": 525,
-          "h": 758,
-          "rotate": 270,
-          "fileId": "1WVXOZY6CS56w8VjM-qV2itM60bWrqALy"
-        },
-        "verse": {
-          "enabled": true,
-          "x": 525,
-          "y": 0,
-          "w": 499,
-          "h": 758,
-          "rotate": 270,
-          "collection": "bibelverse",
-          "mode": "seq",
-          "repeats": "no",
-          "atEnd": "restart",
-          "change": "sync",
-          "every": 1,
-          "unit": "days",
-          "startAt": "2026-09-25T15:53:42.196Z",
-          "seed": 143791608,
-          "font": "lora",
+          "startAt": "2026-10-07T05:37:07.326Z",
+          "seed": 2036375546,
+          "font": "serif",
           "sizeMode": "auto",
           "size": 36,
           "maxSize": 72,
@@ -305,42 +182,5 @@
       }
     }
   ],
-  "collections": [
-    {
-      "id": "bibelverse",
-      "name": "Bibelverse",
-      "items": [
-        {
-          "t": "Der HERR ist mein Hirte;\nmir wird nichts mangeln.\nEr weidet mich auf grünen Auen\nund führt mich zu stillen Wassern.\nEr erquickt meine Seele;\ner führt mich auf rechter Straße\num seines Namens willen.\nUnd wenn ich auch wanderte durchs Tal der Todesschatten,\nso fürchte ich kein Unglück,\ndenn du bist bei mir;\ndein Stecken und dein Stab, die trösten mich.\nDu bereitest vor mir einen Tisch\nangesichts meiner Feinde;\ndu hast mein Haupt mit Öl gesalbt,\nmein Becher fließt über.\nNur Güte und Gnade werden mir folgen mein Leben lang,\nund ich werde bleiben im Haus des HERRN immerdar.",
-          "r": "Ps 23,1–6"
-        },
-        {
-          "t": "Lobe den HERRN, meine Seele!\nHERR, mein Gott, du bist sehr groß;\nmit Pracht und Majestät bist du bekleidet,\ndu, der sich in Licht hüllt wie in ein Gewand,\nder den Himmel ausspannt wie eine Zeltbahn,\nder sich seine Obergemächer zimmert in den Wassern,\nder Wolken zu seinem Wagen macht\nund einherfährt auf den Flügeln des Windes,\nder seine Engel zu Winden macht,\nseine Diener zu Feuerflammen.",
-          "r": "Ps 104,1–4"
-        },
-        {
-          "t": "Lobe den HERRN, meine Seele!",
-          "r": "Ps 104,1"
-        }
-      ]
-    },
-    {
-      "id": "test",
-      "name": "Test",
-      "items": [
-        {
-          "t": "Der HERR ist mein Hirte; \nmir wird nichts mangeln. \nEr weidet mich auf grünen Auen \nund führt mich zu stillen Wassern. \nEr erquickt meine Seele; \ner führt mich auf rechter Straße \num seines Namens willen. \nUnd wenn ich auch wanderte durchs Tal der Todesschatten, \nso fürchte ich kein Unglück, \ndenn du bist bei mir; \ndein Stecken und dein Stab, die trösten mich. \nDu bereitest vor mir einen Tisch \nangesichts meiner Feinde; \ndu hast mein Haupt mit Öl gesalbt, \nmein Becher fließt über. \nNur Güte und Gnade werden mir folgen mein Leben lang, \nund ich werde bleiben im Haus des HERRN immerdar.",
-          "r": "Ps 23,1–6"
-        },
-        {
-          "t": "Lobe den HERRN, meine Seele! \nHERR, mein Gott, du bist sehr groß; \nmit Pracht und Majestät bist du bekleidet, \ndu, der sich in Licht hüllt wie in ein Gewand, \nder den Himmel ausspannt wie eine Zeltbahn, \nder sich seine Obergemächer zimmert in den Wassern, \nder Wolken zu seinem Wagen macht \nund einherfährt auf den Flügeln des Windes, \nder seine Engel zu Winden macht, \nseine Diener zu Feuerflammen.",
-          "r": "Ps 104,1–4"
-        },
-        {
-          "t": "Lobe den HERRN, meine Seele!",
-          "r": "Ps 104,1"
-        }
-      ]
-    }
-  ]
+  "collections": []
 }
