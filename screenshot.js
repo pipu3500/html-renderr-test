@@ -59,6 +59,19 @@ function loadDoc() {
   return { profiles, collections, updateMinutes };
 }
 
+// Wählt das Drive-Bild, das jetzt dran ist (gleiche Auswahl-Logik wie bei den Texten, aus den Dateien im Fenster selbst)
+function photoFor(p, docInfo) {
+  const cfg = p.widgets.photo;
+  if (!cfg || cfg.enabled !== true) return null;
+  const items = (Array.isArray(cfg.items) ? cfg.items : []).map((it) => it && String(it.id || '').trim()).filter(Boolean);
+  const legacy = typeof cfg.fileId === 'string' ? cfg.fileId.trim() : '';   // sehr alte profiles.json (eine Datei)
+  const all = items.length ? items : (legacy ? [legacy] : []);
+  if (!all.length) return { ok: false, error: 'Keine Datei eingetragen' };
+  if (all.length === 1) return { ok: true, id: all[0], index: 0, total: 1 };
+  const pk = Verses.pick(cfg, all.length, NOW, docInfo.updateMinutes);
+  return { ok: true, id: all[pk.index], index: pk.index, total: all.length, slot: pk.slot };
+}
+
 // Wählt den Text, der jetzt dran ist (ohne gespeicherten Zustand: nur Startzeit, Wechselzeit und Uhrzeit zählen)
 function verseFor(p, docInfo) {
   const cfg = p.widgets.verse;
@@ -93,14 +106,16 @@ async function render(browser, p, docInfo) {
 
   const verse = verseFor(p, docInfo);
   if (verse) console.log('  Text:', verse.ok ? 'Nr. ' + (verse.index + 1) + ' von ' + verse.total + ' (Wechsel ' + verse.slot + ')' : 'Fehler: ' + verse.error);
+  const photo = photoFor(p, docInfo);
+  if (photo && photo.total > 1) console.log('  Foto:', photo.ok ? 'Datei ' + (photo.index + 1) + ' von ' + photo.total : 'Fehler: ' + photo.error);
 
   const page = await browser.newPage();
   let shot;
   try {
     await page.setViewport({ width: pageW, height: pageH, deviceScaleFactor: p.zoom });
-    await page.evaluateOnNewDocument((layout, w, size, v) => {
-      window.LAYOUT = layout; window.WEATHER = w; window.PAGE = size; window.VERSE = v;
-    }, { widgets: p.widgets }, wx, { w: pageW, h: pageH }, verse);
+    await page.evaluateOnNewDocument((layout, w, size, v, ph) => {
+      window.LAYOUT = layout; window.WEATHER = w; window.PAGE = size; window.VERSE = v; window.PHOTO = ph;
+    }, { widgets: p.widgets }, wx, { w: pageW, h: pageH }, verse, photo);
     try {
       // Google-Kalender-iFrames halten oft Verbindungen offen -> networkidle0 läuft dann in den Timeout
       await page.goto('file://' + path.join(__dirname, 'index.html'), { waitUntil: 'networkidle2', timeout: 60000 });

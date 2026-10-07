@@ -67,7 +67,8 @@
                 calendarId: 'family13776384795444561092@group.calendar.google.com' },
     agenda:   { enabled: true, x: 519, y: 505, w: 238, h: 238, rotate: 0, calendarId: '' },  // leer = wie Kalender
     photo:    { enabled: true, x: 771, y: 505, w: 238, h: 238, rotate: 0,
-                fileId: '1WVXOZY6CS56w8VjM-qV2itM60bWrqALy' },
+                items: [{ id: '1WVXOZY6CS56w8VjM-qV2itM60bWrqALy' }], mode: 'seq', repeats: 'no', atEnd: 'restart',
+                change: 'sync', every: 1, unit: 'days', startAt: null, seed: null },
     verse:    { enabled: false, x: 519, y: 505, w: 490, h: 238, rotate: 0 }   // Text kommt fertig vom Renderer (window.VERSE)
   };
   var BORDER = 4;
@@ -261,7 +262,12 @@
     },
     photo: function (root, s) {
       root.className += ' photo';
-      var id = driveId(s.fileId) || DEFAULTS.photo.fileId;
+      var id;
+      var p = window.PHOTO;                                   // vom Renderer (Node) bereits ausgewählt
+      if (p && p.ok) id = p.id;
+      else if (Array.isArray(s.items) && s.items.length) id = driveId(s.items[0].id);  // Vorschau/Fallback: erste Datei
+      else id = driveId(s.fileId);                              // sehr alte Layouts (nur eine Datei)
+      if (!id) id = DEFAULTS.photo.items[0].id;
       root.appendChild(make('img', { src: 'https://lh3.googleusercontent.com/d/' + encodeURIComponent(id), alt: 'Foto' }));
     }
   };

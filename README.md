@@ -59,3 +59,9 @@ Das PNG entsteht nur so oft, wie der Workflow läuft (Standard stündlich). Kür
 Import-Format („Mehrere einfügen“): ein Text pro Zeile, oder mehrere Zeilen pro Text mit Leerzeile dazwischen. Bibelstelle nach ` | `, nach ` — `, in Klammern am Ende oder als letzte Zeile `— Psalm 23,1`.
 
 `verses.js` steckt auch als Kopie im `editor.html`. Beide müssen zusammen aktualisiert werden.
+
+## Mehrere Google-Drive-Fotos
+
+Das Fenster „Google Drive“ zeigt nicht mehr nur eine Datei, sondern eine Liste beliebig vieler Dateien aus demselben Account (Editor: „+ Datei hinzufügen“, mit Miniaturvorschau, Sortieren per Pfeil, Entfernen per ✕). Bei mehr als einer Datei gelten dieselben Reihenfolge- und Wechsel-Einstellungen wie beim Textfenster (der Reihe nach oder zufällig, Verhalten nach der letzten Datei, Wechsel bei jedem PNG-Update oder nach fester Zeit) – siehe oben. Jede Datei braucht die Freigabe „Jeder mit dem Link“.
+
+Ein `profiles.json` aus einer älteren Version (einzelne `fileId`) wird beim Laden im Editor automatisch in eine Liste mit einem Eintrag umgewandelt.

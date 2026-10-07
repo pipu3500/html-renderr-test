@@ -294,6 +294,20 @@
   .bopts { display: grid; gap: 6px; font-size: 14px; }
   .bopts label { display: flex; align-items: center; gap: 8px; }
   #bPrev { color: var(--ink); background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; min-height: 40px; white-space: pre-wrap; }
+
+  /* ---------- Fotoliste (mehrere Google-Drive-Dateien) ---------- */
+  .plist { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .prow { display: grid; grid-template-columns: 36px 1fr auto; gap: 8px; align-items: center; border: 1px solid var(--line); border-radius: 8px; background: #fff; padding: 6px 8px; }
+  .pthumb { width: 36px; height: 36px; border-radius: 6px; object-fit: cover; background: #eef1f4; border: 1px solid var(--line); display: block; }
+  .pthumb.ph { background-image: linear-gradient(135deg, #e3e8ed 25%, transparent 25%, transparent 50%, #e3e8ed 50%, #e3e8ed 75%, transparent 75%, transparent); background-size: 10px 10px; }
+  .pf { min-width: 0; display: grid; gap: 2px; }
+  .pnr { font-size: 11px; color: var(--muted); font-weight: 600; }
+  .pfld { width: 100%; padding: 5px 7px; border: 1px solid var(--line); border-radius: 6px; background: #fff; color: var(--ink); font-size: 13px; }
+  .pact { display: flex; gap: 3px; }
+  .pact button { border: 1px solid var(--line); background: #fff; border-radius: 6px; width: 28px; height: 28px; cursor: pointer; }
+  .pact button:hover:not(:disabled) { background: #eef2f6; }
+  .pact button:disabled { opacity: .35; cursor: default; }
+
   @media (max-width: 700px) {
     .lrow { grid-template-columns: auto auto 1fr; gap: 6px 10px; }
     .lnr { text-align: left; }
@@ -780,10 +794,19 @@
                 icon: '<path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/>',
                 fields: [{ key: 'calendarId', type: 'text', label: 'Kalender-ID (leer = wie Google Kalender)', ph: 'leer lassen für denselben Kalender',
                            help: 'Nur ausfüllen, wenn hier ein anderer Kalender erscheinen soll.' }] },
-    photo:    { name: 'Google Drive', hint: 'Foto aus Google Drive',
+    photo:    { name: 'Google Drive', hint: 'Ein oder mehrere Fotos, wechselnd', custom: true,
                 icon: '<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="m21 16-5-5-8 9"/>',
-                fields: [{ key: 'fileId', type: 'text', label: 'Datei-ID oder Freigabe-Link', ph: '1WVXOZY6CS56w8VjM-qV2itM60bWrqALy',
-                           help: 'Die Datei braucht die Freigabe „Jeder mit dem Link“. Den Link kannst du direkt einfügen.' }] },
+                fields: [
+                  { key: 'items', type: 'items' },
+                  { key: 'mode', type: 'select', options: [['seq', 'Der Reihe nach'], ['random', 'Zufällig']] },
+                  { key: 'repeats', type: 'select', options: [['no', 'Nein, erst alle Bilder zeigen'], ['yes', 'Ja, Wiederholungen erlaubt']] },
+                  { key: 'atEnd', type: 'select', options: [['restart', 'Von vorn beginnen (bei Zufall neu mischen)'], ['pause', 'Beim letzten Bild stehen bleiben']] },
+                  { key: 'change', type: 'select', options: [['sync', 'Bei jedem PNG-Update'], ['interval', 'Nach fester Zeit']] },
+                  { key: 'every', type: 'number', min: 1, max: 9999 },
+                  { key: 'unit', type: 'select', options: [['minutes', 'Minuten'], ['hours', 'Stunden'], ['days', 'Tage']] },
+                  { key: 'startAt', type: 'iso' },
+                  { key: 'seed', type: 'int' }
+                ] },
     verse:    { name: 'Bibelvers', hint: 'Bibelverse und andere Texte, wechselnd', custom: true,
                 icon: '<path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H12v16H5.5A1.5 1.5 0 0 1 4 18.5z"/><path d="M12 4h6.5A1.5 1.5 0 0 1 20 5.5v13a1.5 1.5 0 0 1-1.5 1.5H12"/>',
                 fields: [
@@ -812,7 +835,8 @@
     weather:  { x: 15,  y: 15,  w: 489, h: 728, source: 'openmeteo', location: 'Sundern', days: 3 },
     calendar: { x: 519, y: 15,  w: 490, h: 475, calendarId: 'family13776384795444561092@group.calendar.google.com' },
     agenda:   { x: 519, y: 505, w: 238, h: 238, calendarId: '' },
-    photo:    { x: 771, y: 505, w: 238, h: 238, fileId: '1WVXOZY6CS56w8VjM-qV2itM60bWrqALy' },
+    photo:    { x: 771, y: 505, w: 238, h: 238, items: [{ id: '1WVXOZY6CS56w8VjM-qV2itM60bWrqALy' }], mode: 'seq', repeats: 'no', atEnd: 'restart',
+                change: 'sync', every: 1, unit: 'days', startAt: null, seed: null },
     verse:    { enabled: false, x: 519, y: 505, w: 490, h: 238, collection: '', mode: 'seq', repeats: 'no', atEnd: 'restart',
                 change: 'sync', every: 1, unit: 'days', startAt: null, seed: null, font: 'serif', sizeMode: 'auto',
                 size: 36, maxSize: 72, bold: false, italic: false, align: 'center', showRef: true, quotes: false }
@@ -868,6 +892,15 @@
       case 'iso': { const t = Date.parse(raw); return Number.isFinite(t) ? new Date(t).toISOString() : new Date().toISOString(); }
       case 'int': { const n = Math.floor(Number(raw)); return (Number.isFinite(n) && n >= 0) ? n % 2147483647 : Math.floor(Math.random() * 2147483647); }
       case 'id': return String(raw || '').toLowerCase().replace(/[^a-z0-9-]/g, '').slice(0, 40);
+      case 'items': {
+        if (!Array.isArray(raw)) return Array.isArray(def) ? def.map((it) => ({ id: it.id })) : [];   // Feld fehlt ganz -> Beispielbild
+        const out = [];
+        raw.forEach((it) => {
+          const id = normOpt('fileId', it && it.id);
+          if (id) out.push({ id });
+        });
+        return out.slice(0, 50);    // leeres Array ausdrücklich zulassen (Nutzer hat alles entfernt)
+      }
       default: {
         const o = normOpt(f.key, raw);
         return (!o && !(id === 'agenda')) ? def : o;
@@ -886,6 +919,9 @@
       x: clamp(n(s.x, dflt.x), 0, dims.w - w), y: clamp(n(s.y, dflt.y), 0, dims.h - h), w, h,
       rotate: [0, 90, 180, 270].includes(Number(s.rotate)) ? Number(s.rotate) : 0
     };
+    if (id === 'photo' && (!Array.isArray(s.items) || !s.items.length) && typeof s.fileId === 'string' && s.fileId.trim()) {
+      s = Object.assign({}, s, { items: [{ id: s.fileId }] });   // altes Layout mit nur einer Datei übernehmen
+    }
     META[id].fields.forEach((f) => { out[f.key] = cleanField(f, s[f.key], b[f.key], id); });
     return out;
   }
@@ -991,6 +1027,28 @@
   const nodes = {}, cardEls = {};
 
   const fldOptions = (k, options) => `<select class="fld" data-k="${k}">${options.map((o) => `<option value="${o[0]}">${o[1]}</option>`).join('')}</select>`;
+
+  // Reihenfolge- und Wechsel-Einstellungen: identischer Baustein für Texte und Fotos (gleiche Auswahl-Logik, verses.js)
+  function orderBlockHtml(S, sing, plur) {
+    return `
+      <div class="vg">
+        <div class="vh">Reihenfolge</div>
+        <label class="optf">Reihenfolge ${S('mode')}</label>
+        <label class="optf" data-show="random">Wiederholungen ${S('repeats')}</label>
+        <small class="help" data-show="random">Ja: ${plur} können mehrmals vorkommen, aber nie zweimal direkt hintereinander. Nein: Jede${sing === 'Bild' ? 's' : 'r'} ${sing} kommt genau einmal dran, bevor eine neue Runde beginnt.</small>
+        <label class="optf" data-show="ends">Nach dem letzten ${sing} ${S('atEnd')}</label>
+        <div class="vrow" data-show="random"><span>Startwert der Zufallsfolge</span><button type="button" class="btn sm" data-act="reshuffle">Neu mischen</button></div>
+      </div>
+      <div class="vg">
+        <div class="vh">Wechsel</div>
+        <label class="optf">Nächste${sing === 'Bild' ? 's' : 'r'} ${sing} erscheint ${S('change')}</label>
+        <div class="vrow" data-show="interval"><span>Alle</span><input type="number" class="fld sm" data-k="every" min="1" max="9999" inputmode="numeric">${S('unit')}</div>
+        <div class="vrow" data-show="sync"><span>PNG-Update alle</span><span><input type="number" class="updateMin sm" min="1" max="1440" inputmode="numeric"> Min.</span></div>
+        <small class="help vtime"></small>
+        <div class="vrow"><span>Beginnt beim ersten ${sing}</span><button type="button" class="btn sm" data-act="restart">Wiedergabe neu starten</button></div>
+      </div>`;
+  }
+
   function verseOptionsHtml() {
     const S = (k) => fldOptions(k, META.verse.fields.find((f) => f.key === k).options);
     return `
@@ -999,22 +1057,7 @@
         <label class="optf">Sammlung <select class="fld" data-k="collection"></select></label>
         <div class="vrow"><span class="vcount"></span><button type="button" class="btn sm" data-act="lib">Texte verwalten …</button></div>
       </div>
-      <div class="vg">
-        <div class="vh">Reihenfolge</div>
-        <label class="optf">Reihenfolge ${S('mode')}</label>
-        <label class="optf" data-show="random">Wiederholungen ${S('repeats')}</label>
-        <small class="help" data-show="random">Ja: Texte können mehrmals vorkommen, aber nie zweimal direkt hintereinander. Nein: Jeder Text kommt genau einmal dran, bevor eine neue Runde beginnt.</small>
-        <label class="optf" data-show="ends">Nach dem letzten Text ${S('atEnd')}</label>
-        <div class="vrow" data-show="random"><span>Startwert der Zufallsfolge</span><button type="button" class="btn sm" data-act="reshuffle">Neu mischen</button></div>
-      </div>
-      <div class="vg">
-        <div class="vh">Wechsel</div>
-        <label class="optf">Nächster Text erscheint ${S('change')}</label>
-        <div class="vrow" data-show="interval"><span>Alle</span><input type="number" class="fld sm" data-k="every" min="1" max="9999" inputmode="numeric">${S('unit')}</div>
-        <div class="vrow" data-show="sync"><span>PNG-Update alle</span><span><input type="number" id="vUpdate" class="sm" min="1" max="1440" inputmode="numeric"> Min.</span></div>
-        <small class="help vtime"></small>
-        <div class="vrow"><span>Beginnt beim ersten Text</span><button type="button" class="btn sm" data-act="restart">Wiedergabe neu starten</button></div>
-      </div>
+      ${orderBlockHtml(S, 'Text', 'Texte')}
       <div class="vg">
         <div class="vh">Darstellung</div>
         <label class="optf">Schriftart ${S('font')}</label>
@@ -1035,6 +1078,23 @@
         <small class="help">Ein Klick auf einen Eintrag zeigt ihn im Fenster. Die Zeiten sind der frühestmögliche Wechsel, sichtbar wird er mit dem nächsten PNG-Update.</small>
       </div>`;
   }
+
+  function photoOptionsHtml() {
+    const S = (k) => fldOptions(k, META.photo.fields.find((f) => f.key === k).options);
+    return `
+      <div class="vg">
+        <div class="vh">Dateien</div>
+        <ol class="plist"></ol>
+        <button type="button" class="btn sm" data-pact="add">+ Datei hinzufügen</button>
+        <small class="help">Datei-ID oder Freigabe-Link aus Google Drive. Freigabe: „Jeder mit dem Link“.</small>
+      </div>
+      ${orderBlockHtml(S, 'Bild', 'Bilder')}
+      <div class="vg">
+        <div class="vh">Reihenfolge und Zeitpunkte</div>
+        <ol class="vlist"></ol>
+        <small class="help">Ein Klick auf einen Eintrag zeigt ihn im Fenster. Die Zeiten sind der frühestmögliche Wechsel, sichtbar wird er mit dem nächsten PNG-Update.</small>
+      </div>`;
+  }
   const fldValue = (el) => el.type === 'checkbox' ? el.checked : (el.type === 'number' ? Number(el.value) : el.value);
   const setFld = (el, v) => { if (el.type === 'checkbox') el.checked = !!v; else el.value = v; };
 
@@ -1044,11 +1104,11 @@
     el.className = 'w'; el.dataset.id = id;
     el.innerHTML = `<div class="lbl"><svg viewBox="0 0 24 24">${m.icon}</svg><b>${m.name}</b><span></span><span class="sub"></span></div>` +
       ['nw', 'n', 'ne', 'e', 'se', 's', 'sw', 'w'].map((d) => `<i class="h h-${d}" data-dir="${d}"></i>`).join('');
-    if (id === 'verse') el.insertAdjacentHTML('afterbegin', '<div class="vprev"><div class="vrot"></div></div>');
+    if (id === 'verse' || id === 'photo') el.insertAdjacentHTML('afterbegin', '<div class="vprev"><div class="vrot"></div></div>');
     screen.appendChild(el);
     nodes[id] = el;
 
-    const fieldsHtml = m.custom ? verseOptionsHtml() : m.fields.map((f) => {
+    const fieldsHtml = id === 'verse' ? verseOptionsHtml() : id === 'photo' ? photoOptionsHtml() : m.fields.map((f) => {
       const inner = f.type === 'select'
         ? `<select class="fld" data-k="${f.key}">${f.options.map((o) => `<option value="${o[0]}">${o[1]}</option>`).join('')}</select>`
         : `<input type="text" class="fld" data-k="${f.key}" placeholder="${f.ph || ''}" spellcheck="false" autocomplete="off" autocapitalize="off">`;
@@ -1100,19 +1160,23 @@
       el.classList.toggle('sel', selected === id && s.enabled);
       el.querySelector('.lbl span').textContent = `${s.w} × ${s.h}`;
       el.querySelector('.lbl .sub').textContent = id === 'weather' ? `${s.location}, ${SRC[s.source].name}, ${s.days} ${s.days === 1 ? 'Tag' : 'Tage'}`
-        : (id === 'verse' ? `${(lib.find((x) => x.id === s.collection) || { name: 'keine Sammlung' }).name}, ${s.mode === 'random' ? 'zufällig' : 'der Reihe nach'}` : '');
+        : (id === 'verse' ? `${(lib.find((x) => x.id === s.collection) || { name: 'keine Sammlung' }).name}, ${s.mode === 'random' ? 'zufällig' : 'der Reihe nach'}`
+        : (id === 'photo' ? (s.items.length ? `${s.items.length} ${s.items.length === 1 ? 'Datei' : 'Dateien'}` + (s.items.length > 1 ? `, ${s.mode === 'random' ? 'zufällig' : 'der Reihe nach'}` : '') : 'keine Datei') : ''));
       el.querySelector('.lbl').style.transform = `rotate(${s.rotate}deg)`;
       c.classList.toggle('on', s.enabled);
       c.classList.toggle('sel', selected === id);
       c.querySelector('[data-k=enabled]').checked = s.enabled;
       c.querySelectorAll('[data-rot]').forEach((b) => b.setAttribute('aria-pressed', String(Number(b.dataset.rot) === s.rotate)));
       if (id === 'verse') paintVerseOptions(s, c);
+      if (id === 'photo') paintPhotoOptions(s, c);
       c.querySelectorAll('.fld').forEach((f) => { if (document.activeElement !== f) setFld(f, s[f.dataset.k]); });
       if (id === 'verse') paintVerseInfo(s, c);
+      if (id === 'photo') paintPhotoInfo(s, c);
       const help = c.querySelector('[data-help=source]'); if (help) help.textContent = SRC[s.source].help;
       c.querySelectorAll('.nums input').forEach((inp) => { if (document.activeElement !== inp) inp.value = s[inp.dataset.k]; });
     });
     scheduleVersePreview();
+    schedulePhotoPreview();
     updateState();
   }
 
@@ -1128,7 +1192,7 @@
     const show = new Set([s.mode === 'random' ? 'random' : 'seq', s.change, s.sizeMode === 'fixed' ? 'fixed' : 'auto']);
     if (s.mode !== 'random' || s.repeats !== 'yes') show.add('ends');
     c.querySelectorAll('[data-show]').forEach((el) => { el.hidden = !show.has(el.dataset.show); });
-    const u = c.querySelector('#vUpdate'); if (document.activeElement !== u) u.value = settings.updateMinutes;
+    const u = c.querySelector('.updateMin'); if (u && document.activeElement !== u) u.value = settings.updateMinutes;
   }
   const fmtWhen = (ms) => new Date(ms).toLocaleString('de-DE', { weekday: 'short', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Berlin' });
   let vlKey = '';
@@ -1176,6 +1240,69 @@
     rot.style.width = rw + 'px'; rot.style.height = rh + 'px';
     rot.style.transform = `translate(-50%, -50%) rotate(${s.rotate}deg)`;
     Verses.renderVerse(rot, v, s, rw, rh);
+  }
+
+  /* ---------- Fotofenster: Dateiliste, Reihenfolge, Vorschau ---------- */
+  function paintPhotoOptions(s, c) {
+    const show = new Set([s.mode === 'random' ? 'random' : 'seq', s.change]);
+    if (s.mode !== 'random' || s.repeats !== 'yes') show.add('ends');
+    c.querySelectorAll('[data-show]').forEach((el) => { el.hidden = !show.has(el.dataset.show); });
+    const u = c.querySelector('.updateMin'); if (u && document.activeElement !== u) u.value = settings.updateMinutes;
+    const list = c.querySelector('.plist'), n = s.items.length;
+    const key = s.items.map((it) => it.id).join('|');
+    if (list.dataset.key === key) return;           // Liste unverändert -> Eingabefelder beim Tippen nicht neu aufbauen
+    list.dataset.key = key;
+    list.innerHTML = s.items.map((it, i) => {
+      const id = normOpt('fileId', it.id);
+      const thumb = id ? `<img class="pthumb" src="https://lh3.googleusercontent.com/d/${encodeURIComponent(id)}=w80-h80-c" alt="">` : '<span class="pthumb ph"></span>';
+      return `<li class="prow" data-i="${i}">${thumb}<div class="pf"><span class="pnr">Datei ${i + 1}</span>` +
+        `<input type="text" class="pfld" data-i="${i}" placeholder="Datei-ID oder Freigabe-Link" value="${esc(it.id)}"></div>` +
+        `<div class="pact"><button type="button" data-pact="up" ${i === 0 ? 'disabled' : ''} title="Nach oben">↑</button>` +
+        `<button type="button" data-pact="down" ${i === n - 1 ? 'disabled' : ''} title="Nach unten">↓</button>` +
+        `<button type="button" data-pact="del" title="Entfernen">✕</button></div></li>`;
+    }).join('') || '<li class="help">Noch keine Datei eingetragen.</li>';
+  }
+  let plKey = '';
+  function paintPhotoInfo(s, c) {
+    const N = s.items.length;
+    let help;
+    if (s.change === 'sync') help = `Bei jedem PNG-Update kommt das nächste Bild. Standard ist stündlich (Zeitplan in .github/workflows/render.yml). Ändert sich der Zeitplan, hier denselben Takt eintragen.`;
+    else {
+      const mins = Math.max(1, Number(s.every) || 1) * ({ minutes: 1, hours: 60, days: 1440 }[s.unit] || 1440);
+      help = mins < settings.updateMinutes
+        ? `Achtung: Das PNG wird nur alle ${settings.updateMinutes} Min. neu erzeugt. Ein kürzerer Wechsel wird erst mit dem nächsten Update sichtbar, dazwischen entfallen Bilder. Für kürzere Zeiten den Zeitplan in render.yml anpassen.`
+        : (s.unit === 'days' ? 'Das neue Bild beginnt um Mitternacht (Berlin) und erscheint mit dem nächsten PNG-Update.' : 'Das neue Bild beginnt zum jeweiligen Zeitpunkt und erscheint mit dem nächsten PNG-Update.');
+    }
+    c.querySelector('.vtime').textContent = help;
+    const minute = Math.floor(Date.now() / 60000);
+    const key = JSON.stringify([s.mode, s.repeats, s.atEnd, s.change, s.every, s.unit, s.startAt, s.seed, settings.updateMinutes, s.items.map((it) => it.id), photoOverride, minute]);
+    if (key === plKey) return;
+    plKey = key;
+    const list = c.querySelector('.vlist');
+    if (N < 2) { list.innerHTML = `<li class="help">${N === 1 ? 'Nur eine Datei: Sie wird immer gezeigt, ohne Wechsel.' : 'Noch keine Datei eingetragen.'}</li>`; return; }
+    const up = Verses.upcoming(s, N, Date.now(), 6, settings.updateMinutes);
+    list.innerHTML = up.map((u) => `<li><button type="button" data-pprev="${u.index}" class="${photoOverride === u.index ? 'pv' : ''}">` +
+      `<span class="t">${u.isNow ? '<b class="now">Jetzt</b> ' : ''}Datei ${u.index + 1}</span>` +
+      `<span class="m">${u.isNow ? 'seit ' : 'ab '}${fmtWhen(u.start)}${u.final ? ' <span class="end">danach bleibt dieses Bild stehen</span>' : ''}</span></button></li>`).join('');
+  }
+  let photoOverride = null, ppKey = '', ppTimer = 0;
+  function schedulePhotoPreview() { clearTimeout(ppTimer); ppTimer = setTimeout(photoPreview, 60); }
+  function photoPreview() {
+    const s = state.photo, el = nodes.photo, rot = el.querySelector('.vrot');
+    const n = s.items.length;
+    if (!s.enabled || !n) { el.classList.remove('has-preview'); ppKey = ''; return; }
+    const idx = (photoOverride !== null && photoOverride < n) ? photoOverride : (n > 1 ? Verses.pick(s, n, Date.now(), settings.updateMinutes).index : 0);
+    const id = normOpt('fileId', s.items[idx].id);
+    const swap = s.rotate === 90 || s.rotate === 270;
+    const iw = s.w - 8, ih = s.h - 8, rw = swap ? ih : iw, rh = swap ? iw : ih;
+    const key = id + '|' + rw + '|' + rh + '|' + s.rotate;
+    if (key === ppKey) return;
+    ppKey = key;
+    el.classList.add('has-preview');
+    rot.style.width = rw + 'px'; rot.style.height = rh + 'px';
+    rot.style.transform = `translate(-50%, -50%) rotate(${s.rotate}deg)`;
+    rot.innerHTML = id ? `<img src="https://lh3.googleusercontent.com/d/${encodeURIComponent(id)}" alt="" style="width:100%;height:100%;object-fit:contain;display:block">`
+      : `<div class="wx-msg" style="position:absolute;inset:0;display:flex">Keine gültige Datei-ID</div>`;
   }
   function updateState() {
     const el = $('state');
@@ -1270,10 +1397,10 @@
   cards.addEventListener('change', (e) => {
     const card = e.target.closest('.card'); if (!card) return;
     const id = card.dataset.id, k = e.target.dataset.k;
-    if (e.target.id === 'vUpdate') { settings = cleanSettings({ updateMinutes: e.target.value }); e.target.value = settings.updateMinutes; vlKey = ''; changed(); return; }
+    if (e.target.classList.contains('updateMin')) { settings = cleanSettings({ updateMinutes: e.target.value }); e.target.value = settings.updateMinutes; vlKey = ''; changed(); return; }
     if (k === 'enabled') {
       state[id].enabled = e.target.checked;
-      if (e.target.checked) { selected = id; if (id === 'verse') state.verse.startAt = new Date().toISOString(); }
+      if (e.target.checked) { selected = id; if (id === 'verse' || id === 'photo') state[id].startAt = new Date().toISOString(); }
     }
     else if (e.target.classList.contains('fld')) {
       state[id][k] = fldValue(e.target);
@@ -1281,14 +1408,25 @@
       setFld(e.target, state[id][k]);
       if (id === 'verse' && k === 'collection') verseOverride = null;
     }
+    else if (e.target.classList.contains('pfld')) {
+      // nur diesen einen Eintrag normalisieren (Link -> ID); andere, noch leere Zeilen bleiben unangetastet
+      const i = Number(e.target.dataset.i), it = state.photo.items[i];
+      if (it) { it.id = normOpt('fileId', it.id); e.target.value = it.id; }
+      plKey = ''; ppKey = '';
+    }
     else { state[id][k] = Number(e.target.value); state[id] = cleanOne(id, state[id], { w: CW, h: CH }); e.target.blur(); }
     changed();
   });
   cards.addEventListener('input', (e) => {
     const card = e.target.closest('.card'); if (!card) return;
-    if (e.target.id === 'vUpdate') { settings = cleanSettings({ updateMinutes: e.target.value }); vlKey = ''; saveDraft(); paint(); return; }
+    if (e.target.classList.contains('updateMin')) { settings = cleanSettings({ updateMinutes: e.target.value }); vlKey = ''; saveDraft(); paint(); return; }
     if (e.target.classList.contains('fld') && e.target.type === 'text') {         // Text sofort übernehmen, aufräumen beim Verlassen
       state[card.dataset.id][e.target.dataset.k] = e.target.value; saveDraft(); paint(); return;
+    }
+    if (e.target.classList.contains('pfld')) {
+      const i = Number(e.target.dataset.i), it = state.photo.items[i];
+      if (it) it.id = e.target.value;
+      plKey = ''; ppKey = ''; saveDraft(); paintPhotoInfo(state.photo, card); schedulePhotoPreview(); return;
     }
     if (e.target.classList.contains('fld') && e.target.type === 'number') {
       const n = Number(e.target.value);
@@ -1307,12 +1445,34 @@
     if (rb) { state[card.dataset.id].rotate = Number(rb.dataset.rot); selected = card.dataset.id; changed(); return; }
     const pv = e.target.closest('[data-prev]');
     if (pv) { const i = Number(pv.dataset.prev); verseOverride = (pv.dataset.now === '1' || verseOverride === i) ? null : i; vlKey = ''; vpKey = ''; selected = 'verse'; paint(); return; }
+    const pp = e.target.closest('[data-pprev]');
+    if (pp) { const i = Number(pp.dataset.pprev); photoOverride = photoOverride === i ? null : i; plKey = ''; ppKey = ''; selected = 'photo'; paint(); return; }
+    const pa = e.target.closest('[data-pact]');
+    if (pa) {
+      selected = 'photo';
+      const row = pa.closest('.prow'), i = row ? Number(row.dataset.i) : -1, items = state.photo.items;
+      if (pa.dataset.pact === 'add') { items.push({ id: '' }); photoOverride = null; }
+      else if (pa.dataset.pact === 'del') { items.splice(i, 1); photoOverride = null; }
+      else if (pa.dataset.pact === 'up' && i > 0) { [items[i - 1], items[i]] = [items[i], items[i - 1]]; photoOverride = null; }
+      else if (pa.dataset.pact === 'down' && i < items.length - 1) { [items[i + 1], items[i]] = [items[i], items[i + 1]]; photoOverride = null; }
+      if (items.length > 50) items.length = 50;   // nur Obergrenze, keine volle Bereinigung (sonst verschwinden leere Zeilen beim Tippen)
+      plKey = ''; ppKey = ''; changed();
+      return;
+    }
     const act = e.target.closest('[data-act]');
     if (act) {
       selected = card.dataset.id;
       if (act.dataset.act === 'lib') { openLib(); return; }
-      if (act.dataset.act === 'reshuffle') { state.verse.seed = Math.floor(Math.random() * 2147483647); verseOverride = null; vlKey = ''; changed(); say('Zufallsfolge neu gemischt. Zum Übernehmen hochladen.', 'ok'); return; }
-      if (act.dataset.act === 'restart') { state.verse.startAt = new Date().toISOString(); verseOverride = null; vlKey = ''; changed(); say('Die Wiedergabe beginnt wieder beim ersten Text. Zum Übernehmen hochladen.', 'ok'); return; }
+      if (act.dataset.act === 'reshuffle') {
+        state[card.dataset.id].seed = Math.floor(Math.random() * 2147483647);
+        if (card.dataset.id === 'verse') { verseOverride = null; vlKey = ''; } else { photoOverride = null; plKey = ''; }
+        changed(); say('Zufallsfolge neu gemischt. Zum Übernehmen hochladen.', 'ok'); return;
+      }
+      if (act.dataset.act === 'restart') {
+        state[card.dataset.id].startAt = new Date().toISOString();
+        if (card.dataset.id === 'verse') { verseOverride = null; vlKey = ''; } else { photoOverride = null; plKey = ''; }
+        changed(); say('Die Wiedergabe beginnt wieder beim ersten ' + (card.dataset.id === 'verse' ? 'Text' : 'Bild') + '. Zum Übernehmen hochladen.', 'ok'); return;
+      }
     }
     if (!e.target.closest('.sw')) select(card.dataset.id);
   });
