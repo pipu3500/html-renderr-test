@@ -63,6 +63,91 @@
           "startAt": "2026-10-07T05:37:07.326Z",
           "seed": 1800958791
         },
+        "photo2": {
+          "enabled": false,
+          "x": 756,
+          "y": 490,
+          "w": 238,
+          "h": 238,
+          "rotate": 0,
+          "items": [],
+          "mode": "seq",
+          "repeats": "no",
+          "atEnd": "restart",
+          "change": "sync",
+          "every": 1,
+          "unit": "days",
+          "startAt": "2026-10-08T19:32:19.687Z",
+          "seed": 323256039
+        },
+        "photo3": {
+          "enabled": false,
+          "x": 741,
+          "y": 475,
+          "w": 238,
+          "h": 238,
+          "rotate": 0,
+          "items": [],
+          "mode": "seq",
+          "repeats": "no",
+          "atEnd": "restart",
+          "change": "sync",
+          "every": 1,
+          "unit": "days",
+          "startAt": "2026-10-08T19:32:19.687Z",
+          "seed": 2032316955
+        },
+        "photo4": {
+          "enabled": false,
+          "x": 726,
+          "y": 460,
+          "w": 238,
+          "h": 238,
+          "rotate": 0,
+          "items": [],
+          "mode": "seq",
+          "repeats": "no",
+          "atEnd": "restart",
+          "change": "sync",
+          "every": 1,
+          "unit": "days",
+          "startAt": "2026-10-08T19:32:19.687Z",
+          "seed": 555511190
+        },
+        "photo5": {
+          "enabled": false,
+          "x": 711,
+          "y": 445,
+          "w": 238,
+          "h": 238,
+          "rotate": 0,
+          "items": [],
+          "mode": "seq",
+          "repeats": "no",
+          "atEnd": "restart",
+          "change": "sync",
+          "every": 1,
+          "unit": "days",
+          "startAt": "2026-10-08T19:32:19.687Z",
+          "seed": 978691780
+        },
+        "photo6": {
+          "enabled": false,
+          "x": 696,
+          "y": 430,
+          "w": 238,
+          "h": 238,
+          "rotate": 0,
+          "items": [],
+          "mode": "seq",
+          "repeats": "no",
+          "atEnd": "restart",
+          "change": "sync",
+          "every": 1,
+          "unit": "days",
+          "startAt": "2026-10-08T19:32:19.687Z",
+          "seed": 222104876
+        },
         "verse": {
           "enabled": false,
           "x": 519,
@@ -131,17 +216,14 @@
         },
         "photo": {
           "enabled": true,
-          "x": 270,
-          "y": 485,
-          "w": 754,
+          "x": 0,
+          "y": 0,
+          "w": 455,
           "h": 273,
           "rotate": 0,
           "items": [
             {
               "id": "1WVXOZY6CS56w8VjM-qV2itM60bWrqALy"
-            },
-            {
-              "id": "1WPy49RRCnHZUtHHk_FfEgwzRAyHsvsaT"
             }
           ],
           "mode": "seq",
@@ -153,10 +235,115 @@
           "startAt": "2026-10-07T05:37:07.326Z",
           "seed": 1800958791
         },
+        "photo2": {
+          "enabled": true,
+          "x": 95,
+          "y": 520,
+          "w": 238,
+          "h": 238,
+          "rotate": 0,
+          "items": [
+            {
+              "id": "1WVXOZY6CS56w8VjM"
+            }
+          ],
+          "mode": "seq",
+          "repeats": "no",
+          "atEnd": "restart",
+          "change": "sync",
+          "every": 1,
+          "unit": "days",
+          "startAt": "2026-10-08T19:34:10.066Z",
+          "seed": 1779775674
+        },
+        "photo3": {
+          "enabled": true,
+          "x": 415,
+          "y": 500,
+          "w": 238,
+          "h": 238,
+          "rotate": 0,
+          "items": [
+            {
+              "id": "1WVXOZY6CS56w8VjM"
+            }
+          ],
+          "mode": "seq",
+          "repeats": "no",
+          "atEnd": "restart",
+          "change": "sync",
+          "every": 1,
+          "unit": "days",
+          "startAt": "2026-10-08T19:36:04.193Z",
+          "seed": 1793254426
+        },
+        "photo4": {
+          "enabled": true,
+          "x": 15,
+          "y": 290,
+          "w": 238,
+          "h": 238,
+          "rotate": 0,
+          "items": [
+            {
+              "id": "1WVXOZY6CS56w8VjM"
+            }
+          ],
+          "mode": "seq",
+          "repeats": "no",
+          "atEnd": "restart",
+          "change": "sync",
+          "every": 1,
+          "unit": "days",
+          "startAt": "2026-10-08T19:36:47.846Z",
+          "seed": 1429879466
+        },
+        "photo5": {
+          "enabled": true,
+          "x": 786,
+          "y": 5,
+          "w": 238,
+          "h": 238,
+          "rotate": 0,
+          "items": [
+            {
+              "id": "1WVXOZY6CS56w8VjM"
+            }
+          ],
+          "mode": "seq",
+          "repeats": "no",
+          "atEnd": "restart",
+          "change": "sync",
+          "every": 1,
+          "unit": "days",
+          "startAt": "2026-10-08T19:37:03.208Z",
+          "seed": 564416572
+        },
+        "photo6": {
+          "enabled": true,
+          "x": 786,
+          "y": 310,
+          "w": 238,
+          "h": 238,
+          "rotate": 0,
+          "items": [
+            {
+              "id": "1WVXOZY6CS56w8VjM"
+            }
+          ],
+          "mode": "seq",
+          "repeats": "no",
+          "atEnd": "restart",
+          "change": "sync",
+          "every": 1,
+          "unit": "days",
+          "startAt": "2026-10-08T19:37:20.840Z",
+          "seed": 336542144
+        },
         "verse": {
-          "enabled": false,
-          "x": 519,
-          "y": 505,
+          "enabled": true,
+          "x": 330,
+          "y": 170,
           "w": 490,
           "h": 238,
           "rotate": 0,
@@ -167,7 +354,7 @@
           "change": "sync",
           "every": 1,
           "unit": "days",
-          "startAt": "2026-10-07T05:37:07.326Z",
+          "startAt": "2026-10-08T19:34:49.230Z",
           "seed": 2036375546,
           "font": "serif",
           "sizeMode": "auto",
