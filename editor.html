@@ -367,6 +367,7 @@
     <div class="devinfo" id="devInfo"></div>
     <h2>Fenster</h2>
     <ul class="cards" id="cards"></ul>
+    <button class="btn sm" id="btnAddPhoto" type="button" style="width: 100%; margin-top: 8px;">+ Weiteres Foto-Fenster</button>
 
     <div class="tools">
       <label>Raster
@@ -768,7 +769,9 @@
   'use strict';
 
   const MIN = 60;
-  const ORDER = ['weather', 'calendar', 'agenda', 'photo', 'verse'];
+  const PHOTO_SLOTS = ['photo', 'photo2', 'photo3', 'photo4', 'photo5', 'photo6'];   // mehrere gleichzeitige Google-Drive-Fenster (für Collagen)
+  const ORDER = ['weather', 'calendar', 'agenda'].concat(PHOTO_SLOTS, ['verse']);
+  const isPhoto = (id) => PHOTO_SLOTS.indexOf(id) >= 0;
   const FILE_RE = /^[a-z0-9][a-z0-9._-]{0,60}\.png$/;
   const SRC = {
     openmeteo: { name: 'Open-Meteo',        help: 'Sehr zuverlässig, weltweit, kostenlos. Schlichte Anzeige mit Symbolen (empfohlen).' },
@@ -830,6 +833,10 @@
                   { key: 'quotes', type: 'bool' }
                 ] }
   };
+  // Weitere gleichzeitige Google-Drive-Fenster (für Collagen): gleiche Felder wie 'photo', eigener Name in der Liste
+  PHOTO_SLOTS.slice(1).forEach((id, i) => {
+    META[id] = Object.assign({}, META.photo, { name: 'Google Drive ' + (i + 2) });
+  });
   // Grundlayout für eine Layout-Fläche von 1024 x 758 (wird bei anderen Flächen mitskaliert)
   const BASE = {
     weather:  { x: 15,  y: 15,  w: 489, h: 728, source: 'openmeteo', location: 'Sundern', days: 3 },
@@ -841,6 +848,11 @@
                 change: 'sync', every: 1, unit: 'days', startAt: null, seed: null, font: 'serif', sizeMode: 'auto',
                 size: 36, maxSize: 72, bold: false, italic: false, align: 'center', showRef: true, quotes: false }
   };
+  // Weitere Foto-Fenster: zu Beginn aus und ohne Datei, leicht versetzte Standardposition
+  PHOTO_SLOTS.slice(1).forEach((id, i) => {
+    BASE[id] = { enabled: false, x: 771 - (i + 1) * 15, y: 505 - (i + 1) * 15, w: 238, h: 238, items: [],
+                 mode: 'seq', repeats: 'no', atEnd: 'restart', change: 'sync', every: 1, unit: 'days', startAt: null, seed: null };
+  });
   const PRESETS = [
     { id: 'k600',  w: 600,  h: 800,  name: 'Kindle Basic (bis 10. Gen), Touch' },
     { id: 'pw2',   w: 758,  h: 1024, name: 'Paperwhite 1 und 2' },
@@ -919,7 +931,7 @@
       x: clamp(n(s.x, dflt.x), 0, dims.w - w), y: clamp(n(s.y, dflt.y), 0, dims.h - h), w, h,
       rotate: [0, 90, 180, 270].includes(Number(s.rotate)) ? Number(s.rotate) : 0
     };
-    if (id === 'photo' && (!Array.isArray(s.items) || !s.items.length) && typeof s.fileId === 'string' && s.fileId.trim()) {
+    if (isPhoto(id) && (!Array.isArray(s.items) || !s.items.length) && typeof s.fileId === 'string' && s.fileId.trim()) {
       s = Object.assign({}, s, { items: [{ id: s.fileId }] });   // altes Layout mit nur einer Datei übernehmen
     }
     META[id].fields.forEach((f) => { out[f.key] = cleanField(f, s[f.key], b[f.key], id); });
@@ -1104,11 +1116,11 @@
     el.className = 'w'; el.dataset.id = id;
     el.innerHTML = `<div class="lbl"><svg viewBox="0 0 24 24">${m.icon}</svg><b>${m.name}</b><span></span><span class="sub"></span></div>` +
       ['nw', 'n', 'ne', 'e', 'se', 's', 'sw', 'w'].map((d) => `<i class="h h-${d}" data-dir="${d}"></i>`).join('');
-    if (id === 'verse' || id === 'photo') el.insertAdjacentHTML('afterbegin', '<div class="vprev"><div class="vrot"></div></div>');
+    if (id === 'verse' || isPhoto(id)) el.insertAdjacentHTML('afterbegin', '<div class="vprev"><div class="vrot"></div></div>');
     screen.appendChild(el);
     nodes[id] = el;
 
-    const fieldsHtml = id === 'verse' ? verseOptionsHtml() : id === 'photo' ? photoOptionsHtml() : m.fields.map((f) => {
+    const fieldsHtml = id === 'verse' ? verseOptionsHtml() : isPhoto(id) ? photoOptionsHtml() : m.fields.map((f) => {
       const inner = f.type === 'select'
         ? `<select class="fld" data-k="${f.key}">${f.options.map((o) => `<option value="${o[0]}">${o[1]}</option>`).join('')}</select>`
         : `<input type="text" class="fld" data-k="${f.key}" placeholder="${f.ph || ''}" spellcheck="false" autocomplete="off" autocapitalize="off">`;
@@ -1161,22 +1173,24 @@
       el.querySelector('.lbl span').textContent = `${s.w} × ${s.h}`;
       el.querySelector('.lbl .sub').textContent = id === 'weather' ? `${s.location}, ${SRC[s.source].name}, ${s.days} ${s.days === 1 ? 'Tag' : 'Tage'}`
         : (id === 'verse' ? `${(lib.find((x) => x.id === s.collection) || { name: 'keine Sammlung' }).name}, ${s.mode === 'random' ? 'zufällig' : 'der Reihe nach'}`
-        : (id === 'photo' ? (s.items.length ? `${s.items.length} ${s.items.length === 1 ? 'Datei' : 'Dateien'}` + (s.items.length > 1 ? `, ${s.mode === 'random' ? 'zufällig' : 'der Reihe nach'}` : '') : 'keine Datei') : ''));
+        : (isPhoto(id) ? (s.items.length ? `${s.items.length} ${s.items.length === 1 ? 'Datei' : 'Dateien'}` + (s.items.length > 1 ? `, ${s.mode === 'random' ? 'zufällig' : 'der Reihe nach'}` : '') : 'keine Datei') : ''));
       el.querySelector('.lbl').style.transform = `rotate(${s.rotate}deg)`;
       c.classList.toggle('on', s.enabled);
+      if (isPhoto(id) && id !== 'photo') c.hidden = !s.enabled;   // zusätzliche Foto-Fenster: nur sichtbar, solange benutzt
       c.classList.toggle('sel', selected === id);
       c.querySelector('[data-k=enabled]').checked = s.enabled;
       c.querySelectorAll('[data-rot]').forEach((b) => b.setAttribute('aria-pressed', String(Number(b.dataset.rot) === s.rotate)));
       if (id === 'verse') paintVerseOptions(s, c);
-      if (id === 'photo') paintPhotoOptions(s, c);
+      if (isPhoto(id)) paintPhotoOptions(s, c);
       c.querySelectorAll('.fld').forEach((f) => { if (document.activeElement !== f) setFld(f, s[f.dataset.k]); });
       if (id === 'verse') paintVerseInfo(s, c);
-      if (id === 'photo') paintPhotoInfo(s, c);
+      if (isPhoto(id)) { paintPhotoInfo(id, s, c); schedulePhotoPreview(id); }
       const help = c.querySelector('[data-help=source]'); if (help) help.textContent = SRC[s.source].help;
       c.querySelectorAll('.nums input').forEach((inp) => { if (document.activeElement !== inp) inp.value = s[inp.dataset.k]; });
     });
+    const nextPhotoSlot = PHOTO_SLOTS.slice(1).find((pid) => !state[pid].enabled);
+    $('btnAddPhoto').hidden = !nextPhotoSlot;
     scheduleVersePreview();
-    schedulePhotoPreview();
     updateState();
   }
 
@@ -1242,14 +1256,16 @@
     Verses.renderVerse(rot, v, s, rw, rh);
   }
 
-  /* ---------- Fotofenster: Dateiliste, Reihenfolge, Vorschau ---------- */
+  /* ---------- Fotofenster: Dateiliste, Reihenfolge, Vorschau (pro Fenster getrennt, bis zu 6 gleichzeitig) ---------- */
+  const photoState = {};
+  function pst(id) { return photoState[id] || (photoState[id] = { override: null, plKey: '', ppKey: '', ppTimer: 0 }); }
   function paintPhotoOptions(s, c) {
     const show = new Set([s.mode === 'random' ? 'random' : 'seq', s.change]);
     if (s.mode !== 'random' || s.repeats !== 'yes') show.add('ends');
     c.querySelectorAll('[data-show]').forEach((el) => { el.hidden = !show.has(el.dataset.show); });
     const u = c.querySelector('.updateMin'); if (u && document.activeElement !== u) u.value = settings.updateMinutes;
     const list = c.querySelector('.plist'), n = s.items.length;
-    const key = s.items.map((it) => it.id).join('|');
+    const key = s.items.length + ':' + s.items.map((it) => it.id).join('|');   // Länge mit einbeziehen (sonst [] und [''] ununterscheidbar)
     if (list.dataset.key === key) return;           // Liste unverändert -> Eingabefelder beim Tippen nicht neu aufbauen
     list.dataset.key = key;
     list.innerHTML = s.items.map((it, i) => {
@@ -1262,9 +1278,8 @@
         `<button type="button" data-pact="del" title="Entfernen">✕</button></div></li>`;
     }).join('') || '<li class="help">Noch keine Datei eingetragen.</li>';
   }
-  let plKey = '';
-  function paintPhotoInfo(s, c) {
-    const N = s.items.length;
+  function paintPhotoInfo(id, s, c) {
+    const st = pst(id), N = s.items.length;
     let help;
     if (s.change === 'sync') help = `Bei jedem PNG-Update kommt das nächste Bild. Standard ist stündlich (Zeitplan in .github/workflows/render.yml). Ändert sich der Zeitplan, hier denselben Takt eintragen.`;
     else {
@@ -1275,33 +1290,32 @@
     }
     c.querySelector('.vtime').textContent = help;
     const minute = Math.floor(Date.now() / 60000);
-    const key = JSON.stringify([s.mode, s.repeats, s.atEnd, s.change, s.every, s.unit, s.startAt, s.seed, settings.updateMinutes, s.items.map((it) => it.id), photoOverride, minute]);
-    if (key === plKey) return;
-    plKey = key;
+    const key = JSON.stringify([s.mode, s.repeats, s.atEnd, s.change, s.every, s.unit, s.startAt, s.seed, settings.updateMinutes, s.items.map((it) => it.id), st.override, minute]);
+    if (key === st.plKey) return;
+    st.plKey = key;
     const list = c.querySelector('.vlist');
     if (N < 2) { list.innerHTML = `<li class="help">${N === 1 ? 'Nur eine Datei: Sie wird immer gezeigt, ohne Wechsel.' : 'Noch keine Datei eingetragen.'}</li>`; return; }
     const up = Verses.upcoming(s, N, Date.now(), 6, settings.updateMinutes);
-    list.innerHTML = up.map((u) => `<li><button type="button" data-pprev="${u.index}" class="${photoOverride === u.index ? 'pv' : ''}">` +
+    list.innerHTML = up.map((u) => `<li><button type="button" data-pprev="${u.index}" class="${st.override === u.index ? 'pv' : ''}">` +
       `<span class="t">${u.isNow ? '<b class="now">Jetzt</b> ' : ''}Datei ${u.index + 1}</span>` +
       `<span class="m">${u.isNow ? 'seit ' : 'ab '}${fmtWhen(u.start)}${u.final ? ' <span class="end">danach bleibt dieses Bild stehen</span>' : ''}</span></button></li>`).join('');
   }
-  let photoOverride = null, ppKey = '', ppTimer = 0;
-  function schedulePhotoPreview() { clearTimeout(ppTimer); ppTimer = setTimeout(photoPreview, 60); }
-  function photoPreview() {
-    const s = state.photo, el = nodes.photo, rot = el.querySelector('.vrot');
+  function schedulePhotoPreview(id) { const st = pst(id); clearTimeout(st.ppTimer); st.ppTimer = setTimeout(() => photoPreview(id), 60); }
+  function photoPreview(id) {
+    const s = state[id], el = nodes[id], rot = el.querySelector('.vrot'), st = pst(id);
     const n = s.items.length;
-    if (!s.enabled || !n) { el.classList.remove('has-preview'); ppKey = ''; return; }
-    const idx = (photoOverride !== null && photoOverride < n) ? photoOverride : (n > 1 ? Verses.pick(s, n, Date.now(), settings.updateMinutes).index : 0);
-    const id = normOpt('fileId', s.items[idx].id);
+    if (!s.enabled || !n) { el.classList.remove('has-preview'); st.ppKey = ''; return; }
+    const idx = (st.override !== null && st.override < n) ? st.override : (n > 1 ? Verses.pick(s, n, Date.now(), settings.updateMinutes).index : 0);
+    const fid = normOpt('fileId', s.items[idx].id);
     const swap = s.rotate === 90 || s.rotate === 270;
     const iw = s.w - 8, ih = s.h - 8, rw = swap ? ih : iw, rh = swap ? iw : ih;
-    const key = id + '|' + rw + '|' + rh + '|' + s.rotate;
-    if (key === ppKey) return;
-    ppKey = key;
+    const key = fid + '|' + rw + '|' + rh + '|' + s.rotate;
+    if (key === st.ppKey) return;
+    st.ppKey = key;
     el.classList.add('has-preview');
     rot.style.width = rw + 'px'; rot.style.height = rh + 'px';
     rot.style.transform = `translate(-50%, -50%) rotate(${s.rotate}deg)`;
-    rot.innerHTML = id ? `<img src="https://lh3.googleusercontent.com/d/${encodeURIComponent(id)}" alt="" style="width:100%;height:100%;object-fit:contain;display:block">`
+    rot.innerHTML = fid ? `<img src="https://lh3.googleusercontent.com/d/${encodeURIComponent(fid)}" alt="" style="width:100%;height:100%;object-fit:contain;display:block">`
       : `<div class="wx-msg" style="position:absolute;inset:0;display:flex">Keine gültige Datei-ID</div>`;
   }
   function updateState() {
@@ -1400,7 +1414,7 @@
     if (e.target.classList.contains('updateMin')) { settings = cleanSettings({ updateMinutes: e.target.value }); e.target.value = settings.updateMinutes; vlKey = ''; changed(); return; }
     if (k === 'enabled') {
       state[id].enabled = e.target.checked;
-      if (e.target.checked) { selected = id; if (id === 'verse' || id === 'photo') state[id].startAt = new Date().toISOString(); }
+      if (e.target.checked) { selected = id; if (id === 'verse' || isPhoto(id)) state[id].startAt = new Date().toISOString(); }
     }
     else if (e.target.classList.contains('fld')) {
       state[id][k] = fldValue(e.target);
@@ -1410,9 +1424,9 @@
     }
     else if (e.target.classList.contains('pfld')) {
       // nur diesen einen Eintrag normalisieren (Link -> ID); andere, noch leere Zeilen bleiben unangetastet
-      const i = Number(e.target.dataset.i), it = state.photo.items[i];
+      const i = Number(e.target.dataset.i), it = state[id].items[i];
       if (it) { it.id = normOpt('fileId', it.id); e.target.value = it.id; }
-      plKey = ''; ppKey = '';
+      const st = pst(id); st.plKey = ''; st.ppKey = '';
     }
     else { state[id][k] = Number(e.target.value); state[id] = cleanOne(id, state[id], { w: CW, h: CH }); e.target.blur(); }
     changed();
@@ -1424,9 +1438,9 @@
       state[card.dataset.id][e.target.dataset.k] = e.target.value; saveDraft(); paint(); return;
     }
     if (e.target.classList.contains('pfld')) {
-      const i = Number(e.target.dataset.i), it = state.photo.items[i];
+      const pid = card.dataset.id, i = Number(e.target.dataset.i), it = state[pid].items[i];
       if (it) it.id = e.target.value;
-      plKey = ''; ppKey = ''; saveDraft(); paintPhotoInfo(state.photo, card); schedulePhotoPreview(); return;
+      const st = pst(pid); st.plKey = ''; st.ppKey = ''; saveDraft(); paintPhotoInfo(pid, state[pid], card); schedulePhotoPreview(pid); return;
     }
     if (e.target.classList.contains('fld') && e.target.type === 'number') {
       const n = Number(e.target.value);
@@ -1446,17 +1460,18 @@
     const pv = e.target.closest('[data-prev]');
     if (pv) { const i = Number(pv.dataset.prev); verseOverride = (pv.dataset.now === '1' || verseOverride === i) ? null : i; vlKey = ''; vpKey = ''; selected = 'verse'; paint(); return; }
     const pp = e.target.closest('[data-pprev]');
-    if (pp) { const i = Number(pp.dataset.pprev); photoOverride = photoOverride === i ? null : i; plKey = ''; ppKey = ''; selected = 'photo'; paint(); return; }
+    if (pp) { const pid = card.dataset.id, i = Number(pp.dataset.pprev), st = pst(pid); st.override = st.override === i ? null : i; st.plKey = ''; st.ppKey = ''; selected = pid; paint(); return; }
     const pa = e.target.closest('[data-pact]');
     if (pa) {
-      selected = 'photo';
-      const row = pa.closest('.prow'), i = row ? Number(row.dataset.i) : -1, items = state.photo.items;
-      if (pa.dataset.pact === 'add') { items.push({ id: '' }); photoOverride = null; }
-      else if (pa.dataset.pact === 'del') { items.splice(i, 1); photoOverride = null; }
-      else if (pa.dataset.pact === 'up' && i > 0) { [items[i - 1], items[i]] = [items[i], items[i - 1]]; photoOverride = null; }
-      else if (pa.dataset.pact === 'down' && i < items.length - 1) { [items[i + 1], items[i]] = [items[i], items[i + 1]]; photoOverride = null; }
+      const pid = card.dataset.id, st = pst(pid);
+      selected = pid;
+      const row = pa.closest('.prow'), i = row ? Number(row.dataset.i) : -1, items = state[pid].items;
+      if (pa.dataset.pact === 'add') { items.push({ id: '' }); st.override = null; }
+      else if (pa.dataset.pact === 'del') { items.splice(i, 1); st.override = null; }
+      else if (pa.dataset.pact === 'up' && i > 0) { [items[i - 1], items[i]] = [items[i], items[i - 1]]; st.override = null; }
+      else if (pa.dataset.pact === 'down' && i < items.length - 1) { [items[i + 1], items[i]] = [items[i], items[i + 1]]; st.override = null; }
       if (items.length > 50) items.length = 50;   // nur Obergrenze, keine volle Bereinigung (sonst verschwinden leere Zeilen beim Tippen)
-      plKey = ''; ppKey = ''; changed();
+      st.plKey = ''; st.ppKey = ''; changed();
       return;
     }
     const act = e.target.closest('[data-act]');
@@ -1465,12 +1480,12 @@
       if (act.dataset.act === 'lib') { openLib(); return; }
       if (act.dataset.act === 'reshuffle') {
         state[card.dataset.id].seed = Math.floor(Math.random() * 2147483647);
-        if (card.dataset.id === 'verse') { verseOverride = null; vlKey = ''; } else { photoOverride = null; plKey = ''; }
+        if (card.dataset.id === 'verse') { verseOverride = null; vlKey = ''; } else { const st = pst(card.dataset.id); st.override = null; st.plKey = ''; }
         changed(); say('Zufallsfolge neu gemischt. Zum Übernehmen hochladen.', 'ok'); return;
       }
       if (act.dataset.act === 'restart') {
         state[card.dataset.id].startAt = new Date().toISOString();
-        if (card.dataset.id === 'verse') { verseOverride = null; vlKey = ''; } else { photoOverride = null; plKey = ''; }
+        if (card.dataset.id === 'verse') { verseOverride = null; vlKey = ''; } else { const st = pst(card.dataset.id); st.override = null; st.plKey = ''; }
         changed(); say('Die Wiedergabe beginnt wieder beim ersten ' + (card.dataset.id === 'verse' ? 'Text' : 'Bild') + '. Zum Übernehmen hochladen.', 'ok'); return;
       }
     }
@@ -1484,6 +1499,12 @@
     if (!confirm('Alle Fenster dieses Geräts auf das Standardlayout zurücksetzen?')) return;
     cur.widgets = state = cleanWidgets({}, { w: CW, h: CH }); selected = null; changed();
     say('Standardlayout geladen. Zum Übernehmen noch hochladen.', 'ok');
+  });
+  $('btnAddPhoto').addEventListener('click', () => {
+    const pid = PHOTO_SLOTS.slice(1).find((x) => !state[x].enabled); if (!pid) return;
+    state[pid].enabled = true; state[pid].startAt = new Date().toISOString();
+    selected = pid; changed();
+    requestAnimationFrame(() => cardEls[pid].scrollIntoView({ behavior: 'smooth', block: 'center' }));
   });
 
   /* Datei-Export/Import */

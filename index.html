@@ -72,6 +72,10 @@
     verse:    { enabled: false, x: 519, y: 505, w: 490, h: 238, rotate: 0 }   // Text kommt fertig vom Renderer (window.VERSE)
   };
   var BORDER = 4;
+  for (var pn = 2; pn <= 6; pn++) {
+    DEFAULTS['photo' + pn] = { enabled: false, x: 771, y: 505, w: 238, h: 238, rotate: 0,
+      items: [], mode: 'seq', repeats: 'no', atEnd: 'restart', change: 'sync', every: 1, unit: 'days', startAt: null, seed: null };
+  }
 
   var given = (window.LAYOUT && window.LAYOUT.widgets) || {};
 
@@ -260,17 +264,18 @@
       if (!v || !v.ok) { root.className += ' wx'; root.appendChild(div('wx-msg', (v && v.error) || 'Kein Text vorhanden')); return; }
       pending.push(function () { return Verses.renderVerse(root, v, s, W, H); });
     },
-    photo: function (root, s) {
+    photo: function (root, s, W, H, id) {
       root.className += ' photo';
-      var id;
-      var p = window.PHOTO;                                   // vom Renderer (Node) bereits ausgewählt
-      if (p && p.ok) id = p.id;
-      else if (Array.isArray(s.items) && s.items.length) id = driveId(s.items[0].id);  // Vorschau/Fallback: erste Datei
-      else id = driveId(s.fileId);                              // sehr alte Layouts (nur eine Datei)
-      if (!id) id = DEFAULTS.photo.items[0].id;
-      root.appendChild(make('img', { src: 'https://lh3.googleusercontent.com/d/' + encodeURIComponent(id), alt: 'Foto' }));
+      var file;
+      var p = window.PHOTO && window.PHOTO[id];                 // vom Renderer (Node) bereits ausgewählt
+      if (p && p.ok) file = p.id;
+      else if (Array.isArray(s.items) && s.items.length) file = driveId(s.items[0].id);  // Vorschau/Fallback: erste Datei
+      else file = driveId(s.fileId);                            // sehr alte Layouts (nur eine Datei)
+      if (!file) return;                                        // keine Datei eingetragen -> Fenster bleibt leer
+      root.appendChild(make('img', { src: 'https://lh3.googleusercontent.com/d/' + encodeURIComponent(file), alt: 'Foto' }));
     }
   };
+  for (var pn2 = 2; pn2 <= 6; pn2++) BUILD['photo' + pn2] = BUILD.photo;
 
   // Größe der Seite (Layout-Fläche) kommt vom Renderer, sonst 1024x758
   var page = window.PAGE || { w: 1024, h: 758 };
@@ -302,7 +307,7 @@
     rot.style.height = rh + 'px';
     rot.style.transform = 'translate(-50%, -50%) rotate(' + r + 'deg)';
 
-    BUILD[id](rot, s, rw, rh);
+    BUILD[id](rot, s, rw, rh, id);
     box.appendChild(rot);
     document.body.appendChild(box);
   });

@@ -59,9 +59,11 @@ function loadDoc() {
   return { profiles, collections, updateMinutes };
 }
 
-// Wählt das Drive-Bild, das jetzt dran ist (gleiche Auswahl-Logik wie bei den Texten, aus den Dateien im Fenster selbst)
-function photoFor(p, docInfo) {
-  const cfg = p.widgets.photo;
+const PHOTO_SLOTS = ['photo', 'photo2', 'photo3', 'photo4', 'photo5', 'photo6'];
+
+// Wählt das Drive-Bild, das jetzt dran ist (gleiche Auswahl-Logik wie bei den Texten, aus den Dateien im jeweiligen Fenster)
+function photoFor(p, docInfo, key) {
+  const cfg = p.widgets[key];
   if (!cfg || cfg.enabled !== true) return null;
   const items = (Array.isArray(cfg.items) ? cfg.items : []).map((it) => it && String(it.id || '').trim()).filter(Boolean);
   const legacy = typeof cfg.fileId === 'string' ? cfg.fileId.trim() : '';   // sehr alte profiles.json (eine Datei)
@@ -70,6 +72,13 @@ function photoFor(p, docInfo) {
   if (all.length === 1) return { ok: true, id: all[0], index: 0, total: 1 };
   const pk = Verses.pick(cfg, all.length, NOW, docInfo.updateMinutes);
   return { ok: true, id: all[pk.index], index: pk.index, total: all.length, slot: pk.slot };
+}
+
+// Alle (bis zu 6) Foto-Fenster eines Profils auswerten, als Map { photo: {...}, photo2: {...}, ... }
+function photosFor(p, docInfo) {
+  const out = {};
+  PHOTO_SLOTS.forEach((key) => { const r = photoFor(p, docInfo, key); if (r) out[key] = r; });
+  return out;
 }
 
 // Wählt den Text, der jetzt dran ist (ohne gespeicherten Zustand: nur Startzeit, Wechselzeit und Uhrzeit zählen)
@@ -106,8 +115,11 @@ async function render(browser, p, docInfo) {
 
   const verse = verseFor(p, docInfo);
   if (verse) console.log('  Text:', verse.ok ? 'Nr. ' + (verse.index + 1) + ' von ' + verse.total + ' (Wechsel ' + verse.slot + ')' : 'Fehler: ' + verse.error);
-  const photo = photoFor(p, docInfo);
-  if (photo && photo.total > 1) console.log('  Foto:', photo.ok ? 'Datei ' + (photo.index + 1) + ' von ' + photo.total : 'Fehler: ' + photo.error);
+  const photos = photosFor(p, docInfo);
+  PHOTO_SLOTS.forEach((key) => {
+    const ph = photos[key];
+    if (ph && (ph.total > 1 || !ph.ok)) console.log('  Foto (' + key + '):', ph.ok ? 'Datei ' + (ph.index + 1) + ' von ' + ph.total : 'Fehler: ' + ph.error);
+  });
 
   const page = await browser.newPage();
   let shot;
@@ -115,7 +127,7 @@ async function render(browser, p, docInfo) {
     await page.setViewport({ width: pageW, height: pageH, deviceScaleFactor: p.zoom });
     await page.evaluateOnNewDocument((layout, w, size, v, ph) => {
       window.LAYOUT = layout; window.WEATHER = w; window.PAGE = size; window.VERSE = v; window.PHOTO = ph;
-    }, { widgets: p.widgets }, wx, { w: pageW, h: pageH }, verse, photo);
+    }, { widgets: p.widgets }, wx, { w: pageW, h: pageH }, verse, photos);
     try {
       // Google-Kalender-iFrames halten oft Verbindungen offen -> networkidle0 läuft dann in den Timeout
       await page.goto('file://' + path.join(__dirname, 'index.html'), { waitUntil: 'networkidle2', timeout: 60000 });

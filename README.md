@@ -65,3 +65,14 @@ Import-Format („Mehrere einfügen“): ein Text pro Zeile, oder mehrere Zeilen
 Das Fenster „Google Drive“ zeigt nicht mehr nur eine Datei, sondern eine Liste beliebig vieler Dateien aus demselben Account (Editor: „+ Datei hinzufügen“, mit Miniaturvorschau, Sortieren per Pfeil, Entfernen per ✕). Bei mehr als einer Datei gelten dieselben Reihenfolge- und Wechsel-Einstellungen wie beim Textfenster (der Reihe nach oder zufällig, Verhalten nach der letzten Datei, Wechsel bei jedem PNG-Update oder nach fester Zeit) – siehe oben. Jede Datei braucht die Freigabe „Jeder mit dem Link“.
 
 Ein `profiles.json` aus einer älteren Version (einzelne `fileId`) wird beim Laden im Editor automatisch in eine Liste mit einem Eintrag umgewandelt.
+
+## Mehrere gleichzeitige Google-Drive-Fenster (Collage)
+
+Im Editor steht unter der Fensterliste „+ Weiteres Foto-Fenster“. Jeder Klick schaltet ein
+weiteres, bisher verstecktes Google-Drive-Fenster frei (bis zu 6 gleichzeitig: „Google Drive“,
+„Google Drive 2“ … „Google Drive 6“). Jedes hat seine eigene Position, Größe, Drehung, Dateiliste
+und eigene Reihenfolge-/Wechsel-Einstellungen – unabhängig von den anderen. So lässt sich eine
+Foto-Collage aus mehreren, gleichzeitig sichtbaren Bildern bauen.
+
+Ein zusätzliches Fenster wieder ausschalten (eigener Schalter oben in seiner Karte) versteckt es
+wieder aus der Liste; sein Platz für „+ Weiteres Foto-Fenster“ wird dann erneut frei.
