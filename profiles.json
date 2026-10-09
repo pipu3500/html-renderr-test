@@ -396,26 +396,26 @@
       "widgets": {
         "weather": {
           "enabled": true,
-          "x": 15,
-          "y": 15,
-          "w": 489,
-          "h": 580,
-          "rotate": 0,
-          "source": "dwd",
+          "x": 0,
+          "y": 0,
+          "w": 535,
+          "h": 305,
+          "rotate": 270,
+          "source": "openmeteo",
           "location": "Sundern",
           "days": 3
         },
         "calendar": {
           "enabled": true,
-          "x": 519,
-          "y": 15,
+          "x": 534,
+          "y": 0,
           "w": 490,
           "h": 475,
-          "rotate": 0,
+          "rotate": 270,
           "calendarId": "family13776384795444561092@group.calendar.google.com"
         },
         "agenda": {
-          "enabled": true,
+          "enabled": false,
           "x": 519,
           "y": 505,
           "w": 238,
@@ -425,17 +425,14 @@
         },
         "photo": {
           "enabled": true,
-          "x": 771,
-          "y": 505,
-          "w": 238,
-          "h": 238,
-          "rotate": 180,
+          "x": 770,
+          "y": 475,
+          "w": 254,
+          "h": 283,
+          "rotate": 270,
           "items": [
             {
-              "id": "1WVXOZY6CS56w8VjM-qV2itM60bWrqALy"
-            },
-            {
-              "id": "1WVXOZY6CS56w8VjM"
+              "id": "1UDBotodWbPnJNyMYBg1zMPKdBXKFF_dY-qV2itM60bWrqALy-qV2itM60bWrqALy"
             }
           ],
           "mode": "seq",
@@ -449,17 +446,14 @@
         },
         "photo2": {
           "enabled": true,
-          "x": 250,
-          "y": 520,
+          "x": 535,
+          "y": 475,
           "w": 238,
-          "h": 238,
-          "rotate": 0,
+          "h": 283,
+          "rotate": 270,
           "items": [
             {
-              "id": "1WVXOZY6CS56w8VjM"
-            },
-            {
-              "id": "1WVXOZY6CS56w8VjM"
+              "id": "1WVXOZY6CS56w8VjM-qV2itM60bWrqALy"
             }
           ],
           "mode": "seq",
@@ -468,11 +462,11 @@
           "change": "sync",
           "every": 1,
           "unit": "days",
-          "startAt": "2026-10-09T06:56:36.687Z",
+          "startAt": "2026-10-09T13:46:19.585Z",
           "seed": 323256039
         },
         "photo3": {
-          "enabled": true,
+          "enabled": false,
           "x": 0,
           "y": 450,
           "w": 238,
@@ -548,12 +542,12 @@
         },
         "verse": {
           "enabled": true,
-          "x": 519,
-          "y": 505,
-          "w": 490,
-          "h": 238,
-          "rotate": 0,
-          "collection": "",
+          "x": 0,
+          "y": 305,
+          "w": 535,
+          "h": 453,
+          "rotate": 270,
+          "collection": "20261009",
           "mode": "seq",
           "repeats": "no",
           "atEnd": "restart",
