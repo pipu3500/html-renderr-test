@@ -425,14 +425,14 @@
         },
         "photo": {
           "enabled": true,
-          "x": 770,
+          "x": 865,
           "y": 475,
-          "w": 254,
+          "w": 159,
           "h": 283,
           "rotate": 270,
           "items": [
             {
-              "id": "1UDBotodWbPnJNyMYBg1zMPKdBXKFF_dY-qV2itM60bWrqALy-qV2itM60bWrqALy"
+              "id": "1UDBotodWbPnJNyMYBg1zMPKdBXKFF_dY"
             }
           ],
           "mode": "seq",
@@ -448,7 +448,7 @@
           "enabled": true,
           "x": 535,
           "y": 475,
-          "w": 238,
+          "w": 330,
           "h": 283,
           "rotate": 270,
           "items": [
