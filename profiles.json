@@ -585,43 +585,43 @@
       "widgets": {
         "weather": {
           "enabled": true,
-          "x": 15,
-          "y": 15,
-          "w": 489,
-          "h": 580,
-          "rotate": 0,
-          "source": "wttr",
+          "x": 0,
+          "y": 0,
+          "w": 535,
+          "h": 305,
+          "rotate": 270,
+          "source": "openmeteo",
           "location": "Sundern",
           "days": 3
         },
         "calendar": {
           "enabled": true,
-          "x": 519,
-          "y": 15,
+          "x": 534,
+          "y": 0,
           "w": 490,
           "h": 475,
-          "rotate": 0,
+          "rotate": 270,
           "calendarId": "family13776384795444561092@group.calendar.google.com"
         },
         "agenda": {
-          "enabled": true,
-          "x": 519,
-          "y": 505,
-          "w": 238,
-          "h": 238,
-          "rotate": 0,
+          "enabled": false,
+          "x": 535,
+          "y": 475,
+          "w": 350,
+          "h": 283,
+          "rotate": 270,
           "calendarId": ""
         },
         "photo": {
           "enabled": true,
-          "x": 785,
-          "y": 380,
-          "w": 238,
-          "h": 238,
-          "rotate": 180,
+          "x": 885,
+          "y": 475,
+          "w": 139,
+          "h": 283,
+          "rotate": 270,
           "items": [
             {
-              "id": "1WVXOZY6CS56w8VjM-qV2itM60bWrqALy"
+              "id": "1dX1FSJnH5D1Cx5thr0_xqn4CbW3Ulmiz"
             }
           ],
           "mode": "seq",
@@ -635,15 +635,12 @@
         },
         "photo2": {
           "enabled": true,
-          "x": 90,
-          "y": 500,
-          "w": 238,
-          "h": 238,
-          "rotate": 0,
+          "x": 535,
+          "y": 475,
+          "w": 350,
+          "h": 283,
+          "rotate": 270,
           "items": [
-            {
-              "id": "1WPy49RRCnHZUtHHk_FfEgwzRAyHsvsaT"
-            },
             {
               "id": "1WVXOZY6CS56w8VjM-qV2itM60bWrqALy"
             }
@@ -658,17 +655,13 @@
           "seed": 323256039
         },
         "photo3": {
-          "enabled": true,
-          "x": 345,
-          "y": 405,
+          "enabled": false,
+          "x": 25,
+          "y": 140,
           "w": 238,
           "h": 238,
           "rotate": 90,
-          "items": [
-            {
-              "id": "1WPy49RRCnHZUtHHk_FfEgwzRAyHsvsaT"
-            }
-          ],
+          "items": [],
           "mode": "seq",
           "repeats": "no",
           "atEnd": "restart",
@@ -731,12 +724,12 @@
         },
         "verse": {
           "enabled": true,
-          "x": 519,
-          "y": 505,
-          "w": 490,
-          "h": 238,
-          "rotate": 0,
-          "collection": "",
+          "x": 0,
+          "y": 305,
+          "w": 535,
+          "h": 453,
+          "rotate": 270,
+          "collection": "20261009",
           "mode": "seq",
           "repeats": "no",
           "atEnd": "restart",
@@ -758,5 +751,1242 @@
       }
     }
   ],
-  "collections": []
+  "collections": [
+    {
+      "id": "bibelverse",
+      "name": "Bibelverse",
+      "items": [
+        {
+          "t": "Dieser ist das Ebenbild des unsichtbaren Gottes, der Erstgeborene, der über aller Schöpfung ist.",
+          "r": "Kolosser 1,15"
+        },
+        {
+          "t": "Denn in ihm ist alles erschaffen worden, was im Himmel und was auf Erden ist, das Sichtbare und das Unsichtbare, seien es Throne oder Herrschaften oder Fürstentümer oder Gewalten: Alles ist durch ihn und für ihn geschaffen;\nund er ist vor allem, und alles hat seinen Bestand in ihm.",
+          "r": "Kolosser 1,16-17"
+        },
+        {
+          "t": "Und er ist das Haupt des Leibes, der Gemeinde, er, der der Anfang ist, der Erstgeborene aus den Toten, damit er in allem der Erste sei.",
+          "r": "Kolosser 1,18"
+        },
+        {
+          "t": "Denn es gefiel [Gott], in ihm alle Fülle wohnen zu lassen\nund durch ihn alles mit sich selbst zu versöhnen, indem er Frieden machte durch das Blut seines Kreuzes — durch ihn, sowohl was auf Erden als auch was im Himmel ist.",
+          "r": "Kolosser 1,19-20"
+        },
+        {
+          "t": "Auch euch, die ihr einst entfremdet und feindlich gesinnt wart in den bösen Werken, hat er jetzt versöhnt\nin dem Leib seines Fleisches durch den Tod, um euch heilig und tadellos und unverklagbar darzustellen vor seinem Angesicht,\nwenn ihr nämlich im Glauben gegründet und fest bleibt und euch nicht abbringen lasst von der Hoffnung des Evangeliums, das ihr gehört habt, das verkündigt worden ist in der ganzen Schöpfung, die unter dem Himmel ist, und dessen Diener ich, Paulus, geworden bin.",
+          "r": "Kolosser 1,21-23"
+        },
+        {
+          "t": "Nachdem Gott in vergangenen Zeiten vielfältig und auf vielerlei Weise zu den Vätern geredet hat durch die Propheten,\nhat er in diesen letzten Tagen zu uns geredet durch den Sohn. Ihn hat er eingesetzt zum Erben von allem, durch ihn hat er auch die Welten geschaffen",
+          "r": "Hebräer 1,1-2"
+        },
+        {
+          "t": "dieser ist die Ausstrahlung seiner Herrlichkeit und der Ausdruck seines Wesens und trägt alle Dinge durch das Wort seiner Kraft; er hat sich, nachdem er die Reinigung von unseren Sünden durch sich selbst vollbracht hat, zur Rechten der Majestät in der Höhe gesetzt.",
+          "r": "Hebräer 1,3"
+        },
+        {
+          "t": "Jesus spricht zu ihm: So lange Zeit bin ich bei euch, und du hast mich noch nicht erkannt, Philippus? Wer mich gesehen hat, der hat den Vater gesehen. Wie kannst du da sagen: Zeige uns den Vater?\nGlaubst du nicht, dass ich im Vater bin und der Vater in mir ist? Die Worte, die ich zu euch rede, rede ich nicht aus mir selbst; und der Vater, der in mir wohnt, der tut die Werke.",
+          "r": "Johannes 14,9-10"
+        },
+        {
+          "t": "Denn in Christus allein wohnt die ganze Fülle des Göttlichen leibhaftig.",
+          "r": "Kolosser 2,9"
+        },
+        {
+          "t": "Und das Wort wurde Fleisch und wohnte unter uns; und wir sahen seine Herrlichkeit, eine Herrlichkeit als des Eingeborenen vom Vater, voller Gnade und Wahrheit.",
+          "r": "Johannes 1,14"
+        },
+        {
+          "t": "Niemand hat Gott je gesehen; der eingeborene Sohn, der im Schoß des Vaters ist, der hat Aufschluss [über ihn] gegeben.",
+          "r": "Johannes 1,18"
+        },
+        {
+          "t": "Denn so [sehr] hat Gott die Welt geliebt, dass er seinen eingeborenen Sohn gab, damit jeder, der an ihn glaubt, nicht verlorengeht, sondern ewiges Leben hat.",
+          "r": "Johannes 3,16"
+        },
+        {
+          "t": "Denn Gott hat seinen Sohn nicht in die Welt gesandt, damit er die Welt richte, sondern damit die Welt durch ihn gerettet werde.",
+          "r": "3,17"
+        },
+        {
+          "t": "Wer an ihn glaubt, wird nicht gerichtet; wer aber nicht glaubt, der ist schon gerichtet, weil er nicht an den Namen des eingeborenen Sohnes Gottes geglaubt hat.",
+          "r": "3,18"
+        },
+        {
+          "t": "Darin aber besteht das Gericht, dass das Licht in die Welt gekommen ist, und die Menschen liebten die Finsternis mehr als das Licht; denn ihre Werke waren böse.\nDenn jeder, der Böses tut, hasst das Licht und kommt nicht zum Licht, damit seine Werke nicht aufgedeckt werden.\nWer aber die Wahrheit tut, der kommt zum Licht, damit seine Werke offenbar werden, dass sie in Gott getan sind.",
+          "r": "3,19-21"
+        },
+        {
+          "t": "In ihm war das Leben, und das Leben war das Licht der Menschen.",
+          "r": "Johannes 1,4"
+        },
+        {
+          "t": "Und das ist die Botschaft, die wir von ihm gehört haben und euch verkündigen, dass Gott Licht ist und in ihm gar keine Finsternis ist.",
+          "r": "1.Johannes 1,5"
+        },
+        {
+          "t": "Darin ist die Liebe Gottes zu uns geoffenbart worden, dass Gott seinen eingeborenen Sohn in die Welt gesandt hat, damit wir durch ihn leben sollen.",
+          "r": "1.Johannes 4,9"
+        },
+        {
+          "t": "Darin besteht die Liebe — nicht dass wir Gott geliebt haben, sondern dass er uns geliebt hat und seinen Sohn gesandt hat als Sühnopfer für unsere Sünden.",
+          "r": "1.Johannes 4,10"
+        },
+        {
+          "t": "Gott aber beweist seine Liebe zu uns dadurch, dass Christus für uns gestorben ist, als wir noch Sünder waren.",
+          "r": "Römer 5,8"
+        },
+        {
+          "t": "Wie viel mehr nun werden wir, nachdem wir jetzt durch sein Blut gerechtfertigt worden sind, durch ihn vor dem Zorn errettet werden!",
+          "r": "Römer 5,9"
+        },
+        {
+          "t": "Denn wenn wir mit Gott versöhnt worden sind durch den Tod seines Sohnes, als wir noch Feinde waren, wie viel mehr werden wir als Versöhnte gerettet werden durch sein Leben!",
+          "r": "5,10"
+        },
+        {
+          "t": "Alles ist durch dasselbe entstanden; und ohne dasselbe ist auch nicht eines entstanden, was entstanden ist.",
+          "r": "Johannes 1,3"
+        },
+        {
+          "t": "Gott sprach zu Mose: »Ich bin, der ich bin!«",
+          "r": "2.Mose 3,14"
+        },
+        {
+          "t": "Dein Weg führte durch das Meer und dein Pfad durch gewaltige Fluten, und deine Fußstapfen waren nicht zu erkennen.\nDu führtest dein Volk wie eine Herde durch die Hand von Mose und Aaron.",
+          "r": "Psalm 77,20"
+        },
+        {
+          "t": "Er allein spannt den Himmel aus und schreitet auf Meereswogen einher.",
+          "r": "Hiob 9,8"
+        },
+        {
+          "t": "Und du, Bethlehem-Ephrata, du bist zwar gering unter den Hauptorten von Juda; aber aus dir soll mir hervorkommen, der Herrscher über Israel werden soll, dessen Hervorgehen von Anfang, von den Tagen der Ewigkeit her gewesen ist.",
+          "r": "Micha 5,1"
+        },
+        {
+          "t": "Darum wird euch der Herr selbst ein Zeichen geben: Siehe, die Jungfrau wird schwanger werden und einen Sohn gebären und wird ihm den Namen Immanuel geben.",
+          "r": "Jesaja 7,14"
+        },
+        {
+          "t": "Denn ein Kind ist uns geboren, ein Sohn ist uns gegeben; und die Herrschaft ruht auf seiner Schulter; und man nennt seinen Namen: Wunderbarer, Ratgeber, starker Gott, Ewig-Vater, Friedefürst.",
+          "r": "Jesaja 9,5"
+        },
+        {
+          "t": "Die Mehrung der Herrschaft und der Friede werden kein Ende haben auf dem Thron Davids und über seinem Königreich, dass er es gründe und festige mit Recht und Gerechtigkeit von nun an bis in Ewigkeit. Der Eifer des HERRN der Heerscharen wird dies tun!",
+          "r": "Jesaja 9,6"
+        },
+        {
+          "t": "Als Israel jung war, liebte ich ihn, und aus Ägypten habe ich meinen Sohn gerufen.",
+          "r": "Hosea 11,1"
+        },
+        {
+          "t": "Wenn deine Tage erfüllt sind und du bei deinen Vätern liegst, so will ich deinen Samen nach dir erwecken, der aus deinem Leib kommen wird, und ich werde sein Königtum befestigen.\nDer wird meinem Namen ein Haus bauen, und ich werde den Thron seines Königreichs auf ewig befestigen.",
+          "r": "2.Samuel 7,12-13"
+        },
+        {
+          "t": "O HERR, Gott der Heerscharen, wer ist mächtig wie du, HERR? Und deine Treue ist um dich her!\nDu beherrschst das ungestüme Meer; wenn sich seine Wogen erheben, so stillst du sie.",
+          "r": "Psalm 89,9-10"
+        },
+        {
+          "t": "Dein sind die Himmel, dir gehört auch die Erde, der Erdkreis und was ihn erfüllt; du hast es alles gegründet.",
+          "r": "Psalm 89,12"
+        },
+        {
+          "t": "Wohl dem Volk, das den Jubelschall kennt! O HERR, im Licht deines Angesichts wandeln sie;\nÜber deinen Namen frohlocken sie allezeit, und durch deine Gerechtigkeit werden sie erhöht;\ndenn du bist ihr mächtiger Ruhm, und durch deine Gnade wird unser Horn erhöht.",
+          "r": "Psalm 89,16-18"
+        },
+        {
+          "t": "Und es wird ein Zweig hervorgehen aus dem Stumpf Isais und ein Schössling hervorbrechen aus seinen Wurzeln.\nUnd auf ihm wird ruhen der Geist des HERRN, der Geist der Weisheit und des Verstandes, der Geist des Rats und der Kraft, der Geist der Erkenntnis und der Furcht des HERRN.",
+          "r": "Jesaja 11,1-2"
+        },
+        {
+          "t": "Und er wird sein Wohlgefallen haben an der Furcht des HERRN. Er wird nicht nach dem Augenschein richten, noch nach dem Hörensagen Recht sprechen,\nsondern er wird die Armen mit Gerechtigkeit richten und den Elenden im Land ein unparteiisches Urteil sprechen. Er wird die Erde mit dem Stab seines Mundes schlagen und den Gesetzlosen mit dem Hauch seiner Lippen töten.",
+          "r": "Jesaja 11,3-4"
+        },
+        {
+          "t": "»Ich habe meinen König eingesetzt auf Zion, meinem heiligen Berg!« —\nIch will den Ratschluss des HERRN verkünden; er hat zu mir gesagt: »Du bist mein Sohn, heute habe ich dich gezeugt.\nErbitte von mir, so will ich dir die Heidenvölker zum Erbe geben und die Enden der Erde zu deinem Eigentum.",
+          "r": "Psalm 2,6-8"
+        },
+        {
+          "t": "Ein Psalm Davids. Der HERR sprach zu meinem Herrn: Setze dich zu meiner Rechten, bis ich deine Feinde hinlege als Schemel für deine Füße!",
+          "r": "Psalm 110,1"
+        },
+        {
+          "t": "Mein Gott, mein Gott, warum hast du mich verlassen?",
+          "r": "Psalm 22,2"
+        },
+        {
+          "t": "Alle, die mich sehen, spotten über mich; sie reißen den Mund auf und schütteln den Kopf:\n»Er soll doch auf den HERRN vertrauen; der soll ihn befreien; der soll ihn retten, er hat ja Lust an ihm!«",
+          "r": "Psalm 22,8-9"
+        },
+        {
+          "t": "Es umringen mich große Stiere, mächtige [Stiere] von Baschan umzingeln mich.\nSie sperren ihr Maul gegen mich auf wie ein reißender und brüllender Löwe.\nIch bin ausgeschüttet wie Wasser, und alle meine Gebeine sind ausgerenkt. Mein Herz ist geworden wie Wachs, zerschmolzen in meinem Innern.\nMeine Kraft ist vertrocknet wie eine Scherbe, und meine Zunge klebt an meinem Gaumen, und du legst mich in den Staub des Todes.\nDenn Hunde umringen mich, eine Rotte von Übeltätern umgibt mich; sie haben meine Hände und meine Füße durchgraben.\nIch kann alle meine Gebeine zählen; sie schauen her und sehen mich [schadenfroh] an.\nSie teilen meine Kleider unter sich und werfen das Los über mein Gewand.",
+          "r": "Psalm 22,13-19"
+        },
+        {
+          "t": "Er wuchs auf vor ihm wie ein Schössling, wie ein Wurzelspross aus dürrem Erdreich. Er hatte keine Gestalt und keine Pracht; wir sahen ihn, aber sein Anblick gefiel uns nicht.\nVerachtet war er und verlassen von den Menschen, ein Mann der Schmerzen und mit Leiden vertraut; wie einer, vor dem man das Angesicht verbirgt, so verachtet war er, und wir achteten ihn nicht.\nFürwahr, er hat unsere Krankheit getragen und unsere Schmerzen auf sich geladen; wir aber hielten ihn für bestraft, von Gott geschlagen und niedergebeugt.",
+          "r": "Jesaja 53,2-4"
+        },
+        {
+          "t": "Doch er wurde um unserer Übertretungen willen durchbohrt, wegen unserer Missetaten zerschlagen; die Strafe lag auf ihm, damit wir Frieden hätten, und durch seine Wunden sind wir geheilt worden.",
+          "r": "Jesaja 53,5"
+        },
+        {
+          "t": "Wir alle gingen in die Irre wie Schafe, jeder wandte sich auf seinen Weg; aber der HERR warf unser aller Schuld auf ihn.\nEr wurde misshandelt, aber er beugte sich und tat seinen Mund nicht auf, wie ein Lamm, das zur Schlachtbank geführt wird, und wie ein Schaf, das verstummt vor seinem Scherer und seinen Mund nicht auftut.",
+          "r": "Jesaja 53,6-7"
+        },
+        {
+          "t": "Infolge von Drangsal und Gericht wurde er weggenommen; wer will aber sein Geschlecht beschreiben? Denn er wurde aus dem Land der Lebendigen weggerissen; wegen der Übertretung meines Volkes hat ihn Strafe getroffen.\nUnd man bestimmte sein Grab bei Gottlosen, aber bei einem Reichen [war er] in seinem Tod, weil er kein Unrecht getan hatte und kein Betrug in seinem Mund gewesen war.",
+          "r": "Jesaja 53,8-9"
+        },
+        {
+          "t": "Aber dem HERRN gefiel es, ihn zu zerschlagen; er ließ ihn leiden. Wenn er sein Leben zum Schuldopfer gegeben hat, so wird er Nachkommen sehen und seine Tage verlängern; und das Vorhaben des HERRN wird in seiner Hand gelingen.\nNachdem seine Seele Mühsal erlitten hat, wird er seine Lust sehen und die Fülle haben; durch seine Erkenntnis wird mein Knecht, der Gerechte, viele gerecht machen, und ihre Sünden wird er tragen.\nDarum will ich ihm die Vielen zum Anteil geben, und er wird Starke zum Raub erhalten, dafür, dass er seine Seele dem Tod preisgegeben hat und sich unter die Übeltäter zählen ließ und die Sünde vieler getragen und für die Übeltäter gebetet hat.",
+          "r": "Jesaja 53,10-12"
+        },
+        {
+          "t": "Ein jeder nun, der diese meine Worte hört und sie tut, den will ich mit einem klugen Mann vergleichen, der sein Haus auf den Felsen baute.\nAls nun der Platzregen fiel und die Wasserströme kamen und die Winde stürmten und an dieses Haus stießen, fiel es nicht; denn es war auf den Felsen gegründet.",
+          "r": "Matthäus 7,24-25"
+        },
+        {
+          "t": "Und es geschah, als Jesus diese Worte beendet hatte, erstaunte die Volksmenge über seine Lehre,\ndenn er lehrte sie wie einer, der Vollmacht hat, und nicht wie die Schriftgelehrten.",
+          "r": "Matthäus 7,28-29"
+        },
+        {
+          "t": "Glückselig sind, die um der Gerechtigkeit willen verfolgt werden, denn ihrer ist das Reich der Himmel!\nGlückselig seid ihr, wenn sie euch schmähen und verfolgen und lügnerisch jegliches böse Wort gegen euch reden um meinetwillen!\nFreut euch und jubelt, denn euer Lohn ist groß im Himmel; denn ebenso haben sie die Propheten verfolgt, die vor euch gewesen sind.",
+          "r": "Matthäus 5,10-12"
+        },
+        {
+          "t": "Ihr seid das Salz der Erde. Wenn aber das Salz fade wird, womit soll es wieder salzig gemacht werden? Es taugt zu nichts mehr, als dass es hinausgeworfen und von den Leuten zertreten wird.",
+          "r": "Matthäus 5,13"
+        },
+        {
+          "t": "Ihr seid das Licht der Welt. Es kann eine Stadt, die auf einem Berg liegt, nicht verborgen bleiben.\nMan zündet auch nicht ein Licht an und setzt es unter den Scheffel, sondern auf den Leuchter; so leuchtet es allen, die im Haus sind.\nSo soll euer Licht leuchten vor den Leuten, dass sie eure guten Werke sehen und euren Vater im Himmel preisen.",
+          "r": "Matthäus 5,14-16"
+        },
+        {
+          "t": "Ihr sollt nicht meinen, dass ich gekommen sei, um das Gesetz oder die Propheten aufzulösen. Ich bin nicht gekommen, um aufzulösen, sondern um zu erfüllen!",
+          "r": "Matthäus 5,17"
+        },
+        {
+          "t": "Damit ihr aber wisst, dass der Sohn des Menschen Vollmacht hat, auf Erden Sünden zu vergeben — sprach er zu dem Gelähmten:\nIch sage dir, steh auf und nimm deine Liegematte und geh heim!",
+          "r": "Markus 2,10-11"
+        },
+        {
+          "t": "Und er sprach zu ihr: Dir sind deine Sünden vergeben!\nDa fingen die Tischgenossen an, bei sich selbst zu sagen: Wer ist dieser, der sogar Sünden vergibt?\nEr aber sprach zu der Frau: Dein Glaube hat dich gerettet; geh hin in Frieden!",
+          "r": "Lukas 7,48-50"
+        },
+        {
+          "t": "Aber Jesus befahl ihm und sprach: Verstumme und fahre aus von ihm!\nDa zerrte ihn der unreine Geist hin und her, schrie mit lauter Stimme und fuhr von ihm aus.\nUnd sie erstaunten alle, sodass sie sich untereinander fragten und sprachen: Was ist das? Was für eine neue Lehre ist dies? Mit Vollmacht gebietet er auch den unreinen Geistern, und sie gehorchen ihm!",
+          "r": "Markus 1,25-27"
+        },
+        {
+          "t": "Und er trat in das Schiff, und seine Jünger folgten ihm nach.\nUnd siehe, es erhob sich ein großer Sturm auf dem See, sodass das Schiff von den Wellen bedeckt wurde; er aber schlief.\nUnd seine Jünger traten zu ihm, weckten ihn auf und sprachen: Herr, rette uns! Wir kommen um!\nDa sprach er zu ihnen: Was seid ihr so furchtsam, ihr Kleingläubigen? Dann stand er auf und befahl den Winden und dem See; und es entstand eine große Stille.\nDie Menschen aber verwunderten sich und sprachen: Wer ist dieser, dass ihm selbst die Winde und der See gehorsam sind?",
+          "r": "Matthäus 8,23-27"
+        },
+        {
+          "t": "Aber um die vierte Nachtwache kam Jesus zu ihnen und ging auf dem See.\nUnd als ihn die Jünger auf dem See gehen sahen, erschraken sie und sprachen: Es ist ein Gespenst!, und schrien vor Furcht.\nJesus aber redete sogleich mit ihnen und sprach: Seid getrost, ich bin’s; fürchtet euch nicht!\nPetrus aber antwortete ihm und sprach: Herr, wenn du es bist, so befiehl mir, zu dir auf das Wasser zu kommen!\nDa sprach er: Komm! Und Petrus stieg aus dem Schiff und ging auf dem Wasser, um zu Jesus zu kommen.\nAls er aber den starken Wind sah, fürchtete er sich, und da er zu sinken anfing, schrie er und sprach: Herr, rette mich!",
+          "r": "Matthäus 14,25-30"
+        },
+        {
+          "t": "Jesus aber sprach: Lasst die Leute sich setzen! Es war nämlich viel Gras an dem Ort. Da setzten sich die Männer; es waren etwa 5 000.\nUnd Jesus nahm die Brote, sagte Dank und teilte sie den Jüngern aus, die Jünger aber denen, die sich gesetzt hatten; ebenso auch von den Fischen, so viel sie wollten.\nUnd als sie gesättigt waren, sprach er zu seinen Jüngern: Sammelt die übrig gebliebenen Brocken, damit nichts verdirbt!",
+          "r": "Johannes 6,10-12"
+        },
+        {
+          "t": "Da hoben sie den Stein weg, wo der Verstorbene lag. Jesus aber hob die Augen empor und sprach: Vater, ich danke dir, dass du mich erhört hast.\nIch aber weiß, dass du mich allezeit erhörst; doch um der umstehenden Menge willen habe ich es gesagt, damit sie glauben, dass du mich gesandt hast.\nUnd als er dies gesagt hatte, rief er mit lauter Stimme: Lazarus, komm heraus!\nUnd der Verstorbene kam heraus, an Händen und Füßen mit Grabtüchern umwickelt und sein Angesicht mit einem Schweißtuch umhüllt. Jesus spricht zu ihnen: Bindet ihn los und lasst ihn gehen!",
+          "r": "Johannes 11,41-44"
+        },
+        {
+          "t": "Und als sie ihn sahen, warfen sie sich anbetend vor ihm nieder; etliche aber zweifelten.\nUnd Jesus trat herzu, redete mit ihnen und sprach: Mir ist gegeben alle Macht im Himmel und auf Erden.\nSo geht nun hin und macht zu Jüngern alle Völker, und tauft sie auf den Namen des Vaters und des Sohnes und des Heiligen Geistes\nund lehrt sie alles halten, was ich euch befohlen habe. Und siehe, ich bin bei euch alle Tage bis an das Ende der Weltzeit! Amen.",
+          "r": "Matthäus 28,17-28"
+        },
+        {
+          "t": "»Der Geist des Herrn ist auf mir, weil er mich gesalbt hat, den Armen frohe Botschaft zu verkünden; er hat mich gesandt, zu heilen, die zerbrochenen Herzens sind, Gefangenen Befreiung zu verkünden und den Blinden, dass sie wieder sehend werden, Zerschlagene in Freiheit zu setzen,\num zu verkündigen das angenehme Jahr des Herrn.«\nUnd er rollte die Buchrolle zusammen und gab sie dem Diener wieder und setzte sich, und aller Augen in der Synagoge waren auf ihn gerichtet.\nEr aber fing an, ihnen zu sagen: Heute ist diese Schrift erfüllt vor euren Ohren!",
+          "r": "Lukas 4,18-21"
+        },
+        {
+          "t": "Das ist aber das ewige Leben, dass sie dich, den allein wahren Gott, und den du gesandt hast, Jesus Christus, erkennen.",
+          "r": "Johannes 17,3"
+        },
+        {
+          "t": "Ich habe ihnen dein Wort gegeben, und die Welt hasst sie; denn sie sind nicht von der Welt, gleichwie auch ich nicht von der Welt bin.\nIch bitte nicht, dass du sie aus der Welt nimmst, sondern dass du sie bewahrst vor dem Bösen.\nSie sind nicht von der Welt, gleichwie auch ich nicht von der Welt bin.\nHeilige sie in deiner Wahrheit! Dein Wort ist Wahrheit.",
+          "r": "17,14-17"
+        },
+        {
+          "t": "Darum hat ihn Gott auch über alle Maßen erhöht und ihm einen Namen verliehen, der über allen Namen ist,\ndamit in dem Namen Jesu sich alle Knie derer beugen, die im Himmel und auf Erden und unter der Erde sind,\nund alle Zungen bekennen, dass Jesus Christus der Herr ist, zur Ehre Gottes, des Vaters.",
+          "r": "Philipper 2,9-11"
+        },
+        {
+          "t": "Siehe, es kommen Tage, spricht der HERR, da ich mit dem Haus Israel und mit dem Haus Juda einen neuen Bund schließen werde",
+          "r": "Jeremia 31,31"
+        },
+        {
+          "t": "Und ich will euch ein neues Herz geben und einen neuen Geist in euer Inneres legen; ich will das steinerne Herz aus eurem Fleisch wegnehmen und euch ein fleischernes Herz geben;\nja, ich will meinen Geist in euer Inneres legen und werde bewirken, dass ihr in meinen Satzungen wandelt und meine Rechtsbestimmungen befolgt und tut.",
+          "r": "Hesekiel 36,26-27"
+        },
+        {
+          "t": "Jesus sprach zu ihnen: Wahrlich, wahrlich, ich sage euch: Ehe Abraham war, bin ich!",
+          "r": "Johannes 8,58"
+        },
+        {
+          "t": "Und er sprach zu ihnen: Ihr seid von unten, ich bin von oben. Ihr seid von dieser Welt, ich bin nicht von dieser Welt.\nDarum habe ich euch gesagt, dass ihr in euren Sünden sterben werdet; denn wenn ihr nicht glaubt, dass ich es bin, so werdet ihr in euren Sünden sterben.",
+          "r": "Johannes 8,23-24"
+        },
+        {
+          "t": "Jetzt sage ich es euch, ehe es geschieht, damit ihr glaubt, wenn es geschehen ist, dass ich es bin.\nWahrlich, wahrlich, ich sage euch: Wer den aufnimmt, den ich senden werde, der nimmt mich auf; wer aber mich aufnimmt, der nimmt den auf, der mich gesandt hat.",
+          "r": "Johannes 13,19-20"
+        },
+        {
+          "t": "Als er nun zu ihnen sprach: Ich bin’s!, wichen sie alle zurück und fielen zu Boden.",
+          "r": "Johannes 18,6"
+        },
+        {
+          "t": "Ich und der Vater sind eins.",
+          "r": "Johannes 10,30"
+        },
+        {
+          "t": "Die Juden antworteten ihm und sprachen: Nicht wegen eines guten Werkes wollen wir dich steinigen, sondern wegen Gotteslästerung, und zwar weil du, der du ein Mensch bist, dich selbst zu Gott machst!",
+          "r": "Johannes 10,33"
+        },
+        {
+          "t": "Darum suchten die Juden nun noch mehr, ihn zu töten, weil er nicht nur den Sabbat brach, sondern auch Gott seinen eigenen Vater nannte, womit er sich selbst Gott gleich machte.",
+          "r": "Johannes 5,18"
+        },
+        {
+          "t": "Und nun verherrliche du mich, Vater, bei dir selbst mit der Herrlichkeit, die ich bei dir hatte, ehe die Welt war.",
+          "r": "Johannes 17,5"
+        },
+        {
+          "t": "Denn wie der Vater die Toten auferweckt und lebendig macht, so macht auch der Sohn lebendig, welche er will.",
+          "r": "Johannes 5,21"
+        },
+        {
+          "t": "Denn der Vater richtet niemand, sondern alles Gericht hat er dem Sohn übergeben,\ndamit alle den Sohn ehren, wie sie den Vater ehren. Wer den Sohn nicht ehrt, der ehrt den Vater nicht, der ihn gesandt hat.",
+          "r": "Johannes 5,22-23"
+        },
+        {
+          "t": "Wahrlich, wahrlich, ich sage euch: Wer mein Wort hört und dem glaubt, der mich gesandt hat, der hat ewiges Leben und kommt nicht ins Gericht, sondern er ist vom Tod zum Leben hindurchgedrungen.",
+          "r": "Johannes 5,24"
+        },
+        {
+          "t": "Wahrlich, wahrlich, ich sage euch: Die Stunde kommt und ist schon da, wo die Toten die Stimme des Sohnes Gottes hören werden, und die sie hören, werden leben.",
+          "r": "Johannes 5,25"
+        },
+        {
+          "t": "Denn wie der Vater das Leben in sich selbst hat, so hat er auch dem Sohn verliehen, das Leben in sich selbst zu haben.",
+          "r": "Johannes 5,26"
+        },
+        {
+          "t": "Und er hat ihm Vollmacht gegeben, auch Gericht zu halten, weil er der Sohn des Menschen ist.",
+          "r": "Johannes 5,27"
+        },
+        {
+          "t": "Verwundert euch nicht darüber! Denn es kommt die Stunde, in der alle, die in den Gräbern sind, seine Stimme hören werden,\nund sie werden hervorgehen: die das Gute getan haben, zur Auferstehung des Lebens; die aber das Böse getan haben, zur Auferstehung des Gerichts.",
+          "r": "Johannes 5,28-29"
+        },
+        {
+          "t": "Jesus spricht zu ihr: Ich bin die Auferstehung und das Leben.",
+          "r": "Johannes 11,25"
+        },
+        {
+          "t": "Ich bin die Auferstehung und das Leben.",
+          "r": "Johannes 11,25"
+        },
+        {
+          "t": "Und Jesus trat herzu, redete mit ihnen und sprach: Mir ist gegeben alle Macht im Himmel und auf Erden.",
+          "r": "Matthäus 28,18"
+        },
+        {
+          "t": "Da kamen die in dem Schiff waren, warfen sich anbetend vor ihm nieder und sprachen: Wahrhaftig, du bist Gottes Sohn!",
+          "r": "Matthäus 14,33"
+        },
+        {
+          "t": "Und als sie gingen, um es seinen Jüngern zu verkünden, siehe, da begegnete ihnen Jesus und sprach: Seid gegrüßt! Sie aber traten herzu und umfassten seine Füße und beteten ihn an.\nDa sprach Jesus zu ihnen: Fürchtet euch nicht! Geht hin, verkündet meinen Brüdern, dass sie nach Galiläa gehen sollen; dort werden sie mich sehen!",
+          "r": "Matthäus 28,9-10"
+        },
+        {
+          "t": "Jesus hörte, dass sie ihn ausgestoßen hatten, und als er ihn fand, sprach er zu ihm: Glaubst du an den Sohn Gottes?\nEr antwortete und sprach: Wer ist es, Herr, damit ich an ihn glaube?\nJesus aber sprach zu ihm: Du hast ihn gesehen, und der mit dir redet, der ist es!\nEr aber sprach: Ich glaube, Herr! und fiel anbetend vor ihm nieder.",
+          "r": "Johannes 9,35-38"
+        },
+        {
+          "t": "Und Thomas antwortete und sprach zu ihm: Mein Herr und mein Gott!\nJesus spricht zu ihm: Thomas, du glaubst, weil du mich gesehen hast; glückselig sind, die nicht sehen und doch glauben!",
+          "r": "Johannes 20,28-29"
+        },
+        {
+          "t": "Mein Herr und mein Gott!",
+          "r": "Johannes 20,28"
+        },
+        {
+          "t": "Und siehe, ich sende auf euch die Verheißung meines Vaters; ihr aber bleibt in der Stadt Jerusalem, bis ihr angetan werdet mit Kraft aus der Höhe!",
+          "r": "Lukas 24,49"
+        },
+        {
+          "t": "Und es geschah, indem er sie segnete, schied er von ihnen und wurde aufgehoben in den Himmel.\nUnd sie warfen sich anbetend vor ihm nieder und kehrten nach Jerusalem zurück mit großer Freude;\nund sie waren allezeit im Tempel und priesen und lobten Gott. Amen.",
+          "r": "Lukas 24,51-53"
+        },
+        {
+          "t": "Er aber schwieg und antwortete nichts. Wieder fragte ihn der Hohepriester und sagte zu ihm: Bist du der Christus, der Sohn des Hochgelobten?\nJesus aber sprach: Ich bin’s. Und ihr werdet den Sohn des Menschen sitzen sehen zur Rechten der Macht und kommen mit den Wolken des Himmels!",
+          "r": "Markus 14,61-62"
+        },
+        {
+          "t": "Da sprachen sie alle: Bist du also der Sohn Gottes? Er aber sprach zu ihnen: Ihr sagt es, denn ich bin es!",
+          "r": "Lukas 22,70"
+        },
+        {
+          "t": "Jesus aber schwieg. Und der Hohepriester begann und sprach zu ihm: Ich beschwöre dich bei dem lebendigen Gott, dass du uns sagst, ob du der Christus bist, der Sohn Gottes!\nJesus spricht zu ihm: Du hast es gesagt! Überdies sage ich euch: Künftig werdet ihr den Sohn des Menschen sitzen sehen zur Rechten der Macht und kommen auf den Wolken des Himmels!",
+          "r": "Matthäus 26,63-64"
+        },
+        {
+          "t": "Im Anfang war das Wort, und das Wort war bei Gott, und das Wort war Gott.\nDieses war im Anfang bei Gott.\nAlles ist durch dasselbe entstanden; und ohne dasselbe ist auch nicht eines entstanden, was entstanden ist.",
+          "r": "Johannes 1,1-3"
+        },
+        {
+          "t": "In ihm war das Leben, und das Leben war das Licht der Menschen.",
+          "r": "Johannes 1,4"
+        },
+        {
+          "t": "Er kam in sein Eigentum, und die Seinen nahmen ihn nicht auf.\nAllen aber, die ihn aufnahmen, denen gab er das Anrecht, Kinder Gottes zu werden, denen, die an seinen Namen glauben;\ndie nicht aus dem Blut, noch aus dem Willen des Fleisches, noch aus dem Willen des Mannes, sondern aus Gott geboren sind.",
+          "r": "Johannes 1,11-13"
+        },
+        {
+          "t": "Und das Wort wurde Fleisch und wohnte unter uns; und wir sahen seine Herrlichkeit, eine Herrlichkeit als des Eingeborenen vom Vater, voller Gnade und Wahrheit.",
+          "r": "Johannes 1,14"
+        },
+        {
+          "t": "Und niemand ist hinaufgestiegen in den Himmel, außer dem, der aus dem Himmel herabgestiegen ist, dem Sohn des Menschen, der im Himmel ist.",
+          "r": "Johannes 3,13"
+        },
+        {
+          "t": "Und wie Mose in der Wüste die Schlange erhöhte, so muss der Sohn des Menschen erhöht werden,\ndamit jeder, der an ihn glaubt, nicht verlorengeht, sondern ewiges Leben hat.",
+          "r": "Johannes 3,14-15"
+        },
+        {
+          "t": "Denn ich bin aus dem Himmel herabgekommen, nicht damit ich meinen Willen tue, sondern den Willen dessen, der mich gesandt hat.\nUnd das ist der Wille des Vaters, der mich gesandt hat, dass ich nichts verliere von allem, was er mir gegeben hat, sondern dass ich es auferwecke am letzten Tag.",
+          "r": "Johannes 6,38-39"
+        },
+        {
+          "t": "Da sprach Jesus zu ihnen: Wenn Gott euer Vater wäre, so würdet ihr mich lieben, denn ich bin von Gott ausgegangen und gekommen; denn nicht von mir selbst bin ich gekommen, sondern er hat mich gesandt.",
+          "r": "Johannes 8,42"
+        },
+        {
+          "t": "Ich bitte aber nicht für diese allein, sondern auch für die, welche durch ihr Wort an mich glauben werden,\nauf dass sie alle eins seien, gleichwie du, Vater, in mir und ich in dir; auf dass auch sie in uns eins seien, damit die Welt glaube, dass du mich gesandt hast.",
+          "r": "Johannes 17,20-21"
+        },
+        {
+          "t": "Und als ich ihn sah, fiel ich zu seinen Füßen nieder wie tot. Und er legte seine rechte Hand auf mich und sprach zu mir: Fürchte dich nicht! Ich bin der Erste und der Letzte\nund der Lebende; und ich war tot, und siehe, ich lebe von Ewigkeit zu Ewigkeit, Amen! Und ich habe die Schlüssel des Totenreiches und des Todes.",
+          "r": "Offenbarung 1,17-18"
+        },
+        {
+          "t": "Ich bin das A und das O, der Anfang und das Ende, der Erste und der Letzte.",
+          "r": "Offenbarung 22,13"
+        },
+        {
+          "t": "Jesus Christus, dem treuen Zeugen, dem Erstgeborenen aus den Toten und dem Fürsten über die Könige der Erde. Ihm, der uns geliebt hat und uns von unseren Sünden gewaschen hat durch sein Blut,\nund uns zu Königen und Priestern gemacht hat für seinen Gott und Vater — Ihm sei die Herrlichkeit und die Macht von Ewigkeit zu Ewigkeit! Amen.",
+          "r": "Offenbarung 1,5-6"
+        },
+        {
+          "t": "Nun redete Jesus wieder zu ihnen und sprach: Ich bin das Licht der Welt. Wer mir nachfolgt, wird nicht in der Finsternis wandeln, sondern er wird das Licht des Lebens haben.",
+          "r": "Johannes 8,12"
+        },
+        {
+          "t": "Ich bin das Licht der Welt.",
+          "r": "Johannes 8,12"
+        },
+        {
+          "t": "Ich bin die Tür. Wenn jemand durch mich hineingeht, wird er gerettet werden und wird ein- und ausgehen und Weide finden.",
+          "r": "Johannes 10,9"
+        },
+        {
+          "t": "Ich bin die Tür.",
+          "r": "Johannes 10,9"
+        },
+        {
+          "t": "Ich bin das lebendige Brot, das aus dem Himmel herabgekommen ist. Wenn jemand von diesem Brot isst, so wird er leben in Ewigkeit. Das Brot aber, das ich geben werde, ist mein Fleisch, das ich geben werde für das Leben der Welt.",
+          "r": "Johannes 6,51"
+        },
+        {
+          "t": "Ich bin das lebendige Brot, das aus dem Himmel herabgekommen ist.",
+          "r": "Johannes 6,51"
+        },
+        {
+          "t": "Wahrlich, wahrlich, ich sage euch: Wer an mich glaubt, der hat ewiges Leben.",
+          "r": "Johannes 6,47"
+        },
+        {
+          "t": "Du wirst mir den Weg des Lebens zeigen; vor deinem Angesicht sind Freuden in Fülle, liebliches Wesen zu deiner Rechten ewiglich!",
+          "r": "Ps 16,11"
+        },
+        {
+          "t": "Gott ist es, der mich umgürtet mit Kraft und meinen Weg unsträflich macht",
+          "r": "Ps 18,33"
+        },
+        {
+          "t": "Lass mich wandeln auf dem Pfad deiner Gebote, denn ich habe Lust an ihm.",
+          "r": "Ps 119,35"
+        },
+        {
+          "t": "Lehre mich, HERR, den Weg deiner Anweisungen, dass ich ihn einhalte bis ans Ende.",
+          "r": "Ps 119,33"
+        },
+        {
+          "t": "Mancher Weg erscheint dem Menschen richtig, aber zuletzt führt er ihn doch zum Tod.",
+          "r": "Spr 14,12"
+        },
+        {
+          "t": "Gott ist es, der mich umgürtet mit Kraft und meinen Weg unsträflich macht.",
+          "r": "Ps 18,33"
+        },
+        {
+          "t": "»Ich will dich unterweisen und dir den Weg zeigen, auf dem du wandeln sollst; ich will dir raten, mein Auge auf dich richten.",
+          "r": "Ps 32,8"
+        },
+        {
+          "t": "Ich bin der gute Hirte und kenne die Meinen und bin den Meinen bekannt,\ngleichwie der Vater mich kennt und ich den Vater kenne; und ich lasse mein Leben für die Schafe.",
+          "r": "Johannes 10,14-15"
+        },
+        {
+          "t": "Ich bin der gute Hirte.",
+          "r": "Johannes 10,1"
+        },
+        {
+          "t": "Darum liebt mich der Vater, weil ich mein Leben lasse, damit ich es wieder nehme.\nNiemand nimmt es von mir, sondern ich lasse es von mir aus. Ich habe Vollmacht, es zu lassen, und habe Vollmacht, es wieder zu nehmen. Diesen Auftrag habe ich von meinem Vater empfangen.",
+          "r": "Johannes 10,17-18"
+        },
+        {
+          "t": "Ich bin der Weg und die Wahrheit und das Leben; niemand kommt zum Vater als nur durch mich!",
+          "r": "Johannes 14,6"
+        },
+        {
+          "t": "Wer meine Gebote festhält und sie befolgt, der ist es, der mich liebt; wer aber mich liebt, der wird von meinem Vater geliebt werden, und ich werde ihn lieben und mich ihm offenbaren.",
+          "r": "Johannes 14,21"
+        },
+        {
+          "t": "Wenn jemand mich liebt, so wird er mein Wort befolgen, und mein Vater wird ihn lieben, und wir werden zu ihm kommen und Wohnung bei ihm machen.",
+          "r": "Johannes 14,23"
+        },
+        {
+          "t": "Wer mich nicht liebt, der befolgt meine Worte nicht; und das Wort, das ihr hört, ist nicht mein, sondern des Vaters, der mich gesandt hat.",
+          "r": "Johannes 14,24"
+        },
+        {
+          "t": "der Beistand aber, der Heilige Geist, den der Vater senden wird in meinem Namen, der wird euch alles lehren und euch an alles erinnern, was ich euch gesagt habe.",
+          "r": "Johannes 14,26"
+        },
+        {
+          "t": "Frieden hinterlasse ich euch; meinen Frieden gebe ich euch. Nicht wie die Welt gibt, gebe ich euch; euer Herz erschrecke nicht und verzage nicht!",
+          "r": "Johannes 14,27"
+        },
+        {
+          "t": "Und nun habe ich es euch gesagt, ehe es geschieht, damit ihr glaubt, wenn es geschieht.",
+          "r": "Johannes 14,29"
+        },
+        {
+          "t": "Jeder, der glaubt, dass Jesus der Christus ist, der ist aus Gott geboren; und wer den liebt, der ihn geboren hat, der liebt auch den, der aus Ihm geboren ist.",
+          "r": "1.Johannes 5,1"
+        },
+        {
+          "t": "Daran erkennen wir, dass wir die Kinder Gottes lieben, wenn wir Gott lieben und seine Gebote halten.",
+          "r": "1.Johannes 5,2"
+        },
+        {
+          "t": "Denn das ist die Liebe zu Gott, dass wir seine Gebote halten; und seine Gebote sind nicht schwer.",
+          "r": "1.Johannes 5,3"
+        },
+        {
+          "t": "Denn alles, was aus Gott geboren ist, überwindet die Welt; und unser Glaube ist der Sieg, der die Welt überwunden hat.",
+          "r": "1.Johannes 5,4"
+        },
+        {
+          "t": "Wer ist es, der die Welt überwindet, wenn nicht der, welcher glaubt, dass Jesus der Sohn Gottes ist?",
+          "r": "1.Johannes 5,5"
+        },
+        {
+          "t": "Denn drei sind es, die Zeugnis ablegen im Himmel: der Vater, das Wort und der Heilige Geist, und diese drei sind eins;",
+          "r": "1.Johannes 5,7"
+        },
+        {
+          "t": "Und darin besteht das Zeugnis, dass Gott uns ewiges Leben gegeben hat, und dieses Leben ist in seinem Sohn.",
+          "r": "1.Johannes 5,11"
+        },
+        {
+          "t": "Wer den Sohn hat, der hat das Leben; wer den Sohn Gottes nicht hat, der hat das Leben nicht.",
+          "r": "1.Johannes 5,12"
+        },
+        {
+          "t": "Dies habe ich euch geschrieben, die ihr glaubt an den Namen des Sohnes Gottes, damit ihr wisst, dass ihr ewiges Leben habt, und damit ihr [auch weiterhin] an den Namen des Sohnes Gottes glaubt.",
+          "r": "1.Johannes 5,13"
+        },
+        {
+          "t": "Wir wissen aber, dass der Sohn Gottes gekommen ist und uns Verständnis gegeben hat, damit wir den Wahrhaftigen erkennen. Und wir sind in dem Wahrhaftigen, in seinem Sohn Jesus Christus. Dieser ist der wahrhaftige Gott und das ewige Leben.",
+          "r": "1.Johannes 5,20"
+        },
+        {
+          "t": "Wir wissen, dass wir aus dem Tod zum Leben gelangt sind, denn wir lieben die Brüder. Wer den Bruder nicht liebt, bleibt im Tod.",
+          "r": "1.Johannes 3,14"
+        },
+        {
+          "t": "Jeder, der seinen Bruder hasst, ist ein Mörder; und ihr wisst, dass kein Mörder ewiges Leben bleibend in sich hat.",
+          "r": "1.Johannes 3,15"
+        },
+        {
+          "t": "Daran haben wir die Liebe erkannt, dass Er sein Leben für uns hingegeben hat; auch wir sind es schuldig, für die Brüder das Leben hinzugeben.",
+          "r": "1.Johannes 3,16"
+        },
+        {
+          "t": "Wer aber die Güter dieser Welt hat und seinen Bruder Not leiden sieht und sein Herz vor ihm verschließt — wie bleibt die Liebe Gottes in ihm?",
+          "r": "1.Johannes 3,17"
+        },
+        {
+          "t": "Ich aber sage euch: Wer eine Frau ansieht, um sie zu begehren, der hat in seinem Herzen schon Ehebruch mit ihr begangen.",
+          "r": "Matthäus 5,28"
+        },
+        {
+          "t": "Ich aber sage euch: Jeder, der seinem Bruder ohne Ursache zürnt, wird dem Gericht verfallen sein. Wer aber zu seinem Bruder sagt: Raka!, der wird dem Hohen Rat verfallen sein. Wer aber sagt: Du Narr!, der wird dem höllischen Feuer verfallen sein.",
+          "r": "Matthäus 5,22"
+        },
+        {
+          "t": "Ihr aber seid ein auserwähltes Geschlecht, ein königliches Priestertum, ein heiliges Volk, ein Volk des Eigentums, damit ihr die Tugenden dessen verkündet, der euch aus der Finsternis berufen hat zu seinem wunderbaren Licht;",
+          "r": "1.Petrus 2,9"
+        },
+        {
+          "t": "— euch, die ihr einst nicht ein Volk wart, jetzt aber Gottes Volk seid, und einst nicht begnadigt wart, jetzt aber begnadigt seid.",
+          "r": "1.Petrus 2,10"
+        },
+        {
+          "t": "Geliebte, ich ermahne euch als Gäste und Fremdlinge: Enthaltet euch der fleischlichen Begierden, die gegen die Seele streiten;",
+          "r": "1.Petrus 2,11"
+        },
+        {
+          "t": "Denn das ist der Wille Gottes, dass ihr durch Gutestun die Unwissenheit der unverständigen Menschen zum Schweigen bringt;\nals Freie, und nicht als solche, die die Freiheit als Deckmantel für die Bosheit benutzen, sondern als Knechte Gottes.",
+          "r": "1.Petrus 2,15-16"
+        },
+        {
+          "t": "Erweist jedermann Achtung, liebt die Bruderschaft, fürchtet Gott, ehrt den König!",
+          "r": "1.Petrus 2,17"
+        },
+        {
+          "t": "Denn das ist Gnade, wenn jemand aus Gewissenhaftigkeit gegenüber Gott Kränkungen erträgt, indem er zu Unrecht leidet.",
+          "r": "1.Petrus 2,19"
+        }
+      ]
+    },
+    {
+      "id": "20261009",
+      "name": "20261009",
+      "items": [
+        {
+          "t": "Dieser ist das Ebenbild des unsichtbaren Gottes, der Erstgeborene, der über aller Schöpfung ist.",
+          "r": "Kolosser 1,15"
+        },
+        {
+          "t": "Denn in ihm ist alles erschaffen worden, was im Himmel und was auf Erden ist, das Sichtbare und das Unsichtbare, seien es Throne oder Herrschaften oder Fürstentümer oder Gewalten: Alles ist durch ihn und für ihn geschaffen;\nund er ist vor allem, und alles hat seinen Bestand in ihm.",
+          "r": "Kolosser 1,16-17"
+        },
+        {
+          "t": "Und er ist das Haupt des Leibes, der Gemeinde, er, der der Anfang ist, der Erstgeborene aus den Toten, damit er in allem der Erste sei.",
+          "r": "Kolosser 1,18"
+        },
+        {
+          "t": "Denn es gefiel [Gott], in ihm alle Fülle wohnen zu lassen\nund durch ihn alles mit sich selbst zu versöhnen, indem er Frieden machte durch das Blut seines Kreuzes — durch ihn, sowohl was auf Erden als auch was im Himmel ist.",
+          "r": "Kolosser 1,19-20"
+        },
+        {
+          "t": "Auch euch, die ihr einst entfremdet und feindlich gesinnt wart in den bösen Werken, hat er jetzt versöhnt\nin dem Leib seines Fleisches durch den Tod, um euch heilig und tadellos und unverklagbar darzustellen vor seinem Angesicht,\nwenn ihr nämlich im Glauben gegründet und fest bleibt und euch nicht abbringen lasst von der Hoffnung des Evangeliums, das ihr gehört habt, das verkündigt worden ist in der ganzen Schöpfung, die unter dem Himmel ist, und dessen Diener ich, Paulus, geworden bin.",
+          "r": "Kolosser 1,21-23"
+        },
+        {
+          "t": "Nachdem Gott in vergangenen Zeiten vielfältig und auf vielerlei Weise zu den Vätern geredet hat durch die Propheten,\nhat er in diesen letzten Tagen zu uns geredet durch den Sohn. Ihn hat er eingesetzt zum Erben von allem, durch ihn hat er auch die Welten geschaffen",
+          "r": "Hebräer 1,1-2"
+        },
+        {
+          "t": "dieser ist die Ausstrahlung seiner Herrlichkeit und der Ausdruck seines Wesens und trägt alle Dinge durch das Wort seiner Kraft; er hat sich, nachdem er die Reinigung von unseren Sünden durch sich selbst vollbracht hat, zur Rechten der Majestät in der Höhe gesetzt.",
+          "r": "Hebräer 1,3"
+        },
+        {
+          "t": "Jesus spricht zu ihm: So lange Zeit bin ich bei euch, und du hast mich noch nicht erkannt, Philippus? Wer mich gesehen hat, der hat den Vater gesehen. Wie kannst du da sagen: Zeige uns den Vater?\nGlaubst du nicht, dass ich im Vater bin und der Vater in mir ist? Die Worte, die ich zu euch rede, rede ich nicht aus mir selbst; und der Vater, der in mir wohnt, der tut die Werke.",
+          "r": "Johannes 14,9-10"
+        },
+        {
+          "t": "Denn in Christus allein wohnt die ganze Fülle des Göttlichen leibhaftig.",
+          "r": "Kolosser 2,9"
+        },
+        {
+          "t": "Und das Wort wurde Fleisch und wohnte unter uns; und wir sahen seine Herrlichkeit, eine Herrlichkeit als des Eingeborenen vom Vater, voller Gnade und Wahrheit.",
+          "r": "Johannes 1,14"
+        },
+        {
+          "t": "Niemand hat Gott je gesehen; der eingeborene Sohn, der im Schoß des Vaters ist, der hat Aufschluss [über ihn] gegeben.",
+          "r": "Johannes 1,18"
+        },
+        {
+          "t": "Denn so [sehr] hat Gott die Welt geliebt, dass er seinen eingeborenen Sohn gab, damit jeder, der an ihn glaubt, nicht verlorengeht, sondern ewiges Leben hat.",
+          "r": "Johannes 3,16"
+        },
+        {
+          "t": "Denn Gott hat seinen Sohn nicht in die Welt gesandt, damit er die Welt richte, sondern damit die Welt durch ihn gerettet werde.",
+          "r": "3,17"
+        },
+        {
+          "t": "Wer an ihn glaubt, wird nicht gerichtet; wer aber nicht glaubt, der ist schon gerichtet, weil er nicht an den Namen des eingeborenen Sohnes Gottes geglaubt hat.",
+          "r": "3,18"
+        },
+        {
+          "t": "Darin aber besteht das Gericht, dass das Licht in die Welt gekommen ist, und die Menschen liebten die Finsternis mehr als das Licht; denn ihre Werke waren böse.\nDenn jeder, der Böses tut, hasst das Licht und kommt nicht zum Licht, damit seine Werke nicht aufgedeckt werden.\nWer aber die Wahrheit tut, der kommt zum Licht, damit seine Werke offenbar werden, dass sie in Gott getan sind.",
+          "r": "3,19-21"
+        },
+        {
+          "t": "In ihm war das Leben, und das Leben war das Licht der Menschen.",
+          "r": "Johannes 1,4"
+        },
+        {
+          "t": "Und das ist die Botschaft, die wir von ihm gehört haben und euch verkündigen, dass Gott Licht ist und in ihm gar keine Finsternis ist.",
+          "r": "1.Johannes 1,5"
+        },
+        {
+          "t": "Darin ist die Liebe Gottes zu uns geoffenbart worden, dass Gott seinen eingeborenen Sohn in die Welt gesandt hat, damit wir durch ihn leben sollen.",
+          "r": "1.Johannes 4,9"
+        },
+        {
+          "t": "Darin besteht die Liebe — nicht dass wir Gott geliebt haben, sondern dass er uns geliebt hat und seinen Sohn gesandt hat als Sühnopfer für unsere Sünden.",
+          "r": "1.Johannes 4,10"
+        },
+        {
+          "t": "Gott aber beweist seine Liebe zu uns dadurch, dass Christus für uns gestorben ist, als wir noch Sünder waren.",
+          "r": "Römer 5,8"
+        },
+        {
+          "t": "Wie viel mehr nun werden wir, nachdem wir jetzt durch sein Blut gerechtfertigt worden sind, durch ihn vor dem Zorn errettet werden!",
+          "r": "Römer 5,9"
+        },
+        {
+          "t": "Denn wenn wir mit Gott versöhnt worden sind durch den Tod seines Sohnes, als wir noch Feinde waren, wie viel mehr werden wir als Versöhnte gerettet werden durch sein Leben!",
+          "r": "5,10"
+        },
+        {
+          "t": "Alles ist durch dasselbe entstanden; und ohne dasselbe ist auch nicht eines entstanden, was entstanden ist.",
+          "r": "Johannes 1,3"
+        },
+        {
+          "t": "Gott sprach zu Mose: »Ich bin, der ich bin!«",
+          "r": "2.Mose 3,14"
+        },
+        {
+          "t": "Dein Weg führte durch das Meer und dein Pfad durch gewaltige Fluten, und deine Fußstapfen waren nicht zu erkennen.\nDu führtest dein Volk wie eine Herde durch die Hand von Mose und Aaron.",
+          "r": "Psalm 77,20"
+        },
+        {
+          "t": "Er allein spannt den Himmel aus und schreitet auf Meereswogen einher.",
+          "r": "Hiob 9,8"
+        },
+        {
+          "t": "Und du, Bethlehem-Ephrata, du bist zwar gering unter den Hauptorten von Juda; aber aus dir soll mir hervorkommen, der Herrscher über Israel werden soll, dessen Hervorgehen von Anfang, von den Tagen der Ewigkeit her gewesen ist.",
+          "r": "Micha 5,1"
+        },
+        {
+          "t": "Darum wird euch der Herr selbst ein Zeichen geben: Siehe, die Jungfrau wird schwanger werden und einen Sohn gebären und wird ihm den Namen Immanuel geben.",
+          "r": "Jesaja 7,14"
+        },
+        {
+          "t": "Denn ein Kind ist uns geboren, ein Sohn ist uns gegeben; und die Herrschaft ruht auf seiner Schulter; und man nennt seinen Namen: Wunderbarer, Ratgeber, starker Gott, Ewig-Vater, Friedefürst.",
+          "r": "Jesaja 9,5"
+        },
+        {
+          "t": "Die Mehrung der Herrschaft und der Friede werden kein Ende haben auf dem Thron Davids und über seinem Königreich, dass er es gründe und festige mit Recht und Gerechtigkeit von nun an bis in Ewigkeit. Der Eifer des HERRN der Heerscharen wird dies tun!",
+          "r": "Jesaja 9,6"
+        },
+        {
+          "t": "Als Israel jung war, liebte ich ihn, und aus Ägypten habe ich meinen Sohn gerufen.",
+          "r": "Hosea 11,1"
+        },
+        {
+          "t": "Wenn deine Tage erfüllt sind und du bei deinen Vätern liegst, so will ich deinen Samen nach dir erwecken, der aus deinem Leib kommen wird, und ich werde sein Königtum befestigen.\nDer wird meinem Namen ein Haus bauen, und ich werde den Thron seines Königreichs auf ewig befestigen.",
+          "r": "2.Samuel 7,12-13"
+        },
+        {
+          "t": "O HERR, Gott der Heerscharen, wer ist mächtig wie du, HERR? Und deine Treue ist um dich her!\nDu beherrschst das ungestüme Meer; wenn sich seine Wogen erheben, so stillst du sie.",
+          "r": "Psalm 89,9-10"
+        },
+        {
+          "t": "Dein sind die Himmel, dir gehört auch die Erde, der Erdkreis und was ihn erfüllt; du hast es alles gegründet.",
+          "r": "Psalm 89,12"
+        },
+        {
+          "t": "Wohl dem Volk, das den Jubelschall kennt! O HERR, im Licht deines Angesichts wandeln sie;\nÜber deinen Namen frohlocken sie allezeit, und durch deine Gerechtigkeit werden sie erhöht;\ndenn du bist ihr mächtiger Ruhm, und durch deine Gnade wird unser Horn erhöht.",
+          "r": "Psalm 89,16-18"
+        },
+        {
+          "t": "Und es wird ein Zweig hervorgehen aus dem Stumpf Isais und ein Schössling hervorbrechen aus seinen Wurzeln.\nUnd auf ihm wird ruhen der Geist des HERRN, der Geist der Weisheit und des Verstandes, der Geist des Rats und der Kraft, der Geist der Erkenntnis und der Furcht des HERRN.",
+          "r": "Jesaja 11,1-2"
+        },
+        {
+          "t": "Und er wird sein Wohlgefallen haben an der Furcht des HERRN. Er wird nicht nach dem Augenschein richten, noch nach dem Hörensagen Recht sprechen,\nsondern er wird die Armen mit Gerechtigkeit richten und den Elenden im Land ein unparteiisches Urteil sprechen. Er wird die Erde mit dem Stab seines Mundes schlagen und den Gesetzlosen mit dem Hauch seiner Lippen töten.",
+          "r": "Jesaja 11,3-4"
+        },
+        {
+          "t": "»Ich habe meinen König eingesetzt auf Zion, meinem heiligen Berg!« —\nIch will den Ratschluss des HERRN verkünden; er hat zu mir gesagt: »Du bist mein Sohn, heute habe ich dich gezeugt.\nErbitte von mir, so will ich dir die Heidenvölker zum Erbe geben und die Enden der Erde zu deinem Eigentum.",
+          "r": "Psalm 2,6-8"
+        },
+        {
+          "t": "Ein Psalm Davids. Der HERR sprach zu meinem Herrn: Setze dich zu meiner Rechten, bis ich deine Feinde hinlege als Schemel für deine Füße!",
+          "r": "Psalm 110,1"
+        },
+        {
+          "t": "Mein Gott, mein Gott, warum hast du mich verlassen?",
+          "r": "Psalm 22,2"
+        },
+        {
+          "t": "Alle, die mich sehen, spotten über mich; sie reißen den Mund auf und schütteln den Kopf:\n»Er soll doch auf den HERRN vertrauen; der soll ihn befreien; der soll ihn retten, er hat ja Lust an ihm!«",
+          "r": "Psalm 22,8-9"
+        },
+        {
+          "t": "Es umringen mich große Stiere, mächtige [Stiere] von Baschan umzingeln mich.\nSie sperren ihr Maul gegen mich auf wie ein reißender und brüllender Löwe.\nIch bin ausgeschüttet wie Wasser, und alle meine Gebeine sind ausgerenkt. Mein Herz ist geworden wie Wachs, zerschmolzen in meinem Innern.\nMeine Kraft ist vertrocknet wie eine Scherbe, und meine Zunge klebt an meinem Gaumen, und du legst mich in den Staub des Todes.\nDenn Hunde umringen mich, eine Rotte von Übeltätern umgibt mich; sie haben meine Hände und meine Füße durchgraben.\nIch kann alle meine Gebeine zählen; sie schauen her und sehen mich [schadenfroh] an.\nSie teilen meine Kleider unter sich und werfen das Los über mein Gewand.",
+          "r": "Psalm 22,13-19"
+        },
+        {
+          "t": "Er wuchs auf vor ihm wie ein Schössling, wie ein Wurzelspross aus dürrem Erdreich. Er hatte keine Gestalt und keine Pracht; wir sahen ihn, aber sein Anblick gefiel uns nicht.\nVerachtet war er und verlassen von den Menschen, ein Mann der Schmerzen und mit Leiden vertraut; wie einer, vor dem man das Angesicht verbirgt, so verachtet war er, und wir achteten ihn nicht.\nFürwahr, er hat unsere Krankheit getragen und unsere Schmerzen auf sich geladen; wir aber hielten ihn für bestraft, von Gott geschlagen und niedergebeugt.",
+          "r": "Jesaja 53,2-4"
+        },
+        {
+          "t": "Doch er wurde um unserer Übertretungen willen durchbohrt, wegen unserer Missetaten zerschlagen; die Strafe lag auf ihm, damit wir Frieden hätten, und durch seine Wunden sind wir geheilt worden.",
+          "r": "Jesaja 53,5"
+        },
+        {
+          "t": "Wir alle gingen in die Irre wie Schafe, jeder wandte sich auf seinen Weg; aber der HERR warf unser aller Schuld auf ihn.\nEr wurde misshandelt, aber er beugte sich und tat seinen Mund nicht auf, wie ein Lamm, das zur Schlachtbank geführt wird, und wie ein Schaf, das verstummt vor seinem Scherer und seinen Mund nicht auftut.",
+          "r": "Jesaja 53,6-7"
+        },
+        {
+          "t": "Infolge von Drangsal und Gericht wurde er weggenommen; wer will aber sein Geschlecht beschreiben? Denn er wurde aus dem Land der Lebendigen weggerissen; wegen der Übertretung meines Volkes hat ihn Strafe getroffen.\nUnd man bestimmte sein Grab bei Gottlosen, aber bei einem Reichen [war er] in seinem Tod, weil er kein Unrecht getan hatte und kein Betrug in seinem Mund gewesen war.",
+          "r": "Jesaja 53,8-9"
+        },
+        {
+          "t": "Aber dem HERRN gefiel es, ihn zu zerschlagen; er ließ ihn leiden. Wenn er sein Leben zum Schuldopfer gegeben hat, so wird er Nachkommen sehen und seine Tage verlängern; und das Vorhaben des HERRN wird in seiner Hand gelingen.\nNachdem seine Seele Mühsal erlitten hat, wird er seine Lust sehen und die Fülle haben; durch seine Erkenntnis wird mein Knecht, der Gerechte, viele gerecht machen, und ihre Sünden wird er tragen.\nDarum will ich ihm die Vielen zum Anteil geben, und er wird Starke zum Raub erhalten, dafür, dass er seine Seele dem Tod preisgegeben hat und sich unter die Übeltäter zählen ließ und die Sünde vieler getragen und für die Übeltäter gebetet hat.",
+          "r": "Jesaja 53,10-12"
+        },
+        {
+          "t": "Ein jeder nun, der diese meine Worte hört und sie tut, den will ich mit einem klugen Mann vergleichen, der sein Haus auf den Felsen baute.\nAls nun der Platzregen fiel und die Wasserströme kamen und die Winde stürmten und an dieses Haus stießen, fiel es nicht; denn es war auf den Felsen gegründet.",
+          "r": "Matthäus 7,24-25"
+        },
+        {
+          "t": "Und es geschah, als Jesus diese Worte beendet hatte, erstaunte die Volksmenge über seine Lehre,\ndenn er lehrte sie wie einer, der Vollmacht hat, und nicht wie die Schriftgelehrten.",
+          "r": "Matthäus 7,28-29"
+        },
+        {
+          "t": "Glückselig sind, die um der Gerechtigkeit willen verfolgt werden, denn ihrer ist das Reich der Himmel!\nGlückselig seid ihr, wenn sie euch schmähen und verfolgen und lügnerisch jegliches böse Wort gegen euch reden um meinetwillen!\nFreut euch und jubelt, denn euer Lohn ist groß im Himmel; denn ebenso haben sie die Propheten verfolgt, die vor euch gewesen sind.",
+          "r": "Matthäus 5,10-12"
+        },
+        {
+          "t": "Ihr seid das Salz der Erde. Wenn aber das Salz fade wird, womit soll es wieder salzig gemacht werden? Es taugt zu nichts mehr, als dass es hinausgeworfen und von den Leuten zertreten wird.",
+          "r": "Matthäus 5,13"
+        },
+        {
+          "t": "Ihr seid das Licht der Welt. Es kann eine Stadt, die auf einem Berg liegt, nicht verborgen bleiben.\nMan zündet auch nicht ein Licht an und setzt es unter den Scheffel, sondern auf den Leuchter; so leuchtet es allen, die im Haus sind.\nSo soll euer Licht leuchten vor den Leuten, dass sie eure guten Werke sehen und euren Vater im Himmel preisen.",
+          "r": "Matthäus 5,14-16"
+        },
+        {
+          "t": "Ihr sollt nicht meinen, dass ich gekommen sei, um das Gesetz oder die Propheten aufzulösen. Ich bin nicht gekommen, um aufzulösen, sondern um zu erfüllen!",
+          "r": "Matthäus 5,17"
+        },
+        {
+          "t": "Damit ihr aber wisst, dass der Sohn des Menschen Vollmacht hat, auf Erden Sünden zu vergeben — sprach er zu dem Gelähmten:\nIch sage dir, steh auf und nimm deine Liegematte und geh heim!",
+          "r": "Markus 2,10-11"
+        },
+        {
+          "t": "Und er sprach zu ihr: Dir sind deine Sünden vergeben!\nDa fingen die Tischgenossen an, bei sich selbst zu sagen: Wer ist dieser, der sogar Sünden vergibt?\nEr aber sprach zu der Frau: Dein Glaube hat dich gerettet; geh hin in Frieden!",
+          "r": "Lukas 7,48-50"
+        },
+        {
+          "t": "Aber Jesus befahl ihm und sprach: Verstumme und fahre aus von ihm!\nDa zerrte ihn der unreine Geist hin und her, schrie mit lauter Stimme und fuhr von ihm aus.\nUnd sie erstaunten alle, sodass sie sich untereinander fragten und sprachen: Was ist das? Was für eine neue Lehre ist dies? Mit Vollmacht gebietet er auch den unreinen Geistern, und sie gehorchen ihm!",
+          "r": "Markus 1,25-27"
+        },
+        {
+          "t": "Und er trat in das Schiff, und seine Jünger folgten ihm nach.\nUnd siehe, es erhob sich ein großer Sturm auf dem See, sodass das Schiff von den Wellen bedeckt wurde; er aber schlief.\nUnd seine Jünger traten zu ihm, weckten ihn auf und sprachen: Herr, rette uns! Wir kommen um!\nDa sprach er zu ihnen: Was seid ihr so furchtsam, ihr Kleingläubigen? Dann stand er auf und befahl den Winden und dem See; und es entstand eine große Stille.\nDie Menschen aber verwunderten sich und sprachen: Wer ist dieser, dass ihm selbst die Winde und der See gehorsam sind?",
+          "r": "Matthäus 8,23-27"
+        },
+        {
+          "t": "Aber um die vierte Nachtwache kam Jesus zu ihnen und ging auf dem See.\nUnd als ihn die Jünger auf dem See gehen sahen, erschraken sie und sprachen: Es ist ein Gespenst!, und schrien vor Furcht.\nJesus aber redete sogleich mit ihnen und sprach: Seid getrost, ich bin’s; fürchtet euch nicht!\nPetrus aber antwortete ihm und sprach: Herr, wenn du es bist, so befiehl mir, zu dir auf das Wasser zu kommen!\nDa sprach er: Komm! Und Petrus stieg aus dem Schiff und ging auf dem Wasser, um zu Jesus zu kommen.\nAls er aber den starken Wind sah, fürchtete er sich, und da er zu sinken anfing, schrie er und sprach: Herr, rette mich!",
+          "r": "Matthäus 14,25-30"
+        },
+        {
+          "t": "Jesus aber sprach: Lasst die Leute sich setzen! Es war nämlich viel Gras an dem Ort. Da setzten sich die Männer; es waren etwa 5 000.\nUnd Jesus nahm die Brote, sagte Dank und teilte sie den Jüngern aus, die Jünger aber denen, die sich gesetzt hatten; ebenso auch von den Fischen, so viel sie wollten.\nUnd als sie gesättigt waren, sprach er zu seinen Jüngern: Sammelt die übrig gebliebenen Brocken, damit nichts verdirbt!",
+          "r": "Johannes 6,10-12"
+        },
+        {
+          "t": "Da hoben sie den Stein weg, wo der Verstorbene lag. Jesus aber hob die Augen empor und sprach: Vater, ich danke dir, dass du mich erhört hast.\nIch aber weiß, dass du mich allezeit erhörst; doch um der umstehenden Menge willen habe ich es gesagt, damit sie glauben, dass du mich gesandt hast.\nUnd als er dies gesagt hatte, rief er mit lauter Stimme: Lazarus, komm heraus!\nUnd der Verstorbene kam heraus, an Händen und Füßen mit Grabtüchern umwickelt und sein Angesicht mit einem Schweißtuch umhüllt. Jesus spricht zu ihnen: Bindet ihn los und lasst ihn gehen!",
+          "r": "Johannes 11,41-44"
+        },
+        {
+          "t": "Und als sie ihn sahen, warfen sie sich anbetend vor ihm nieder; etliche aber zweifelten.\nUnd Jesus trat herzu, redete mit ihnen und sprach: Mir ist gegeben alle Macht im Himmel und auf Erden.\nSo geht nun hin und macht zu Jüngern alle Völker, und tauft sie auf den Namen des Vaters und des Sohnes und des Heiligen Geistes\nund lehrt sie alles halten, was ich euch befohlen habe. Und siehe, ich bin bei euch alle Tage bis an das Ende der Weltzeit! Amen.",
+          "r": "Matthäus 28,17-28"
+        },
+        {
+          "t": "»Der Geist des Herrn ist auf mir, weil er mich gesalbt hat, den Armen frohe Botschaft zu verkünden; er hat mich gesandt, zu heilen, die zerbrochenen Herzens sind, Gefangenen Befreiung zu verkünden und den Blinden, dass sie wieder sehend werden, Zerschlagene in Freiheit zu setzen,\num zu verkündigen das angenehme Jahr des Herrn.«\nUnd er rollte die Buchrolle zusammen und gab sie dem Diener wieder und setzte sich, und aller Augen in der Synagoge waren auf ihn gerichtet.\nEr aber fing an, ihnen zu sagen: Heute ist diese Schrift erfüllt vor euren Ohren!",
+          "r": "Lukas 4,18-21"
+        },
+        {
+          "t": "Das ist aber das ewige Leben, dass sie dich, den allein wahren Gott, und den du gesandt hast, Jesus Christus, erkennen.",
+          "r": "Johannes 17,3"
+        },
+        {
+          "t": "Ich habe ihnen dein Wort gegeben, und die Welt hasst sie; denn sie sind nicht von der Welt, gleichwie auch ich nicht von der Welt bin.\nIch bitte nicht, dass du sie aus der Welt nimmst, sondern dass du sie bewahrst vor dem Bösen.\nSie sind nicht von der Welt, gleichwie auch ich nicht von der Welt bin.\nHeilige sie in deiner Wahrheit! Dein Wort ist Wahrheit.",
+          "r": "17,14-17"
+        },
+        {
+          "t": "Darum hat ihn Gott auch über alle Maßen erhöht und ihm einen Namen verliehen, der über allen Namen ist,\ndamit in dem Namen Jesu sich alle Knie derer beugen, die im Himmel und auf Erden und unter der Erde sind,\nund alle Zungen bekennen, dass Jesus Christus der Herr ist, zur Ehre Gottes, des Vaters.",
+          "r": "Philipper 2,9-11"
+        },
+        {
+          "t": "Siehe, es kommen Tage, spricht der HERR, da ich mit dem Haus Israel und mit dem Haus Juda einen neuen Bund schließen werde",
+          "r": "Jeremia 31,31"
+        },
+        {
+          "t": "Und ich will euch ein neues Herz geben und einen neuen Geist in euer Inneres legen; ich will das steinerne Herz aus eurem Fleisch wegnehmen und euch ein fleischernes Herz geben;\nja, ich will meinen Geist in euer Inneres legen und werde bewirken, dass ihr in meinen Satzungen wandelt und meine Rechtsbestimmungen befolgt und tut.",
+          "r": "Hesekiel 36,26-27"
+        },
+        {
+          "t": "Jesus sprach zu ihnen: Wahrlich, wahrlich, ich sage euch: Ehe Abraham war, bin ich!",
+          "r": "Johannes 8,58"
+        },
+        {
+          "t": "Und er sprach zu ihnen: Ihr seid von unten, ich bin von oben. Ihr seid von dieser Welt, ich bin nicht von dieser Welt.\nDarum habe ich euch gesagt, dass ihr in euren Sünden sterben werdet; denn wenn ihr nicht glaubt, dass ich es bin, so werdet ihr in euren Sünden sterben.",
+          "r": "Johannes 8,23-24"
+        },
+        {
+          "t": "Jetzt sage ich es euch, ehe es geschieht, damit ihr glaubt, wenn es geschehen ist, dass ich es bin.\nWahrlich, wahrlich, ich sage euch: Wer den aufnimmt, den ich senden werde, der nimmt mich auf; wer aber mich aufnimmt, der nimmt den auf, der mich gesandt hat.",
+          "r": "Johannes 13,19-20"
+        },
+        {
+          "t": "Als er nun zu ihnen sprach: Ich bin’s!, wichen sie alle zurück und fielen zu Boden.",
+          "r": "Johannes 18,6"
+        },
+        {
+          "t": "Ich und der Vater sind eins.",
+          "r": "Johannes 10,30"
+        },
+        {
+          "t": "Die Juden antworteten ihm und sprachen: Nicht wegen eines guten Werkes wollen wir dich steinigen, sondern wegen Gotteslästerung, und zwar weil du, der du ein Mensch bist, dich selbst zu Gott machst!",
+          "r": "Johannes 10,33"
+        },
+        {
+          "t": "Darum suchten die Juden nun noch mehr, ihn zu töten, weil er nicht nur den Sabbat brach, sondern auch Gott seinen eigenen Vater nannte, womit er sich selbst Gott gleich machte.",
+          "r": "Johannes 5,18"
+        },
+        {
+          "t": "Und nun verherrliche du mich, Vater, bei dir selbst mit der Herrlichkeit, die ich bei dir hatte, ehe die Welt war.",
+          "r": "Johannes 17,5"
+        },
+        {
+          "t": "Denn wie der Vater die Toten auferweckt und lebendig macht, so macht auch der Sohn lebendig, welche er will.",
+          "r": "Johannes 5,21"
+        },
+        {
+          "t": "Denn der Vater richtet niemand, sondern alles Gericht hat er dem Sohn übergeben,\ndamit alle den Sohn ehren, wie sie den Vater ehren. Wer den Sohn nicht ehrt, der ehrt den Vater nicht, der ihn gesandt hat.",
+          "r": "Johannes 5,22-23"
+        },
+        {
+          "t": "Wahrlich, wahrlich, ich sage euch: Wer mein Wort hört und dem glaubt, der mich gesandt hat, der hat ewiges Leben und kommt nicht ins Gericht, sondern er ist vom Tod zum Leben hindurchgedrungen.",
+          "r": "Johannes 5,24"
+        },
+        {
+          "t": "Wahrlich, wahrlich, ich sage euch: Die Stunde kommt und ist schon da, wo die Toten die Stimme des Sohnes Gottes hören werden, und die sie hören, werden leben.",
+          "r": "Johannes 5,25"
+        },
+        {
+          "t": "Denn wie der Vater das Leben in sich selbst hat, so hat er auch dem Sohn verliehen, das Leben in sich selbst zu haben.",
+          "r": "Johannes 5,26"
+        },
+        {
+          "t": "Und er hat ihm Vollmacht gegeben, auch Gericht zu halten, weil er der Sohn des Menschen ist.",
+          "r": "Johannes 5,27"
+        },
+        {
+          "t": "Verwundert euch nicht darüber! Denn es kommt die Stunde, in der alle, die in den Gräbern sind, seine Stimme hören werden,\nund sie werden hervorgehen: die das Gute getan haben, zur Auferstehung des Lebens; die aber das Böse getan haben, zur Auferstehung des Gerichts.",
+          "r": "Johannes 5,28-29"
+        },
+        {
+          "t": "Jesus spricht zu ihr: Ich bin die Auferstehung und das Leben.",
+          "r": "Johannes 11,25"
+        },
+        {
+          "t": "Ich bin die Auferstehung und das Leben.",
+          "r": "Johannes 11,25"
+        },
+        {
+          "t": "Und Jesus trat herzu, redete mit ihnen und sprach: Mir ist gegeben alle Macht im Himmel und auf Erden.",
+          "r": "Matthäus 28,18"
+        },
+        {
+          "t": "Da kamen die in dem Schiff waren, warfen sich anbetend vor ihm nieder und sprachen: Wahrhaftig, du bist Gottes Sohn!",
+          "r": "Matthäus 14,33"
+        },
+        {
+          "t": "Und als sie gingen, um es seinen Jüngern zu verkünden, siehe, da begegnete ihnen Jesus und sprach: Seid gegrüßt! Sie aber traten herzu und umfassten seine Füße und beteten ihn an.\nDa sprach Jesus zu ihnen: Fürchtet euch nicht! Geht hin, verkündet meinen Brüdern, dass sie nach Galiläa gehen sollen; dort werden sie mich sehen!",
+          "r": "Matthäus 28,9-10"
+        },
+        {
+          "t": "Jesus hörte, dass sie ihn ausgestoßen hatten, und als er ihn fand, sprach er zu ihm: Glaubst du an den Sohn Gottes?\nEr antwortete und sprach: Wer ist es, Herr, damit ich an ihn glaube?\nJesus aber sprach zu ihm: Du hast ihn gesehen, und der mit dir redet, der ist es!\nEr aber sprach: Ich glaube, Herr! und fiel anbetend vor ihm nieder.",
+          "r": "Johannes 9,35-38"
+        },
+        {
+          "t": "Und Thomas antwortete und sprach zu ihm: Mein Herr und mein Gott!\nJesus spricht zu ihm: Thomas, du glaubst, weil du mich gesehen hast; glückselig sind, die nicht sehen und doch glauben!",
+          "r": "Johannes 20,28-29"
+        },
+        {
+          "t": "Mein Herr und mein Gott!",
+          "r": "Johannes 20,28"
+        },
+        {
+          "t": "Und siehe, ich sende auf euch die Verheißung meines Vaters; ihr aber bleibt in der Stadt Jerusalem, bis ihr angetan werdet mit Kraft aus der Höhe!",
+          "r": "Lukas 24,49"
+        },
+        {
+          "t": "Und es geschah, indem er sie segnete, schied er von ihnen und wurde aufgehoben in den Himmel.\nUnd sie warfen sich anbetend vor ihm nieder und kehrten nach Jerusalem zurück mit großer Freude;\nund sie waren allezeit im Tempel und priesen und lobten Gott. Amen.",
+          "r": "Lukas 24,51-53"
+        },
+        {
+          "t": "Er aber schwieg und antwortete nichts. Wieder fragte ihn der Hohepriester und sagte zu ihm: Bist du der Christus, der Sohn des Hochgelobten?\nJesus aber sprach: Ich bin’s. Und ihr werdet den Sohn des Menschen sitzen sehen zur Rechten der Macht und kommen mit den Wolken des Himmels!",
+          "r": "Markus 14,61-62"
+        },
+        {
+          "t": "Da sprachen sie alle: Bist du also der Sohn Gottes? Er aber sprach zu ihnen: Ihr sagt es, denn ich bin es!",
+          "r": "Lukas 22,70"
+        },
+        {
+          "t": "Jesus aber schwieg. Und der Hohepriester begann und sprach zu ihm: Ich beschwöre dich bei dem lebendigen Gott, dass du uns sagst, ob du der Christus bist, der Sohn Gottes!\nJesus spricht zu ihm: Du hast es gesagt! Überdies sage ich euch: Künftig werdet ihr den Sohn des Menschen sitzen sehen zur Rechten der Macht und kommen auf den Wolken des Himmels!",
+          "r": "Matthäus 26,63-64"
+        },
+        {
+          "t": "Im Anfang war das Wort, und das Wort war bei Gott, und das Wort war Gott.\nDieses war im Anfang bei Gott.\nAlles ist durch dasselbe entstanden; und ohne dasselbe ist auch nicht eines entstanden, was entstanden ist.",
+          "r": "Johannes 1,1-3"
+        },
+        {
+          "t": "In ihm war das Leben, und das Leben war das Licht der Menschen.",
+          "r": "Johannes 1,4"
+        },
+        {
+          "t": "Er kam in sein Eigentum, und die Seinen nahmen ihn nicht auf.\nAllen aber, die ihn aufnahmen, denen gab er das Anrecht, Kinder Gottes zu werden, denen, die an seinen Namen glauben;\ndie nicht aus dem Blut, noch aus dem Willen des Fleisches, noch aus dem Willen des Mannes, sondern aus Gott geboren sind.",
+          "r": "Johannes 1,11-13"
+        },
+        {
+          "t": "Und das Wort wurde Fleisch und wohnte unter uns; und wir sahen seine Herrlichkeit, eine Herrlichkeit als des Eingeborenen vom Vater, voller Gnade und Wahrheit.",
+          "r": "Johannes 1,14"
+        },
+        {
+          "t": "Und niemand ist hinaufgestiegen in den Himmel, außer dem, der aus dem Himmel herabgestiegen ist, dem Sohn des Menschen, der im Himmel ist.",
+          "r": "Johannes 3,13"
+        },
+        {
+          "t": "Und wie Mose in der Wüste die Schlange erhöhte, so muss der Sohn des Menschen erhöht werden,\ndamit jeder, der an ihn glaubt, nicht verlorengeht, sondern ewiges Leben hat.",
+          "r": "Johannes 3,14-15"
+        },
+        {
+          "t": "Denn ich bin aus dem Himmel herabgekommen, nicht damit ich meinen Willen tue, sondern den Willen dessen, der mich gesandt hat.\nUnd das ist der Wille des Vaters, der mich gesandt hat, dass ich nichts verliere von allem, was er mir gegeben hat, sondern dass ich es auferwecke am letzten Tag.",
+          "r": "Johannes 6,38-39"
+        },
+        {
+          "t": "Da sprach Jesus zu ihnen: Wenn Gott euer Vater wäre, so würdet ihr mich lieben, denn ich bin von Gott ausgegangen und gekommen; denn nicht von mir selbst bin ich gekommen, sondern er hat mich gesandt.",
+          "r": "Johannes 8,42"
+        },
+        {
+          "t": "Ich bitte aber nicht für diese allein, sondern auch für die, welche durch ihr Wort an mich glauben werden,\nauf dass sie alle eins seien, gleichwie du, Vater, in mir und ich in dir; auf dass auch sie in uns eins seien, damit die Welt glaube, dass du mich gesandt hast.",
+          "r": "Johannes 17,20-21"
+        },
+        {
+          "t": "Und als ich ihn sah, fiel ich zu seinen Füßen nieder wie tot. Und er legte seine rechte Hand auf mich und sprach zu mir: Fürchte dich nicht! Ich bin der Erste und der Letzte\nund der Lebende; und ich war tot, und siehe, ich lebe von Ewigkeit zu Ewigkeit, Amen! Und ich habe die Schlüssel des Totenreiches und des Todes.",
+          "r": "Offenbarung 1,17-18"
+        },
+        {
+          "t": "Ich bin das A und das O, der Anfang und das Ende, der Erste und der Letzte.",
+          "r": "Offenbarung 22,13"
+        },
+        {
+          "t": "Jesus Christus, dem treuen Zeugen, dem Erstgeborenen aus den Toten und dem Fürsten über die Könige der Erde. Ihm, der uns geliebt hat und uns von unseren Sünden gewaschen hat durch sein Blut,\nund uns zu Königen und Priestern gemacht hat für seinen Gott und Vater — Ihm sei die Herrlichkeit und die Macht von Ewigkeit zu Ewigkeit! Amen.",
+          "r": "Offenbarung 1,5-6"
+        },
+        {
+          "t": "Nun redete Jesus wieder zu ihnen und sprach: Ich bin das Licht der Welt. Wer mir nachfolgt, wird nicht in der Finsternis wandeln, sondern er wird das Licht des Lebens haben.",
+          "r": "Johannes 8,12"
+        },
+        {
+          "t": "Ich bin das Licht der Welt.",
+          "r": "Johannes 8,12"
+        },
+        {
+          "t": "Ich bin die Tür. Wenn jemand durch mich hineingeht, wird er gerettet werden und wird ein- und ausgehen und Weide finden.",
+          "r": "Johannes 10,9"
+        },
+        {
+          "t": "Ich bin die Tür.",
+          "r": "Johannes 10,9"
+        },
+        {
+          "t": "Ich bin das lebendige Brot, das aus dem Himmel herabgekommen ist. Wenn jemand von diesem Brot isst, so wird er leben in Ewigkeit. Das Brot aber, das ich geben werde, ist mein Fleisch, das ich geben werde für das Leben der Welt.",
+          "r": "Johannes 6,51"
+        },
+        {
+          "t": "Ich bin das lebendige Brot, das aus dem Himmel herabgekommen ist.",
+          "r": "Johannes 6,51"
+        },
+        {
+          "t": "Wahrlich, wahrlich, ich sage euch: Wer an mich glaubt, der hat ewiges Leben.",
+          "r": "Johannes 6,47"
+        },
+        {
+          "t": "Du wirst mir den Weg des Lebens zeigen; vor deinem Angesicht sind Freuden in Fülle, liebliches Wesen zu deiner Rechten ewiglich!",
+          "r": "Ps 16,11"
+        },
+        {
+          "t": "Gott ist es, der mich umgürtet mit Kraft und meinen Weg unsträflich macht",
+          "r": "Ps 18,33"
+        },
+        {
+          "t": "Lass mich wandeln auf dem Pfad deiner Gebote, denn ich habe Lust an ihm.",
+          "r": "Ps 119,35"
+        },
+        {
+          "t": "Lehre mich, HERR, den Weg deiner Anweisungen, dass ich ihn einhalte bis ans Ende.",
+          "r": "Ps 119,33"
+        },
+        {
+          "t": "Mancher Weg erscheint dem Menschen richtig, aber zuletzt führt er ihn doch zum Tod.",
+          "r": "Spr 14,12"
+        },
+        {
+          "t": "Gott ist es, der mich umgürtet mit Kraft und meinen Weg unsträflich macht.",
+          "r": "Ps 18,33"
+        },
+        {
+          "t": "»Ich will dich unterweisen und dir den Weg zeigen, auf dem du wandeln sollst; ich will dir raten, mein Auge auf dich richten.",
+          "r": "Ps 32,8"
+        },
+        {
+          "t": "Ich bin der gute Hirte und kenne die Meinen und bin den Meinen bekannt,\ngleichwie der Vater mich kennt und ich den Vater kenne; und ich lasse mein Leben für die Schafe.",
+          "r": "Johannes 10,14-15"
+        },
+        {
+          "t": "Ich bin der gute Hirte.",
+          "r": "Johannes 10,1"
+        },
+        {
+          "t": "Darum liebt mich der Vater, weil ich mein Leben lasse, damit ich es wieder nehme.\nNiemand nimmt es von mir, sondern ich lasse es von mir aus. Ich habe Vollmacht, es zu lassen, und habe Vollmacht, es wieder zu nehmen. Diesen Auftrag habe ich von meinem Vater empfangen.",
+          "r": "Johannes 10,17-18"
+        },
+        {
+          "t": "Ich bin der Weg und die Wahrheit und das Leben; niemand kommt zum Vater als nur durch mich!",
+          "r": "Johannes 14,6"
+        },
+        {
+          "t": "Wer meine Gebote festhält und sie befolgt, der ist es, der mich liebt; wer aber mich liebt, der wird von meinem Vater geliebt werden, und ich werde ihn lieben und mich ihm offenbaren.",
+          "r": "Johannes 14,21"
+        },
+        {
+          "t": "Wenn jemand mich liebt, so wird er mein Wort befolgen, und mein Vater wird ihn lieben, und wir werden zu ihm kommen und Wohnung bei ihm machen.",
+          "r": "Johannes 14,23"
+        },
+        {
+          "t": "Wer mich nicht liebt, der befolgt meine Worte nicht; und das Wort, das ihr hört, ist nicht mein, sondern des Vaters, der mich gesandt hat.",
+          "r": "Johannes 14,24"
+        },
+        {
+          "t": "der Beistand aber, der Heilige Geist, den der Vater senden wird in meinem Namen, der wird euch alles lehren und euch an alles erinnern, was ich euch gesagt habe.",
+          "r": "Johannes 14,26"
+        },
+        {
+          "t": "Frieden hinterlasse ich euch; meinen Frieden gebe ich euch. Nicht wie die Welt gibt, gebe ich euch; euer Herz erschrecke nicht und verzage nicht!",
+          "r": "Johannes 14,27"
+        },
+        {
+          "t": "Und nun habe ich es euch gesagt, ehe es geschieht, damit ihr glaubt, wenn es geschieht.",
+          "r": "Johannes 14,29"
+        },
+        {
+          "t": "Jeder, der glaubt, dass Jesus der Christus ist, der ist aus Gott geboren; und wer den liebt, der ihn geboren hat, der liebt auch den, der aus Ihm geboren ist.",
+          "r": "1.Johannes 5,1"
+        },
+        {
+          "t": "Daran erkennen wir, dass wir die Kinder Gottes lieben, wenn wir Gott lieben und seine Gebote halten.",
+          "r": "1.Johannes 5,2"
+        },
+        {
+          "t": "Denn das ist die Liebe zu Gott, dass wir seine Gebote halten; und seine Gebote sind nicht schwer.",
+          "r": "1.Johannes 5,3"
+        },
+        {
+          "t": "Denn alles, was aus Gott geboren ist, überwindet die Welt; und unser Glaube ist der Sieg, der die Welt überwunden hat.",
+          "r": "1.Johannes 5,4"
+        },
+        {
+          "t": "Wer ist es, der die Welt überwindet, wenn nicht der, welcher glaubt, dass Jesus der Sohn Gottes ist?",
+          "r": "1.Johannes 5,5"
+        },
+        {
+          "t": "Denn drei sind es, die Zeugnis ablegen im Himmel: der Vater, das Wort und der Heilige Geist, und diese drei sind eins;",
+          "r": "1.Johannes 5,7"
+        },
+        {
+          "t": "Und darin besteht das Zeugnis, dass Gott uns ewiges Leben gegeben hat, und dieses Leben ist in seinem Sohn.",
+          "r": "1.Johannes 5,11"
+        },
+        {
+          "t": "Wer den Sohn hat, der hat das Leben; wer den Sohn Gottes nicht hat, der hat das Leben nicht.",
+          "r": "1.Johannes 5,12"
+        },
+        {
+          "t": "Dies habe ich euch geschrieben, die ihr glaubt an den Namen des Sohnes Gottes, damit ihr wisst, dass ihr ewiges Leben habt, und damit ihr [auch weiterhin] an den Namen des Sohnes Gottes glaubt.",
+          "r": "1.Johannes 5,13"
+        },
+        {
+          "t": "Wir wissen aber, dass der Sohn Gottes gekommen ist und uns Verständnis gegeben hat, damit wir den Wahrhaftigen erkennen. Und wir sind in dem Wahrhaftigen, in seinem Sohn Jesus Christus. Dieser ist der wahrhaftige Gott und das ewige Leben.",
+          "r": "1.Johannes 5,20"
+        },
+        {
+          "t": "Wir wissen, dass wir aus dem Tod zum Leben gelangt sind, denn wir lieben die Brüder. Wer den Bruder nicht liebt, bleibt im Tod.",
+          "r": "1.Johannes 3,14"
+        },
+        {
+          "t": "Jeder, der seinen Bruder hasst, ist ein Mörder; und ihr wisst, dass kein Mörder ewiges Leben bleibend in sich hat.",
+          "r": "1.Johannes 3,15"
+        },
+        {
+          "t": "Daran haben wir die Liebe erkannt, dass Er sein Leben für uns hingegeben hat; auch wir sind es schuldig, für die Brüder das Leben hinzugeben.",
+          "r": "1.Johannes 3,16"
+        },
+        {
+          "t": "Wer aber die Güter dieser Welt hat und seinen Bruder Not leiden sieht und sein Herz vor ihm verschließt — wie bleibt die Liebe Gottes in ihm?",
+          "r": "1.Johannes 3,17"
+        },
+        {
+          "t": "Ich aber sage euch: Wer eine Frau ansieht, um sie zu begehren, der hat in seinem Herzen schon Ehebruch mit ihr begangen.",
+          "r": "Matthäus 5,28"
+        },
+        {
+          "t": "Ich aber sage euch: Jeder, der seinem Bruder ohne Ursache zürnt, wird dem Gericht verfallen sein. Wer aber zu seinem Bruder sagt: Raka!, der wird dem Hohen Rat verfallen sein. Wer aber sagt: Du Narr!, der wird dem höllischen Feuer verfallen sein.",
+          "r": "Matthäus 5,22"
+        },
+        {
+          "t": "Ihr aber seid ein auserwähltes Geschlecht, ein königliches Priestertum, ein heiliges Volk, ein Volk des Eigentums, damit ihr die Tugenden dessen verkündet, der euch aus der Finsternis berufen hat zu seinem wunderbaren Licht;",
+          "r": "1.Petrus 2,9"
+        },
+        {
+          "t": "— euch, die ihr einst nicht ein Volk wart, jetzt aber Gottes Volk seid, und einst nicht begnadigt wart, jetzt aber begnadigt seid.",
+          "r": "1.Petrus 2,10"
+        },
+        {
+          "t": "Geliebte, ich ermahne euch als Gäste und Fremdlinge: Enthaltet euch der fleischlichen Begierden, die gegen die Seele streiten;",
+          "r": "1.Petrus 2,11"
+        },
+        {
+          "t": "Denn das ist der Wille Gottes, dass ihr durch Gutestun die Unwissenheit der unverständigen Menschen zum Schweigen bringt;\nals Freie, und nicht als solche, die die Freiheit als Deckmantel für die Bosheit benutzen, sondern als Knechte Gottes.",
+          "r": "1.Petrus 2,15-16"
+        },
+        {
+          "t": "Erweist jedermann Achtung, liebt die Bruderschaft, fürchtet Gott, ehrt den König!",
+          "r": "1.Petrus 2,17"
+        },
+        {
+          "t": "Denn das ist Gnade, wenn jemand aus Gewissenhaftigkeit gegenüber Gott Kränkungen erträgt, indem er zu Unrecht leidet.",
+          "r": "1.Petrus 2,19"
+        }
+      ]
+    }
+  ]
 }
