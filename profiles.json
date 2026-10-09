@@ -584,7 +584,7 @@
           "x": 534,
           "y": 0,
           "w": 490,
-          "h": 475,
+          "h": 405,
           "rotate": 270,
           "calendarId": "family13776384795444561092@group.calendar.google.com"
         },
@@ -599,10 +599,10 @@
         },
         "photo": {
           "enabled": true,
-          "x": 885,
-          "y": 475,
-          "w": 139,
-          "h": 283,
+          "x": 955,
+          "y": 620,
+          "w": 69,
+          "h": 138,
           "rotate": 270,
           "items": [
             {
@@ -621,13 +621,13 @@
         "photo2": {
           "enabled": true,
           "x": 535,
-          "y": 475,
+          "y": 405,
           "w": 350,
-          "h": 283,
+          "h": 353,
           "rotate": 270,
           "items": [
             {
-              "id": "1WVXOZY6CS56w8VjM-qV2itM60bWrqALy"
+              "id": "1F4UjzqRoxUjEkjudFF2xEBfM-ZQZp6in"
             }
           ],
           "mode": "seq",
