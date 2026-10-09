@@ -590,7 +590,7 @@
           "w": 489,
           "h": 580,
           "rotate": 0,
-          "source": "dwd",
+          "source": "metno",
           "location": "Sundern",
           "days": 3
         },
@@ -614,17 +614,14 @@
         },
         "photo": {
           "enabled": true,
-          "x": 771,
-          "y": 505,
+          "x": 430,
+          "y": 115,
           "w": 238,
           "h": 238,
           "rotate": 180,
           "items": [
             {
               "id": "1WVXOZY6CS56w8VjM-qV2itM60bWrqALy"
-            },
-            {
-              "id": "1WVXOZY6CS56w8VjM"
             }
           ],
           "mode": "seq",
@@ -638,17 +635,17 @@
         },
         "photo2": {
           "enabled": true,
-          "x": 250,
-          "y": 520,
+          "x": 90,
+          "y": 500,
           "w": 238,
           "h": 238,
           "rotate": 0,
           "items": [
             {
-              "id": "1WVXOZY6CS56w8VjM"
+              "id": "1WPy49RRCnHZUtHHk_FfEgwzRAyHsvsaT"
             },
             {
-              "id": "1WVXOZY6CS56w8VjM"
+              "id": "1WVXOZY6CS56w8VjM-qV2itM60bWrqALy"
             }
           ],
           "mode": "seq",
@@ -662,17 +659,14 @@
         },
         "photo3": {
           "enabled": true,
-          "x": 0,
-          "y": 450,
+          "x": 345,
+          "y": 405,
           "w": 238,
           "h": 238,
-          "rotate": 0,
+          "rotate": 90,
           "items": [
             {
-              "id": "1WVXOZY6CS56w8VjM"
-            },
-            {
-              "id": "1WVXOZY6CS56w8VjM"
+              "id": "1WPy49RRCnHZUtHHk_FfEgwzRAyHsvsaT"
             }
           ],
           "mode": "seq",
