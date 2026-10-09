@@ -15,46 +15,43 @@
       "widgets": {
         "weather": {
           "enabled": true,
-          "x": 15,
-          "y": 15,
-          "w": 489,
-          "h": 580,
+          "x": 0,
+          "y": 495,
+          "w": 505,
+          "h": 263,
           "rotate": 0,
-          "source": "dwd",
+          "source": "openmeteo",
           "location": "Sundern",
           "days": 3
         },
         "calendar": {
           "enabled": true,
-          "x": 519,
-          "y": 15,
-          "w": 490,
-          "h": 475,
+          "x": 505,
+          "y": 338,
+          "w": 519,
+          "h": 420,
           "rotate": 0,
           "calendarId": "family13776384795444561092@group.calendar.google.com"
         },
         "agenda": {
           "enabled": true,
-          "x": 519,
-          "y": 505,
-          "w": 238,
-          "h": 238,
+          "x": 505,
+          "y": 0,
+          "w": 275,
+          "h": 338,
           "rotate": 0,
           "calendarId": ""
         },
         "photo": {
           "enabled": true,
-          "x": 771,
-          "y": 505,
-          "w": 238,
-          "h": 238,
-          "rotate": 180,
+          "x": 779,
+          "y": 0,
+          "w": 245,
+          "h": 338,
+          "rotate": 0,
           "items": [
             {
               "id": "1WVXOZY6CS56w8VjM-qV2itM60bWrqALy"
-            },
-            {
-              "id": "1WVXOZY6CS56w8VjM"
             }
           ],
           "mode": "seq",
@@ -67,16 +64,13 @@
           "seed": 1800958791
         },
         "photo2": {
-          "enabled": true,
+          "enabled": false,
           "x": 250,
           "y": 520,
           "w": 238,
           "h": 238,
           "rotate": 0,
           "items": [
-            {
-              "id": "1WVXOZY6CS56w8VjM"
-            },
             {
               "id": "1WVXOZY6CS56w8VjM"
             }
@@ -91,16 +85,13 @@
           "seed": 323256039
         },
         "photo3": {
-          "enabled": true,
+          "enabled": false,
           "x": 0,
           "y": 450,
           "w": 238,
           "h": 238,
           "rotate": 0,
           "items": [
-            {
-              "id": "1WVXOZY6CS56w8VjM"
-            },
             {
               "id": "1WVXOZY6CS56w8VjM"
             }
@@ -167,10 +158,10 @@
         },
         "verse": {
           "enabled": true,
-          "x": 519,
-          "y": 505,
-          "w": 490,
-          "h": 238,
+          "x": 0,
+          "y": 0,
+          "w": 505,
+          "h": 495,
           "rotate": 0,
           "collection": "",
           "mode": "seq",
