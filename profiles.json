@@ -590,7 +590,7 @@
           "w": 489,
           "h": 580,
           "rotate": 0,
-          "source": "metno",
+          "source": "wttr",
           "location": "Sundern",
           "days": 3
         },
@@ -614,8 +614,8 @@
         },
         "photo": {
           "enabled": true,
-          "x": 430,
-          "y": 115,
+          "x": 785,
+          "y": 380,
           "w": 238,
           "h": 238,
           "rotate": 180,
