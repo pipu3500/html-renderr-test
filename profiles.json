@@ -396,10 +396,10 @@
       "widgets": {
         "weather": {
           "enabled": true,
-          "x": 0,
+          "x": 340,
           "y": 0,
-          "w": 535,
-          "h": 305,
+          "w": 255,
+          "h": 375,
           "rotate": 270,
           "source": "openmeteo",
           "location": "Sundern",
@@ -407,28 +407,28 @@
         },
         "calendar": {
           "enabled": true,
-          "x": 534,
+          "x": 595,
           "y": 0,
-          "w": 490,
-          "h": 475,
+          "w": 429,
+          "h": 375,
           "rotate": 270,
           "calendarId": "family13776384795444561092@group.calendar.google.com"
         },
         "agenda": {
-          "enabled": false,
-          "x": 519,
-          "y": 505,
-          "w": 238,
-          "h": 238,
-          "rotate": 0,
+          "enabled": true,
+          "x": 65,
+          "y": 0,
+          "w": 275,
+          "h": 170,
+          "rotate": 270,
           "calendarId": ""
         },
         "photo": {
           "enabled": true,
-          "x": 865,
-          "y": 475,
-          "w": 159,
-          "h": 283,
+          "x": 0,
+          "y": 0,
+          "w": 69,
+          "h": 170,
           "rotate": 270,
           "items": [
             {
@@ -446,10 +446,10 @@
         },
         "photo2": {
           "enabled": true,
-          "x": 535,
-          "y": 475,
-          "w": 330,
-          "h": 283,
+          "x": 0,
+          "y": 170,
+          "w": 340,
+          "h": 205,
           "rotate": 270,
           "items": [
             {
@@ -543,9 +543,9 @@
         "verse": {
           "enabled": true,
           "x": 0,
-          "y": 305,
-          "w": 535,
-          "h": 453,
+          "y": 375,
+          "w": 1024,
+          "h": 383,
           "rotate": 270,
           "collection": "20261009",
           "mode": "seq",
