@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Dashboard</string>
+    <string name="settings_title">Dashboard einrichten</string>
+    <string name="settings_owner">GitHub-Benutzername</string>
+    <string name="settings_repo">Repository</string>
+    <string name="settings_branch">Branch</string>
+    <string name="settings_device">Geräte-Kennung</string>
+    <string name="settings_interval">Aktualisieren alle (Minuten)</string>
+    <string name="settings_save">Speichern</string>
+    <string name="settings_cancel">Abbrechen</string>
+    <string name="menu_settings">Einstellungen</string>
+    <string name="menu_refresh">Jetzt aktualisieren</string>
+    <string name="not_configured">Noch nicht eingerichtet. Tippe oben rechts auf die drei Punkte, um GitHub-Benutzername, Repository und Geräte-Kennung einzutragen (siehe android-dashboard/editor.html).</string>
+</resources>

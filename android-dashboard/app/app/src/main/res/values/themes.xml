@@ -1,0 +1,14 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.Dashboard" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/brand_primary</item>
+        <item name="colorPrimaryDark">@color/brand_primary_dark</item>
+        <item name="colorAccent">@color/brand_primary</item>
+        <item name="android:windowBackground">@color/background</item>
+    </style>
+
+    <!-- Vollbild ohne Statusleiste, für den Dashboard-Betrieb (z. B. wandmontiertes Tablet) -->
+    <style name="Theme.Dashboard.Fullscreen" parent="Theme.Dashboard">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+</resources>

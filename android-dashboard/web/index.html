@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Dashboard</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 100%; height: 100%; overflow: hidden;
+    background: #eef1f5;
+    color: #1b2430;
+    font-family: "Segoe UI", Roboto, "DejaVu Sans", Arial, sans-serif;
+  }
+  body { position: relative; }
+
+  /* Die eigentliche Dashboard-Fläche hat die im Geräteprofil gewählte Auflösung
+     und wird per CSS-Transform so skaliert, dass sie in den Bildschirm passt. */
+  #canvas { position: absolute; left: 0; top: 0; transform-origin: 0 0; background: #eef1f5; }
+
+  .box {
+    position: absolute; border-radius: 16px; background: #ffffff; overflow: hidden;
+    box-shadow: 0 2px 10px rgba(20, 30, 50, 0.12); border: 1px solid #e1e6ec;
+  }
+  .rot { position: absolute; left: 50%; top: 50%; overflow: hidden; }
+  .rot iframe { width: 100%; height: 100%; border: none; }
+  .photo { background: #11151c; }
+  .photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  .wx { display: flex; flex-direction: column; padding: 14px; }
+  .wx-head { flex: none; font-weight: 700; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #1b2430; }
+  .wx-cards { flex: 1; min-height: 0; display: flex; gap: 8px; margin-top: 6px; }
+  .wx-cards.col { flex-direction: column; }
+  .wx-card {
+    flex: 1; min-width: 0; min-height: 0; overflow: hidden; display: flex; align-items: center; justify-content: space-evenly;
+    border-radius: 12px; background: linear-gradient(180deg, #f3f7ff, #e7eefc);
+  }
+  .wx-card.today { background: linear-gradient(180deg, #e7f1ff, #d6e6fd); }
+  .wx-card.v { flex-direction: column; } .wx-card.h { flex-direction: row; }
+  .wx-day { font-weight: 700; color: #16407a; }
+  .wx-temp { white-space: nowrap; } .wx-temp b { font-weight: 700; } .wx-temp span { color: #5b6b82; }
+  .wx-info { text-align: center; line-height: 1.3; color: #3a4a60; }
+  .wx-info div { white-space: nowrap; }
+  .wx-credit { flex: none; text-align: right; color: #8a97a8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 4px; }
+  .wx-msg { margin: auto; text-align: center; padding: 14px; line-height: 1.4; color: #5b6b82; }
+  .wx-ic-sun { color: #f5a623; } .wx-ic-cloud { color: #8aa0c2; } .wx-ic-rain { color: #3f7fd8; }
+  .wx-ic-snow { color: #7eb6e0; } .wx-ic-storm { color: #6a5acd; } .wx-ic-fog { color: #9aa6b4; }
+
+  .vx { display: flex; flex-direction: column; justify-content: center; padding: 18px; }
+  .vx-msg { margin: auto; text-align: center; padding: 14px; line-height: 1.4; color: #8a97a8; }
+
+  .cal-wrap { height: 100%; }
+</style>
+</head>
+<body>
+<script src="verses.js"></script>
+<script src="weather.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var ORDER = ['weather', 'calendar', 'agenda', 'photo', 'photo2', 'photo3', 'photo4', 'photo5', 'photo6', 'verse'];
+  var PHOTO_SLOTS = ['photo', 'photo2', 'photo3', 'photo4', 'photo5', 'photo6'];
+
+  var DEFAULTS = {
+    weather:  { enabled: true, x: 20, y: 20, w: 540, h: 760, rotate: 0, source: 'openmeteo', location: 'Sundern', days: 3 },
+    calendar: { enabled: true, x: 580, y: 20, w: 560, h: 500, rotate: 0, calendarId: '' },
+    agenda:   { enabled: true, x: 580, y: 540, w: 560, h: 240, rotate: 0, calendarId: '' },
+    verse:    { enabled: false, x: 20, y: 800, w: 1120, h: 260, rotate: 0, collection: '', mode: 'seq', repeats: 'no', atEnd: 'restart',
+                change: 'sync', every: 1, unit: 'days', startAt: null, seed: null, font: 'sans', sizeMode: 'auto',
+                size: 36, maxSize: 72, bold: false, italic: false, align: 'center', showRef: true, quotes: false }
+  };
+  PHOTO_SLOTS.forEach(function (id) {
+    DEFAULTS[id] = { enabled: false, x: 20, y: 800, w: 540, h: 260, rotate: 0, items: [],
+      mode: 'seq', repeats: 'no', atEnd: 'restart', change: 'sync', every: 1, unit: 'days', startAt: null, seed: null };
+  });
+
+  var qs = new URLSearchParams(location.search);
+  var CFG = {
+    owner: qs.get('owner') || '',
+    repo: qs.get('repo') || '',
+    branch: qs.get('branch') || 'main',
+    device: qs.get('device') || '',
+    changeMinutes: 60   // überschrieben durch devices.json settings.updateMinutes
+  };
+  var configUrl = CFG.owner && CFG.repo
+    ? 'https://cdn.jsdelivr.net/gh/' + CFG.owner + '/' + CFG.repo + '@' + CFG.branch + '/android-dashboard/devices.json'
+    : null;
+
+  function num(v, fallback) { v = Number(v); return isFinite(v) ? Math.round(v) : fallback; }
+  function text(v, fallback) {
+    v = typeof v === 'string' ? v.replace(/[\u0000-\u001f]/g, '').trim().slice(0, 300) : '';
+    return v || fallback;
+  }
+  function calendarId(v) {
+    v = text(v, '');
+    var m = v.match(/[?&]src=([^&]+)/);
+    if (m) v = m[1];
+    try { v = decodeURIComponent(v); } catch (e) {}
+    return v.trim();
+  }
+  function driveId(v) {
+    v = text(v, '');
+    var m = v.match(/\/d\/([\w-]+)/) || v.match(/[?&]id=([\w-]+)/);
+    return m ? m[1] : v;
+  }
+  function calendarSrc(id, mode) {
+    return 'https://calendar.google.com/calendar/embed?src=' + encodeURIComponent(id) +
+      '&ctz=Europe%2FBerlin&showTitle=0&showPrint=0&showTabs=0&showCalendars=0&showTz=0&showNav=0&mode=' + mode +
+      (mode === 'AGENDA' ? '&showDate=0' : '') + '&_t=' + Date.now();
+  }
+  function make(tag, attrs) {
+    var e = document.createElement(tag);
+    Object.keys(attrs || {}).forEach(function (k) { e.setAttribute(k, attrs[k]); });
+    return e;
+  }
+  function div(cls, txt) { var e = document.createElement('div'); e.className = cls; if (txt != null) e.textContent = txt; return e; }
+
+  /* ---------- Wetter-Symbole, in Farbe ---------- */
+  var CLOUD = 'M18 46h28a10 10 0 0 0 1.5-19.9A15 15 0 0 0 19 29a8.5 8.5 0 0 0-1 17z';
+  var ICONS = {
+    clear:  ['wx-ic-sun', '<circle cx="32" cy="32" r="11"/><path d="M32 8v8M32 48v8M8 32h8M48 32h8M15 15l5.7 5.7M43.3 43.3l5.7 5.7M49 15l-5.7 5.7M20.7 43.3L15 49"/>'],
+    partly: ['wx-ic-cloud', '<circle cx="22" cy="22" r="8" class="wx-ic-sun" style="stroke:currentColor"/><path d="M22 6v4M22 34v4M6 22h4M34 22h4M10.7 10.7l2.8 2.8M33.3 10.7l-2.8 2.8" class="wx-ic-sun" style="stroke:currentColor"/><path fill="#fff" stroke="currentColor" transform="translate(6 6)" d="' + CLOUD + '"/>'],
+    cloudy: ['wx-ic-cloud', '<path transform="translate(0 4)" d="' + CLOUD + '"/>'],
+    fog:    ['wx-ic-fog', '<path transform="translate(0 -4)" d="' + CLOUD + '"/><path d="M14 52h36M20 59h24"/>'],
+    rain:   ['wx-ic-rain', '<path transform="translate(0 -6)" d="' + CLOUD + '"/><path d="M24 46l-3 8M34 46l-3 8M44 46l-3 8"/>'],
+    snow:   ['wx-ic-snow', '<path transform="translate(0 -6)" d="' + CLOUD + '"/><path d="M23 48v7M19.5 51.5h7M33 51v7M29.5 54.5h7M43 48v7M39.5 51.5h7"/>'],
+    thunder:['wx-ic-storm', '<path transform="translate(0 -6)" d="' + CLOUD + '"/><path d="M35 42l-8 11h8l-5 9"/>']
+  };
+  function icon(cat, size) {
+    var def = ICONS[cat] || ICONS.cloudy;
+    var s = document.createElement('span');
+    s.className = def[0]; s.style.display = 'block'; s.style.width = s.style.height = size + 'px';
+    s.innerHTML = '<svg viewBox="0 0 64 64" width="' + size + '" height="' + size + '" fill="none" stroke="currentColor" ' +
+      'stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round">' + def[1] + '</svg>';
+    return s;
+  }
+  function dayLabel(date, i, long) {
+    if (i === 0) return 'Heute';
+    if (i === 1) return 'Morgen';
+    var d = new Date(date + 'T12:00:00Z');
+    return d.toLocaleDateString('de-DE', { weekday: long ? 'long' : 'short', timeZone: 'UTC' });
+  }
+  function fmtMm(v) { return (Math.round(v * 10) / 10).toString().replace('.', ','); }
+  function fitText(el, fs) { el.style.fontSize = Math.max(9, Math.round(fs)) + 'px'; return el; }
+  function fsFit(len, availW, maxByHeight, bold) { return Math.min(maxByHeight, availW / (Math.max(len, 1) * (bold ? 0.68 : 0.6))); }
+  function sized(el, w) { el.style.width = Math.round(w) + 'px'; el.style.textAlign = 'center'; return el; }
+
+  function dayTexts(day, i, cw) {
+    var lines = [];
+    var rain = day.pop != null ? 'Regen ' + day.pop + ' %' : (day.precip != null ? 'Regen ' + fmtMm(day.precip) + ' mm' : '');
+    if (rain) lines.push(rain);
+    if (day.wind != null) lines.push('Wind ' + day.wind + ' km/h');
+    return { label: dayLabel(day.date, i, cw > 260), hi: day.tmax == null ? '–' : day.tmax + '°', lo: ' / ' + (day.tmin == null ? '–' : day.tmin + '°'), lines: lines };
+  }
+  function weatherCard(day, i, cw, ch, M) {
+    var horiz = cw / ch >= 1.5;
+    var card = div('wx-card ' + (horiz ? 'h' : 'v') + (i === 0 ? ' today' : ''));
+    var T = dayTexts(day, i, cw), labelText = T.label, hiText = T.hi, loText = T.lo, lines = T.lines;
+    var infoLen = M.info, tempLen = M.temp;
+    var wl, wi, wt, wf, fl, fi, ft, ff, isize;
+    if (horiz) {
+      wl = cw * 0.27; wi = cw * 0.18; wt = cw * 0.26; wf = cw * 0.24;
+      fl = fsFit(M.label, wl, ch * 0.26, true); isize = Math.min(wi, ch * 0.8);
+      ft = fsFit(tempLen, wt, ch * 0.34, true); ff = fsFit(infoLen, wf, ch * 0.2, false);
+    } else {
+      wl = wt = wf = cw * 0.92; wi = cw * 0.6;
+      fl = fsFit(M.label, wl, ch * 0.10, true); isize = Math.min(cw * 0.6, ch * 0.32);
+      ft = fsFit(tempLen, wt, ch * 0.13, true); ff = fsFit(infoLen, wf, ch * 0.065, false);
+    }
+    var label = sized(fitText(div('wx-day', labelText), fl), wl);
+    var ic = icon(day.cat, Math.round(isize));
+    var temp = sized(fitText(div('wx-temp'), ft), wt);
+    var hi = document.createElement('b'); hi.textContent = hiText;
+    var lo = document.createElement('span'); lo.textContent = loText;
+    temp.appendChild(hi); temp.appendChild(lo);
+    var info = sized(fitText(div('wx-info'), ff), wf);
+    lines.forEach(function (l) { info.appendChild(div('', l)); });
+    card.appendChild(label); card.appendChild(ic); card.appendChild(temp); card.appendChild(info);
+    return card;
+  }
+  function renderWeather(root, data, n, W, H) {
+    root.className += ' wx';
+    var u = Math.min(W, H), headH = Math.max(20, Math.min(40, u * 0.075)), credH = Math.max(11, Math.min(15, u * 0.04));
+    var head = fitText(div('wx-head', 'Wetter ' + data.place), headH * 0.72);
+    head.style.height = headH + 'px'; head.style.lineHeight = headH + 'px';
+    root.appendChild(head);
+    var days = data.days.slice(0, n), cnt = days.length;
+    var availW = W - 28, availH = H - headH - credH - 28;
+    var aspRow = (availW / cnt) / availH, aspCol = availW / (availH / cnt);
+    var row = Math.abs(Math.log(aspRow)) <= Math.abs(Math.log(aspCol));
+    var cw = row ? availW / cnt : availW, ch = row ? availH : availH / cnt;
+    var M = { label: 1, temp: 1, info: 1 };
+    days.forEach(function (d, i) {
+      var t = dayTexts(d, i, cw);
+      M.label = Math.max(M.label, t.label.length); M.temp = Math.max(M.temp, t.hi.length + t.lo.length);
+      t.lines.forEach(function (l) { M.info = Math.max(M.info, l.length); });
+    });
+    var wrap = div('wx-cards ' + (row ? 'row' : 'col'));
+    days.forEach(function (d, i) { wrap.appendChild(weatherCard(d, i, cw, ch, M)); });
+    root.appendChild(wrap);
+    var cred = fitText(div('wx-credit', data.credit || ''), credH * 0.8);
+    cred.style.height = credH + 'px'; cred.style.lineHeight = credH + 'px';
+    root.appendChild(cred);
+  }
+  function weatherMessage(root, msg) { root.className += ' wx'; root.appendChild(div('wx-msg', 'Wetter nicht verfügbar' + (msg ? ': ' + msg : ''))); }
+
+  var weatherApi = window.Weather.createWeather();
+  var weatherCache = {};
+  function weatherFor(cfg) {
+    var key = [cfg.source || 'openmeteo', cfg.location || '', cfg.days || 3].join('|');
+    var c = weatherCache[key];
+    if (c && Date.now() - c.at < 20 * 60000) return Promise.resolve(c.data);   // 20 Min. zwischenspeichern
+    return weatherApi.getWeather(cfg).then(function (d) { weatherCache[key] = { at: Date.now(), data: d }; return d; });
+  }
+
+  var layout = { widgets: {} }, nodes = {}, library = [];
+
+  function applyLayout(doc) {
+    var dev = (doc.profiles || []).filter(function (p) { return p && p.widgets; })
+      .find(function (p) { return p.id === CFG.device || p.file === CFG.device; }) || (doc.profiles || [])[0];
+    if (!dev) return;
+    layout = dev;
+    library = Array.isArray(doc.collections) ? doc.collections : [];
+    if (doc.settings && Number(doc.settings.updateMinutes) > 0) CFG.changeMinutes = Math.min(1440, Math.floor(Number(doc.settings.updateMinutes)));
+    var canvas = document.getElementById('canvas');
+    canvas.style.width = dev.width + 'px'; canvas.style.height = dev.height + 'px';
+    buildWidgets();
+    fitCanvas();
+  }
+
+  function fitCanvas() {
+    var canvas = document.getElementById('canvas');
+    var w = canvas.offsetWidth || layout.width || 1024, h = canvas.offsetHeight || layout.height || 768;
+    var scale = Math.min(window.innerWidth / w, window.innerHeight / h);
+    canvas.style.transform = 'translate(' + Math.round((window.innerWidth - w * scale) / 2) + 'px,' +
+      Math.round((window.innerHeight - h * scale) / 2) + 'px) scale(' + scale + ')';
+  }
+  window.addEventListener('resize', fitCanvas);
+
+  var BUILD = {
+    weather: function (root, s, W, H) {
+      var n = Math.min(3, Math.max(1, Math.round(Number(s.days) || 3)));
+      weatherFor(s).then(function (data) {
+        root.innerHTML = '';
+        if (data && data.ok && data.days && data.days.length) renderWeather(root, data, n, W, H);
+        else weatherMessage(root, data && data.error);
+      });
+    },
+    calendar: function (root, s) { root.innerHTML = ''; var id = calendarId(s.calendarId); if (!id) return; root.className += ' cal-wrap'; root.appendChild(make('iframe', { src: calendarSrc(id, 'MONTH'), scrolling: 'no' })); },
+    agenda:   function (root, s) { root.innerHTML = ''; var id = calendarId(s.calendarId); if (!id) return; root.className += ' cal-wrap'; root.appendChild(make('iframe', { src: calendarSrc(id, 'AGENDA'), scrolling: 'no' })); },
+    verse: function (root, s, W, H) {
+      root.innerHTML = '';
+      var col = library.find(function (c) { return c.id === s.collection; });
+      var items = col ? (col.items || []).filter(function (i) { return i && i.t; }) : [];
+      if (!items.length) { root.className += ' vx'; root.appendChild(div('vx-msg', 'Kein Text vorhanden')); return; }
+      var pk = Verses.pick(s, items.length, Date.now(), CFG.changeMinutes);
+      var it = items[pk.index];
+      root.className += ' vx';
+      Verses.renderVerse(root, { text: it.t, ref: it.r }, s, W, H);
+    }
+  };
+  PHOTO_SLOTS.forEach(function (key) {
+    BUILD[key] = function (root, s) {
+      root.innerHTML = '';
+      var ids = (s.items || []).map(function (it) { return driveId(it.id); }).filter(Boolean);
+      if (!ids.length) return;
+      root.className += ' photo';
+      var idx = 0;
+      if (ids.length > 1) { var pk = Verses.pick(s, ids.length, Date.now(), CFG.changeMinutes); idx = pk ? pk.index : 0; }
+      root.appendChild(make('img', { src: 'https://lh3.googleusercontent.com/d/' + encodeURIComponent(ids[idx]), alt: '' }));
+    };
+  });
+
+  function buildWidgets() {
+    var canvas = document.getElementById('canvas');
+    canvas.innerHTML = '';
+    nodes = {};
+    var w = layout.widgets;
+    ORDER.forEach(function (id) {
+      var d = DEFAULTS[id], s = Object.assign({}, d, w[id] || {});
+      if (!s.enabled) return;
+      var ww = Math.max(40, num(s.w, d.w)), hh = Math.max(40, num(s.h, d.h));
+      var r = [0, 90, 180, 270].indexOf(Number(s.rotate)) >= 0 ? Number(s.rotate) : 0;
+      var box = make('div', { 'class': 'box' });
+      box.style.left = num(s.x, d.x) + 'px'; box.style.top = num(s.y, d.y) + 'px';
+      box.style.width = ww + 'px'; box.style.height = hh + 'px';
+      var swap = r === 90 || r === 270;
+      var rw = swap ? hh : ww, rh = swap ? ww : hh;
+      var rot = make('div', { 'class': 'rot' });
+      rot.style.width = rw + 'px'; rot.style.height = rh + 'px';
+      rot.style.transform = 'translate(-50%, -50%) rotate(' + r + 'deg)';
+      box.appendChild(rot);
+      canvas.appendChild(box);
+      nodes[id] = { root: rot, s: s, w: rw, h: rh };
+      BUILD[id](rot, s, rw, rh);
+    });
+  }
+
+  /* Leichte, häufige Aktualisierung: Text/Foto-Wechsel und Kalender neu einfügen, ohne alles neu zu laden */
+  function tick() {
+    Object.keys(nodes).forEach(function (id) {
+      var n = nodes[id];
+      if (id === 'verse' || PHOTO_SLOTS.indexOf(id) >= 0) BUILD[id](n.root, n.s, n.w, n.h);
+    });
+  }
+  setInterval(tick, 60000);
+  setInterval(function () {
+    Object.keys(nodes).forEach(function (id) {
+      if (id === 'calendar' || id === 'agenda') BUILD[id](nodes[id].root, nodes[id].s);
+    });
+  }, 15 * 60000);
+
+  function loadConfig() {
+    if (!configUrl) { document.body.innerHTML = '<div style="padding:30px;font:16px sans-serif;color:#5b6b82">Kein GitHub-Repository eingestellt. Bitte in den App-Einstellungen Benutzername, Repository und Gerät eintragen.</div>'; return; }
+    fetch(configUrl, { cache: 'no-store' }).then(function (r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    }).then(applyLayout).catch(function (err) {
+      if (!layout.widgets || !Object.keys(layout.widgets).length) {
+        document.body.innerHTML = '<div style="padding:30px;font:16px sans-serif;color:#5b6b82">Einstellungen konnten nicht geladen werden: ' + err.message + '</div>';
+      }
+    });
+  }
+  loadConfig();
+  setInterval(loadConfig, 15 * 60000);
+})();
+</script>
+<div id="canvas"></div>
+</body>
+</html>
