@@ -730,6 +730,185 @@
           "quotes": false
         }
       }
+    },
+    {
+      "name": "honorv2pipu",
+      "id": "honorv2pipu",
+      "width": 1060,
+      "height": 2277,
+      "rotate": 0,
+      "zoom": 2.22,
+      "widgets": {
+        "weather": {
+          "enabled": true,
+          "x": 0,
+          "y": 669,
+          "w": 235,
+          "h": 357,
+          "rotate": 0,
+          "source": "openmeteo",
+          "location": "Sundern",
+          "days": 3
+        },
+        "calendar": {
+          "enabled": true,
+          "x": 235,
+          "y": 458,
+          "w": 242,
+          "h": 568,
+          "rotate": 0,
+          "calendarId": "family13776384795444561092@group.calendar.google.com"
+        },
+        "agenda": {
+          "enabled": true,
+          "x": 235,
+          "y": 0,
+          "w": 128,
+          "h": 458,
+          "rotate": 0,
+          "calendarId": ""
+        },
+        "photo": {
+          "enabled": true,
+          "x": 363,
+          "y": 0,
+          "w": 114,
+          "h": 458,
+          "rotate": 0,
+          "items": [
+            {
+              "id": "1WVXOZY6CS56w8VjM-qV2itM60bWrqALy"
+            }
+          ],
+          "mode": "seq",
+          "repeats": "no",
+          "atEnd": "restart",
+          "change": "sync",
+          "every": 1,
+          "unit": "days",
+          "startAt": "2026-10-07T05:37:07.326Z",
+          "seed": 1800958791
+        },
+        "photo2": {
+          "enabled": false,
+          "x": 116,
+          "y": 703,
+          "w": 111,
+          "h": 323,
+          "rotate": 0,
+          "items": [
+            {
+              "id": "1WVXOZY6CS56w8VjM"
+            }
+          ],
+          "mode": "seq",
+          "repeats": "no",
+          "atEnd": "restart",
+          "change": "sync",
+          "every": 1,
+          "unit": "days",
+          "startAt": "2026-10-09T06:56:36.687Z",
+          "seed": 323256039
+        },
+        "photo3": {
+          "enabled": false,
+          "x": 0,
+          "y": 609,
+          "w": 111,
+          "h": 323,
+          "rotate": 0,
+          "items": [
+            {
+              "id": "1WVXOZY6CS56w8VjM"
+            }
+          ],
+          "mode": "seq",
+          "repeats": "no",
+          "atEnd": "restart",
+          "change": "sync",
+          "every": 1,
+          "unit": "days",
+          "startAt": "2026-10-09T06:56:55.323Z",
+          "seed": 2032316955
+        },
+        "photo4": {
+          "enabled": false,
+          "x": 338,
+          "y": 622,
+          "w": 111,
+          "h": 323,
+          "rotate": 0,
+          "items": [],
+          "mode": "seq",
+          "repeats": "no",
+          "atEnd": "restart",
+          "change": "sync",
+          "every": 1,
+          "unit": "days",
+          "startAt": "2026-10-08T19:32:19.687Z",
+          "seed": 555511190
+        },
+        "photo5": {
+          "enabled": false,
+          "x": 331,
+          "y": 602,
+          "w": 111,
+          "h": 323,
+          "rotate": 0,
+          "items": [],
+          "mode": "seq",
+          "repeats": "no",
+          "atEnd": "restart",
+          "change": "sync",
+          "every": 1,
+          "unit": "days",
+          "startAt": "2026-10-08T19:32:19.687Z",
+          "seed": 978691780
+        },
+        "photo6": {
+          "enabled": false,
+          "x": 324,
+          "y": 583,
+          "w": 111,
+          "h": 323,
+          "rotate": 0,
+          "items": [],
+          "mode": "seq",
+          "repeats": "no",
+          "atEnd": "restart",
+          "change": "sync",
+          "every": 1,
+          "unit": "days",
+          "startAt": "2026-10-08T19:32:19.687Z",
+          "seed": 222104876
+        },
+        "verse": {
+          "enabled": true,
+          "x": 0,
+          "y": 0,
+          "w": 235,
+          "h": 669,
+          "rotate": 0,
+          "collection": "20261009",
+          "mode": "seq",
+          "repeats": "no",
+          "atEnd": "restart",
+          "change": "sync",
+          "every": 1,
+          "unit": "days",
+          "startAt": "2026-10-09T06:58:22.527Z",
+          "seed": 2036375546,
+          "font": "lora",
+          "sizeMode": "auto",
+          "size": 36,
+          "maxSize": 72,
+          "bold": false,
+          "italic": true,
+          "align": "center",
+          "showRef": true,
+          "quotes": false
+        }
+      }
     }
   ],
   "collections": [
