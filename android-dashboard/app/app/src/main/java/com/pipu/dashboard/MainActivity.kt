@@ -1,5 +1,6 @@
 package com.pipu.dashboard
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
@@ -9,6 +10,7 @@ import android.view.WindowManager
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.Button
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.LinearLayout
@@ -30,10 +32,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var prefs: SharedPreferences
     private val refreshHandler = Handler(Looper.getMainLooper())
     private var refreshRunnable: Runnable? = null
+    private val scheduleHandler = Handler(Looper.getMainLooper())
+    private var scheduleRunnable: Runnable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         setContentView(R.layout.activity_main)
 
         prefs = getSharedPreferences("dashboard", MODE_PRIVATE)
@@ -47,6 +50,29 @@ class MainActivity : AppCompatActivity() {
         } else {
             loadDashboard()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        applyScreenSchedule()
+    }
+
+    override fun onStop() {
+        scheduleRunnable?.let { scheduleHandler.removeCallbacks(it) }
+        super.onStop()
+    }
+
+    /** Prüft jede Minute, ob der Bildschirm laut Zeitplan (siehe Schedule.kt) wach bleiben soll. */
+    private fun applyScreenSchedule() {
+        scheduleRunnable?.let { scheduleHandler.removeCallbacks(it) }
+        if (Schedule.isOnNow(prefs)) {
+            window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        } else {
+            window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        }
+        val r = Runnable { applyScreenSchedule() }
+        scheduleRunnable = r
+        scheduleHandler.postDelayed(r, 60_000L)
     }
 
     private fun setupWebView() {
@@ -114,6 +140,12 @@ class MainActivity : AppCompatActivity() {
             getString(R.string.settings_interval),
             prefs.getInt(KEY_INTERVAL, 15).toString()
         ).apply { inputType = InputType.TYPE_CLASS_NUMBER }
+
+        layout.addView(Button(this).apply {
+            text = getString(R.string.settings_schedule)
+            setPadding(0, pad, 0, 0)
+            setOnClickListener { startActivity(Intent(this@MainActivity, ScheduleActivity::class.java)) }
+        })
 
         val scroll = android.widget.ScrollView(this).apply {
             addView(layout)

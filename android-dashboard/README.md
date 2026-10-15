@@ -64,6 +64,15 @@ Diese APK ist nicht im Play Store, daher fragt Android beim ersten Mal nach, ob 
 dieser Quelle (z. B. dem Browser oder Dateien-App) erlaubt werden sollen. Das ist normal für
 selbst gebaute Apps und muss einmalig bestätigt werden.
 
+## Zeitplan für den Bildschirm
+
+In der App unter den drei Punkten oben rechts → „Zeitplan für den Bildschirm …“. Pro Wochentag
+ein Schieberegler mit zwei Griffen (von … bis), dazu Schnellknöpfe „Ganztägig“ und „Aus“. Innerhalb
+der eingestellten Zeiten hält die App den Bildschirm wach; außerhalb greift die normale
+Bildschirm-Zeitsperre des Geräts. Ein bereits ausgeschalteter Bildschirm wird dadurch nicht aktiv
+wieder eingeschaltet — dafür bräuchte die App Geräteverwalter-Rechte, die hier bewusst nicht
+genutzt werden. Ohne eingeschalteten Zeitplan bleibt der Bildschirm wie bisher immer wach.
+
 ## Wetterdienste
 
 Wie beim Kindle: Open-Meteo (Standard), DWD über Bright Sky, MET Norway. Alle drei sind
