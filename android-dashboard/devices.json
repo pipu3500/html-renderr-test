@@ -769,7 +769,7 @@
           "calendarId": ""
         },
         "photo": {
-          "enabled": true,
+          "enabled": false,
           "x": 888,
           "y": 469,
           "w": 133,
@@ -790,7 +790,7 @@
           "seed": 1800958791
         },
         "photo2": {
-          "enabled": true,
+          "enabled": false,
           "x": 533,
           "y": 307,
           "w": 349,
