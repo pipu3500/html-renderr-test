@@ -1,11 +1,18 @@
 package com.pipu.dashboard
 
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.PowerManager
+import android.provider.Settings
 import android.text.InputType
+import android.view.MotionEvent
+import android.view.View
 import android.view.WindowManager
 import android.webkit.WebChromeClient
 import android.webkit.WebView
@@ -30,20 +37,25 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var webView: WebView
     private lateinit var prefs: SharedPreferences
+    private lateinit var menuButton: FloatingActionButton
     private val refreshHandler = Handler(Looper.getMainLooper())
     private var refreshRunnable: Runnable? = null
     private val scheduleHandler = Handler(Looper.getMainLooper())
     private var scheduleRunnable: Runnable? = null
+    private val hideButtonHandler = Handler(Looper.getMainLooper())
+    private var hideButtonRunnable: Runnable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setupLockscreenWake()
         setContentView(R.layout.activity_main)
 
         prefs = getSharedPreferences("dashboard", MODE_PRIVATE)
         webView = findViewById(R.id.webView)
         setupWebView()
 
-        findViewById<FloatingActionButton>(R.id.menuButton).setOnClickListener { showSettingsDialog() }
+        menuButton = findViewById(R.id.menuButton)
+        menuButton.setOnClickListener { showSettingsDialog() }
 
         if (prefs.getString(KEY_OWNER, "").isNullOrBlank() || prefs.getString(KEY_REPO, "").isNullOrBlank()) {
             showSettingsDialog()
@@ -52,17 +64,53 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /** Lässt die App auch über einem gesperrten Bildschirm erscheinen, wenn sie vom Weck-Alarm gestartet wird. */
+    private fun setupLockscreenWake() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+            setShowWhenLocked(true)
+            setTurnScreenOn(true)
+        } else {
+            @Suppress("DEPRECATION")
+            window.addFlags(
+                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or
+                    WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON or
+                    WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+            )
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         applyScreenSchedule()
+        showMenuButtonTemporarily()
     }
 
     override fun onStop() {
         scheduleRunnable?.let { scheduleHandler.removeCallbacks(it) }
+        hideButtonRunnable?.let { hideButtonHandler.removeCallbacks(it) }
         super.onStop()
     }
 
-    /** Prüft jede Minute, ob der Bildschirm laut Zeitplan (siehe Schedule.kt) wach bleiben soll. */
+    /** Jede Berührung (auch im WebView-Inhalt) zeigt den Einstellungs-Button kurz wieder an. */
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        if (ev.action == MotionEvent.ACTION_DOWN) showMenuButtonTemporarily()
+        return super.dispatchTouchEvent(ev)
+    }
+
+    private fun showMenuButtonTemporarily() {
+        hideButtonRunnable?.let { hideButtonHandler.removeCallbacks(it) }
+        menuButton.animate().cancel()
+        menuButton.alpha = 1f
+        menuButton.visibility = View.VISIBLE
+        val r = Runnable {
+            menuButton.animate().alpha(0f).setDuration(400).withEndAction { menuButton.visibility = View.INVISIBLE }.start()
+        }
+        hideButtonRunnable = r
+        hideButtonHandler.postDelayed(r, 4000L)
+    }
+
+    /** Prüft jede Minute, ob der Bildschirm laut Zeitplan (siehe Schedule.kt) wach bleiben soll,
+     *  und hält den nächsten Weck-Alarm aktuell. */
     private fun applyScreenSchedule() {
         scheduleRunnable?.let { scheduleHandler.removeCallbacks(it) }
         if (Schedule.isOnNow(prefs)) {
@@ -70,6 +118,7 @@ class MainActivity : AppCompatActivity() {
         } else {
             window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         }
+        AlarmScheduler.scheduleNext(this)
         val r = Runnable { applyScreenSchedule() }
         scheduleRunnable = r
         scheduleHandler.postDelayed(r, 60_000L)
@@ -114,7 +163,7 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
-    /** Einfacher Einstellungsdialog: GitHub-Zugang, Gerät, Aktualisierungs-Takt. */
+    /** Einfacher Einstellungsdialog: GitHub-Zugang, Gerät, Aktualisierungs-Takt, Zeitplan, Automatisierung. */
     private fun showSettingsDialog() {
         val pad = (16 * resources.displayMetrics.density).toInt()
         val layout = LinearLayout(this).apply {
@@ -146,6 +195,27 @@ class MainActivity : AppCompatActivity() {
             setPadding(0, pad, 0, 0)
             setOnClickListener { startActivity(Intent(this@MainActivity, ScheduleActivity::class.java)) }
         })
+
+        val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
+        if (!powerManager.isIgnoringBatteryOptimizations(packageName)) {
+            layout.addView(Button(this).apply {
+                text = getString(R.string.settings_battery)
+                setPadding(0, pad / 2, 0, 0)
+                setOnClickListener {
+                    startActivity(Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS, Uri.parse("package:$packageName")))
+                }
+            })
+        }
+
+        if (!AlarmScheduler.canScheduleExact(this)) {
+            layout.addView(Button(this).apply {
+                text = getString(R.string.settings_exact_alarm)
+                setPadding(0, pad / 2, 0, 0)
+                setOnClickListener {
+                    startActivity(Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM, Uri.parse("package:$packageName")))
+                }
+            })
+        }
 
         val scroll = android.widget.ScrollView(this).apply {
             addView(layout)

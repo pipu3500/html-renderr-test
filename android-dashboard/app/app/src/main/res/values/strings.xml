@@ -12,6 +12,8 @@
     <string name="menu_refresh">Jetzt aktualisieren</string>
     <string name="not_configured">Noch nicht eingerichtet. Tippe oben rechts auf die drei Punkte, um GitHub-Benutzername, Repository und Geräte-Kennung einzutragen (siehe android-dashboard/editor.html).</string>
     <string name="settings_schedule">Zeitplan für den Bildschirm …</string>
+    <string name="settings_battery">Akku-Optimierung für diese App deaktivieren</string>
+    <string name="settings_exact_alarm">Pünktliches Aufwecken erlauben</string>
     <string name="schedule_title">Zeitplan für den Bildschirm</string>
     <string name="schedule_master">Zeitplan aktiv</string>
     <string name="schedule_hint">Für jeden Wochentag festlegen, in welcher Zeit der Bildschirm wach bleiben soll. Außerhalb dieser Zeit greift die normale Bildschirm-Zeitsperre des Geräts; ein bereits ausgeschalteter Bildschirm wird dadurch nicht aktiv wieder eingeschaltet.</string>

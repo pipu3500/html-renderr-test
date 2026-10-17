@@ -218,9 +218,17 @@
   var layout = { widgets: {} }, nodes = {}, library = [];
 
   function applyLayout(doc) {
-    var dev = (doc.profiles || []).filter(function (p) { return p && p.widgets; })
-      .find(function (p) { return p.id === CFG.device || p.file === CFG.device; }) || (doc.profiles || [])[0];
-    if (!dev) return;
+    var list = (doc.profiles || []).filter(function (p) { return p && p.widgets; });
+    var dev = CFG.device ? list.find(function (p) { return p.id === CFG.device; }) : list[0];
+    if (!dev) {
+      if (CFG.device) {
+        document.body.innerHTML = '<div style="padding:30px;font:16px sans-serif;color:#5b6b82">Gerät „' + CFG.device.replace(/</g, '&lt;') +
+          '“ wurde in den Einstellungen nicht gefunden (umbenannt oder gelöscht?). Bitte die Geräte-Kennung in den App-Einstellungen prüfen, oder im Editor ein Gerät mit dieser Kennung anlegen.</div>';
+      } else if (!list.length) {
+        document.body.innerHTML = '<div style="padding:30px;font:16px sans-serif;color:#5b6b82">In den Einstellungen ist noch kein Gerät angelegt. Bitte zuerst im Editor eines anlegen und hochladen.</div>';
+      }
+      return;
+    }
     layout = dev;
     library = Array.isArray(doc.collections) ? doc.collections : [];
     if (doc.settings && Number(doc.settings.updateMinutes) > 0) CFG.changeMinutes = Math.min(1440, Math.floor(Number(doc.settings.updateMinutes)));
@@ -314,7 +322,12 @@
 
   function loadConfig() {
     if (!configUrl) { document.body.innerHTML = '<div style="padding:30px;font:16px sans-serif;color:#5b6b82">Kein GitHub-Repository eingestellt. Bitte in den App-Einstellungen Benutzername, Repository und Gerät eintragen.</div>'; return; }
-    fetch(configUrl, { cache: 'no-store' }).then(function (r) {
+    // jsDelivr cacht Antworten serverseitig (unabhängig vom "no-store" unten, das nur den
+    // Browser-/WebView-Cache betrifft) und das Leeren dieses Caches nach dem Hochladen ist nicht
+    // immer sofort wirksam. Ein sich ändernder Parameter zwingt jsDelivr bei jeder Abfrage zu
+    // einem frischen Abruf von GitHub, unabhängig vom Cache-Zustand.
+    var bustedUrl = configUrl + (configUrl.indexOf('?') >= 0 ? '&' : '?') + '_=' + Date.now();
+    fetch(bustedUrl, { cache: 'no-store' }).then(function (r) {
       if (!r.ok) throw new Error('HTTP ' + r.status);
       return r.json();
     }).then(applyLayout).catch(function (err) {

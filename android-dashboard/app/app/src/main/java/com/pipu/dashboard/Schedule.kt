@@ -50,4 +50,31 @@ object Schedule {
         val m = ((min % 1440) + 1440) % 1440
         return String.format("%02d:%02d", m / 60, m % 60)
     }
+
+    /**
+     * Zeitpunkt (in Millisekunden) des nächsten Wechsels von "aus" auf "an", damit das Gerät
+     * dazu per Alarm geweckt werden kann. null, wenn kein Zeitplan aktiv ist oder kein Tag
+     * eingeschränkt wird (dann bleibt der Bildschirm ohnehin durchgehend wach, kein Wecken nötig).
+     */
+    fun nextWakeMillis(prefs: SharedPreferences, from: Calendar = Calendar.getInstance()): Long? {
+        if (!isMasterEnabled(prefs)) return null
+        var best: Long? = null
+        for (offset in 0..7) {
+            val dayCal = (from.clone() as Calendar).apply { add(Calendar.DAY_OF_YEAR, offset) }
+            val weekday = (dayCal.get(Calendar.DAY_OF_WEEK) + 5) % 7
+            val d = load(prefs, weekday)
+            if (!d.enabled || d.startMin == d.endMin) continue
+            val candidate = (dayCal.clone() as Calendar).apply {
+                set(Calendar.HOUR_OF_DAY, d.startMin / 60)
+                set(Calendar.MINUTE, d.startMin % 60)
+                set(Calendar.SECOND, 0)
+                set(Calendar.MILLISECOND, 0)
+            }
+            if (candidate.timeInMillis > from.timeInMillis) {
+                val t = candidate.timeInMillis
+                if (best == null || t < best!!) best = t
+            }
+        }
+        return best
+    }
 }

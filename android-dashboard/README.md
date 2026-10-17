@@ -40,9 +40,16 @@ und keinen eigenen Rendering-Workflow für Android.
 Die App lädt ihr Layout dann live von
 `https://cdn.jsdelivr.net/gh/<Benutzername>/<Repository>@<Branch>/android-dashboard/devices.json`
 (jsDelivr spiegelt öffentliche GitHub-Repos kostenlos, mit den richtigen Content-Types — direkt
-von GitHub geht das aus technischen Gründen nicht). Der Editor leert den jsDelivr-Cache beim
-Hochladen automatisch mit; ganz frisch ist die App trotzdem erst, wenn sie das nächste Mal
-aktualisiert (Einstellung „Aktualisieren alle … Minuten“, Standard 15).
+von GitHub geht das aus technischen Gründen nicht). Damit Änderungen zuverlässig ankommen, hängt
+jede Abfrage einen sich ändernden Parameter an, der sowohl den Cache im Gerät als auch den von
+jsDelivr gezielt umgeht (das alleinige Verlassen auf jsDelivrs eigene Cache-Leerung war nicht
+zuverlässig genug — nach mehreren Änderungen hintereinander blieb die App teils auf einem alten
+Stand hängen). Ganz frisch ist die App trotzdem erst, wenn sie das nächste Mal aktualisiert
+(Einstellung „Aktualisieren alle … Minuten“, Standard 15 — in der App unter den drei Punkten
+jederzeit auch sofort über „Speichern“ im Einstellungsdialog auslösbar).
+
+Wird ein in der App eingetragenes Gerät im Editor gelöscht oder umbenannt, zeigt die App das jetzt
+deutlich als Fehlermeldung an, statt wie zuvor unbemerkt auf ein anderes Gerät zurückzufallen.
 
 ## APK bekommen
 
@@ -64,20 +71,39 @@ Diese APK ist nicht im Play Store, daher fragt Android beim ersten Mal nach, ob 
 dieser Quelle (z. B. dem Browser oder Dateien-App) erlaubt werden sollen. Das ist normal für
 selbst gebaute Apps und muss einmalig bestätigt werden.
 
-## Zeitplan für den Bildschirm
+## Zeitplan für den Bildschirm (voll automatisch)
 
 In der App unter den drei Punkten oben rechts → „Zeitplan für den Bildschirm …“. Pro Wochentag
-ein Schieberegler mit zwei Griffen (von … bis), dazu Schnellknöpfe „Ganztägig“ und „Aus“. Innerhalb
-der eingestellten Zeiten hält die App den Bildschirm wach; außerhalb greift die normale
-Bildschirm-Zeitsperre des Geräts. Ein bereits ausgeschalteter Bildschirm wird dadurch nicht aktiv
-wieder eingeschaltet — dafür bräuchte die App Geräteverwalter-Rechte, die hier bewusst nicht
-genutzt werden. Ohne eingeschalteten Zeitplan bleibt der Bildschirm wie bisher immer wach.
+ein Schieberegler mit zwei Griffen (von … bis), dazu Schnellknöpfe „Ganztägig“ und „Aus“. Ohne
+eingeschalteten Zeitplan (Hauptschalter oben) bleibt der Bildschirm wie bisher immer wach.
+
+Innerhalb der eingestellten Zeiten hält die App den Bildschirm wach. Zum **Start** einer
+Einschaltzeit weckt sie das Gerät zusätzlich selbstständig auf (per Alarm, auch aus dem
+Ruhezustand), damit kein manuelles Einschalten nötig ist. Am **Ende** einer Einschaltzeit lässt
+sie nur die Wach-Sperre los; das Gerät schläft dann nach der normalen Bildschirm-Zeitsperre
+(Android-Einstellungen → Display) ein — für ein zügiges Abschalten dort am besten eine kurze
+Zeitspanne einstellen, z. B. 15–30 Sekunden. Ein aktives Ausschalten durch die App selbst ist ohne
+Geräteverwalter-Rechte nicht möglich, die hier bewusst nicht genutzt werden.
+
+Damit das pünktliche Aufwecken zuverlässig funktioniert, bietet die App in den Einstellungen bei
+Bedarf zwei weitere Schritte an (je ein Knopf, erscheinen nur, wenn nötig):
+- **Akku-Optimierung deaktivieren** — sonst könnte Android die App zwischen den Weckzeiten ganz
+  einfrieren.
+- **Pünktliches Aufwecken erlauben** — ab Android 12 muss diese Berechtigung einmalig in den
+  Systemeinstellungen bestätigt werden (wie bei Wecker-Apps).
+
+Nach einem Neustart des Geräts stellt sich der nächste Weck-Alarm von selbst wieder ein.
 
 ## Wetterdienste
 
 Wie beim Kindle: Open-Meteo (Standard), DWD über Bright Sky, MET Norway. Alle drei sind
 öffentliche, für Browser freigegebene Programmierschnittstellen (CORS erlaubt), die App braucht
 dafür keine eigenen Schlüssel oder Umwege.
+
+## Einstellungs-Button
+
+Der Button oben rechts blendet sich nach ein paar Sekunden ohne Berührung automatisch aus, damit
+er das Dashboard nicht stört. Jede Berührung des Bildschirms lässt ihn kurz wieder erscheinen.
 
 ## Grenzen und Hinweise
 
