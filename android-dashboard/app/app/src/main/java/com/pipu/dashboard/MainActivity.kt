@@ -24,6 +24,9 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 /**
@@ -49,6 +52,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setupLockscreenWake()
         setContentView(R.layout.activity_main)
+        setupImmersiveFullscreen()
 
         prefs = getSharedPreferences("dashboard", MODE_PRIVATE)
         webView = findViewById(R.id.webView)
@@ -83,6 +87,22 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         applyScreenSchedule()
         showMenuButtonTemporarily()
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        // Immersiver Modus wird vom System gelegentlich verlassen (z. B. nach einem Dialog);
+        // bei Rückkehr des Fensterfokus erneut anfordern, damit der Rand dauerhaft frei bleibt.
+        if (hasFocus) setupImmersiveFullscreen()
+    }
+
+    /** Zeichnet den Inhalt randlos bis unter die Systemleisten und blendet sie aus (modernes
+     *  Gegenstück zum veralteten android:windowFullscreen, das ab Android 15 nicht mehr greift). */
+    private fun setupImmersiveFullscreen() {
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        val controller = WindowInsetsControllerCompat(window, window.decorView)
+        controller.hide(WindowInsetsCompat.Type.systemBars())
+        controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
     }
 
     override fun onStop() {

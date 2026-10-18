@@ -6,9 +6,12 @@
         <item name="android:windowBackground">@color/background</item>
     </style>
 
-    <!-- Vollbild ohne Statusleiste, für den Dashboard-Betrieb (z. B. wandmontiertes Tablet) -->
+    <!-- Vollbild ohne Statusleiste, für den Dashboard-Betrieb (z. B. wandmontiertes Tablet).
+         Das eigentliche Ausblenden der Systemleisten passiert in MainActivity.kt per
+         WindowInsetsControllerCompat: android:windowFullscreen allein wird ab Android 15
+         (Edge-to-edge standardmäßig aktiv) nicht mehr zuverlässig beachtet und hinterlässt
+         sonst genau die Lücke, in der sonst die Statusleiste säße. -->
     <style name="Theme.Dashboard.Fullscreen" parent="Theme.Dashboard">
-        <item name="android:windowFullscreen">true</item>
         <item name="android:windowNoTitle">true</item>
     </style>
 </resources>

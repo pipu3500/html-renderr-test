@@ -71,6 +71,16 @@ Diese APK ist nicht im Play Store, daher fragt Android beim ersten Mal nach, ob 
 dieser Quelle (z. B. dem Browser oder Dateien-App) erlaubt werden sollen. Das ist normal für
 selbst gebaute Apps und muss einmalig bestätigt werden.
 
+## Vollbild
+
+Die App blendet Status- und Navigationsleiste aus und zeichnet randlos bis an den Bildschirmrand
+(modernes „Edge-to-edge“, per `WindowInsetsControllerCompat` statt des veralteten
+`android:windowFullscreen`, das Android 15 und neuer nicht mehr zuverlässig beachtet — sonst bleibt
+genau an der Stelle der sonst eingeblendeten Statusleiste eine ungenutzte schwarze Lücke, und die
+Seite füllt die restliche Fläche nicht richtig, weil sie beim Start kurzzeitig von einer kleineren
+Fenstergröße ausgeht, bevor die WebView ihre endgültige Größe erreicht, und das nicht zuverlässig
+mitbekommt). Mit Fingerwisch vom Rand lassen sich die Systemleisten bei Bedarf kurz einblenden.
+
 ## Zeitplan für den Bildschirm (voll automatisch)
 
 In der App unter den drei Punkten oben rechts → „Zeitplan für den Bildschirm …“. Pro Wochentag

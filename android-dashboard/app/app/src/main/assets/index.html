@@ -240,12 +240,25 @@
 
   function fitCanvas() {
     var canvas = document.getElementById('canvas');
-    var w = canvas.offsetWidth || layout.width || 1024, h = canvas.offsetHeight || layout.height || 768;
-    var scale = Math.min(window.innerWidth / w, window.innerHeight / h);
-    canvas.style.transform = 'translate(' + Math.round((window.innerWidth - w * scale) / 2) + 'px,' +
-      Math.round((window.innerHeight - h * scale) / 2) + 'px) scale(' + scale + ')';
+    var w = layout.width || canvas.offsetWidth || 1024, h = layout.height || canvas.offsetHeight || 768;
+    // document.documentElement.clientWidth/Height statt window.innerWidth/innerHeight: bleibt auch
+    // bei Android-Fensteranimationen (Systemleisten ein-/ausblenden) zuverlässig aktuell.
+    var vw = document.documentElement.clientWidth || window.innerWidth;
+    var vh = document.documentElement.clientHeight || window.innerHeight;
+    if (!vw || !vh) return;
+    var scale = Math.min(vw / w, vh / h);
+    canvas.style.transform = 'translate(' + Math.round((vw - w * scale) / 2) + 'px,' +
+      Math.round((vh - h * scale) / 2) + 'px) scale(' + scale + ')';
   }
   window.addEventListener('resize', fitCanvas);
+  window.addEventListener('orientationchange', fitCanvas);
+  document.addEventListener('visibilitychange', fitCanvas);
+  // In einer Android-WebView erreicht die Seite ihre endgültige Größe manchmal erst, nachdem
+  // Systemleisten ein-/ausgeblendet wurden, ohne dass dafür zuverlässig ein "resize"-Ereignis
+  // kommt. Deshalb zusätzlich kurz nach dem Laden mehrfach und danach dauerhaft im Sekundentakt
+  // neu einpassen (sehr billige Berechnung, unschädlich für Akku/Leistung).
+  [0, 150, 400, 800, 1500, 3000].forEach(function (ms) { setTimeout(fitCanvas, ms); });
+  setInterval(fitCanvas, 1000);
 
   var BUILD = {
     weather: function (root, s, W, H) {
