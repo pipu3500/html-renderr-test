@@ -740,7 +740,7 @@
       "zoom": 1,
       "widgets": {
         "weather": {
-          "enabled": true,
+          "enabled": false,
           "x": 0,
           "y": 1549,
           "w": 522,
