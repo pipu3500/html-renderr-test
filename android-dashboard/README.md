@@ -25,6 +25,14 @@ und keinen eigenen Rendering-Workflow für Android.
   eine eigene Datei, eigener Ort)
 - `app/` — das Android-Studio-/Gradle-Projekt (Kotlin), aus dem die APK gebaut wird
 
+## Diagnose-Anzeige
+
+In den App-Einstellungen (drei Punkte oben rechts) unter „Diagnose-Anzeige“ einschaltbar. Zeigt
+unten im Bild ein kleines, dauerhaft sichtbares Protokoll: die abgefragte Adresse, die
+HTTP-Antwort, Zeitpunkt, die Liste aller in `devices.json` gefundenen Geräte-Kennungen und welches
+Gerät ausgewählt wurde. Hilft beim Einrichten und bei der Fehlersuche (z. B. wenn die
+Geräte-Kennung nicht gefunden wird); für den normalen Betrieb ausgeschaltet lassen.
+
 ## Einrichtung
 
 1. `editor.html` öffnen (lokal im Browser, einfach doppelklicken).
@@ -38,18 +46,16 @@ und keinen eigenen Rendering-Workflow für Android.
    Branch und die Geräte-Kennung eintragen.
 
 Die App lädt ihr Layout dann live von
-`https://cdn.jsdelivr.net/gh/<Benutzername>/<Repository>@<Branch>/android-dashboard/devices.json`
-(jsDelivr spiegelt öffentliche GitHub-Repos kostenlos, mit den richtigen Content-Types — direkt
-von GitHub geht das aus technischen Gründen nicht). Damit Änderungen zuverlässig ankommen, hängt
-jede Abfrage einen sich ändernden Parameter an, der sowohl den Cache im Gerät als auch den von
-jsDelivr gezielt umgeht (das alleinige Verlassen auf jsDelivrs eigene Cache-Leerung war nicht
-zuverlässig genug — nach mehreren Änderungen hintereinander blieb die App teils auf einem alten
-Stand hängen). Ganz frisch ist die App trotzdem erst, wenn sie das nächste Mal aktualisiert
-(Einstellung „Aktualisieren alle … Minuten“, Standard 15 — in der App unter den drei Punkten
-jederzeit auch sofort über „Speichern“ im Einstellungsdialog auslösbar).
+`https://raw.githubusercontent.com/<Benutzername>/<Repository>/<Branch>/android-dashboard/devices.json`.
+Das liefert immer den zuletzt committeten Stand (anders als jsDelivr, das für unveränderliche,
+selten wechselnde Inhalte gedacht ist und hartnäckig cacht — frühere Versionen dieser App nutzten
+jsDelivr auch für devices.json, was dazu führte, dass Änderungen und neu angelegte Geräte teils gar
+nicht oder erst nach langer Verzögerung ankamen). jsDelivr kommt nur noch beim „Vorschau-Link“ zum
+Einsatz (zum Testen im Desktop-Browser), weil nur jsDelivr HTML-Dateien mit dem richtigen
+Content-Type ausliefert, den ein Browser zum Rendern braucht.
 
-Wird ein in der App eingetragenes Gerät im Editor gelöscht oder umbenannt, zeigt die App das jetzt
-deutlich als Fehlermeldung an, statt wie zuvor unbemerkt auf ein anderes Gerät zurückzufallen.
+Wird ein in der App eingetragenes Gerät im Editor gelöscht oder umbenannt, zeigt die App das
+deutlich als Fehlermeldung an, statt unbemerkt auf ein anderes Gerät zurückzufallen.
 
 ## APK bekommen
 

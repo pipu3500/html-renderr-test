@@ -158,11 +158,13 @@ class MainActivity : AppCompatActivity() {
         val repo = prefs.getString(KEY_REPO, "") ?: ""
         val branch = prefs.getString(KEY_BRANCH, "main") ?: "main"
         val device = prefs.getString(KEY_DEVICE, "") ?: ""
+        val debug = prefs.getBoolean(KEY_DEBUG, false)
         val url = "file:///android_asset/index.html" +
             "?owner=" + java.net.URLEncoder.encode(owner, "UTF-8") +
             "&repo=" + java.net.URLEncoder.encode(repo, "UTF-8") +
             "&branch=" + java.net.URLEncoder.encode(branch, "UTF-8") +
-            "&device=" + java.net.URLEncoder.encode(device, "UTF-8")
+            "&device=" + java.net.URLEncoder.encode(device, "UTF-8") +
+            "&debug=" + (if (debug) "1" else "0")
         webView.loadUrl(url)
         scheduleRefresh()
     }
@@ -210,6 +212,26 @@ class MainActivity : AppCompatActivity() {
             prefs.getInt(KEY_INTERVAL, 15).toString()
         ).apply { inputType = InputType.TYPE_CLASS_NUMBER }
 
+        val debugRow = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            setPadding(0, pad, 0, 0)
+        }
+        debugRow.addView(TextView(this).apply {
+            text = getString(R.string.settings_debug)
+            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+            gravity = android.view.Gravity.CENTER_VERTICAL
+        })
+        val debugSwitch = androidx.appcompat.widget.SwitchCompat(this).apply {
+            isChecked = prefs.getBoolean(KEY_DEBUG, false)
+        }
+        debugRow.addView(debugSwitch)
+        layout.addView(debugRow)
+        layout.addView(TextView(this).apply {
+            text = getString(R.string.settings_debug_hint)
+            textSize = 12f
+            setTextColor(0xFF5B6B82.toInt())
+        })
+
         layout.addView(Button(this).apply {
             text = getString(R.string.settings_schedule)
             setPadding(0, pad, 0, 0)
@@ -252,6 +274,7 @@ class MainActivity : AppCompatActivity() {
                     .putString(KEY_BRANCH, branchField.text.toString().trim().ifEmpty { "main" })
                     .putString(KEY_DEVICE, deviceField.text.toString().trim())
                     .putInt(KEY_INTERVAL, intervalField.text.toString().toIntOrNull()?.coerceIn(1, 1440) ?: 15)
+                    .putBoolean(KEY_DEBUG, debugSwitch.isChecked)
                     .apply()
                 loadDashboard()
             }
@@ -265,5 +288,6 @@ class MainActivity : AppCompatActivity() {
         private const val KEY_BRANCH = "branch"
         private const val KEY_DEVICE = "device"
         private const val KEY_INTERVAL = "interval_minutes"
+        private const val KEY_DEBUG = "debug_enabled"
     }
 }

@@ -82,11 +82,43 @@
     repo: qs.get('repo') || '',
     branch: qs.get('branch') || 'main',
     device: qs.get('device') || '',
+    debug: qs.get('debug') === '1',
     changeMinutes: 60   // überschrieben durch devices.json settings.updateMinutes
   };
+  // raw.githubusercontent.com statt jsDelivr: jsDelivrs GitHub-Spiegel ist für unveränderliche,
+  // selten wechselnde Inhalte gedacht und cacht hartnäckig (der Query-String zum gezielten
+  // Umgehen wird für die Cache-Zuordnung offenbar ignoriert) - für eine Datei, die sich bei jeder
+  // Bearbeitung im Editor ändern soll, ist raw.githubusercontent.com die richtige Wahl: liefert
+  // immer den zuletzt committeten Stand, mit CORS-Freigabe für Abfragen aus der App.
   var configUrl = CFG.owner && CFG.repo
-    ? 'https://cdn.jsdelivr.net/gh/' + CFG.owner + '/' + CFG.repo + '@' + CFG.branch + '/android-dashboard/devices.json'
+    ? 'https://raw.githubusercontent.com/' + CFG.owner + '/' + CFG.repo + '/' + CFG.branch + '/android-dashboard/devices.json'
     : null;
+
+  /* ---------- Diagnose (per App-Einstellung ein-/ausschaltbar) ---------- */
+  var debugLog = [];
+  function debugAdd(entry) {
+    entry.t = new Date().toLocaleTimeString('de-DE');
+    debugLog.unshift(entry);
+    if (debugLog.length > 12) debugLog.length = 12;
+    if (CFG.debug) paintDebugPanel();
+  }
+  function paintDebugPanel() {
+    var el = document.getElementById('debugPanel');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'debugPanel';
+      el.style.cssText = 'position:fixed;left:0;bottom:0;right:0;max-height:45vh;overflow:auto;' +
+        'background:rgba(10,15,25,0.92);color:#aef0b0;font:11px/1.4 monospace;padding:8px 10px;z-index:9999;white-space:pre-wrap;';
+      document.body.appendChild(el);
+    }
+    var lines = ['DEBUG  owner=' + CFG.owner + ' repo=' + CFG.repo + ' branch=' + CFG.branch + ' device="' + CFG.device + '"',
+      'Konfig-URL: ' + (configUrl || '(keine)')];
+    debugLog.forEach(function (e) {
+      lines.push(e.t + '  ' + e.msg);
+    });
+    el.textContent = lines.join('\n');
+  }
+  if (CFG.debug) paintDebugPanel();
 
   function num(v, fallback) { v = Number(v); return isFinite(v) ? Math.round(v) : fallback; }
   function text(v, fallback) {
@@ -219,16 +251,23 @@
 
   function applyLayout(doc) {
     var list = (doc.profiles || []).filter(function (p) { return p && p.widgets; });
+    var ids = list.map(function (p) { return p.id; });
+    debugAdd({ msg: 'devices.json gelesen, ' + list.length + ' Gerät(e): [' + ids.join(', ') + ']' });
     var dev = CFG.device ? list.find(function (p) { return p.id === CFG.device; }) : list[0];
     if (!dev) {
+      debugAdd({ msg: 'Gerät "' + CFG.device + '" NICHT in der Liste gefunden' });
+      var extra = CFG.debug ? '<br><br><small>Gefundene Geräte-Kennungen: ' + (ids.length ? ids.join(', ') : '(keine)') +
+        '<br>Abgefragte Adresse: ' + configUrl + '</small>' : '';
       if (CFG.device) {
         document.body.innerHTML = '<div style="padding:30px;font:16px sans-serif;color:#5b6b82">Gerät „' + CFG.device.replace(/</g, '&lt;') +
-          '“ wurde in den Einstellungen nicht gefunden (umbenannt oder gelöscht?). Bitte die Geräte-Kennung in den App-Einstellungen prüfen, oder im Editor ein Gerät mit dieser Kennung anlegen.</div>';
+          '“ wurde in den Einstellungen nicht gefunden (umbenannt oder gelöscht, oder noch nicht hochgeladen?). Bitte die Geräte-Kennung in den App-Einstellungen prüfen, oder im Editor ein Gerät mit dieser Kennung anlegen und hochladen.' + extra + '</div>';
       } else if (!list.length) {
-        document.body.innerHTML = '<div style="padding:30px;font:16px sans-serif;color:#5b6b82">In den Einstellungen ist noch kein Gerät angelegt. Bitte zuerst im Editor eines anlegen und hochladen.</div>';
+        document.body.innerHTML = '<div style="padding:30px;font:16px sans-serif;color:#5b6b82">In den Einstellungen ist noch kein Gerät angelegt. Bitte zuerst im Editor eines anlegen und hochladen.' + extra + '</div>';
       }
+      if (CFG.debug) paintDebugPanel();
       return;
     }
+    debugAdd({ msg: 'Gerät "' + dev.id + '" (' + dev.name + ', ' + dev.width + '×' + dev.height + ') wird angezeigt' });
     layout = dev;
     library = Array.isArray(doc.collections) ? doc.collections : [];
     if (doc.settings && Number(doc.settings.updateMinutes) > 0) CFG.changeMinutes = Math.min(1440, Math.floor(Number(doc.settings.updateMinutes)));
@@ -335,17 +374,20 @@
 
   function loadConfig() {
     if (!configUrl) { document.body.innerHTML = '<div style="padding:30px;font:16px sans-serif;color:#5b6b82">Kein GitHub-Repository eingestellt. Bitte in den App-Einstellungen Benutzername, Repository und Gerät eintragen.</div>'; return; }
-    // jsDelivr cacht Antworten serverseitig (unabhängig vom "no-store" unten, das nur den
-    // Browser-/WebView-Cache betrifft) und das Leeren dieses Caches nach dem Hochladen ist nicht
-    // immer sofort wirksam. Ein sich ändernder Parameter zwingt jsDelivr bei jeder Abfrage zu
-    // einem frischen Abruf von GitHub, unabhängig vom Cache-Zustand.
-    var bustedUrl = configUrl + (configUrl.indexOf('?') >= 0 ? '&' : '?') + '_=' + Date.now();
+    // Zusätzlich zu "no-store" (wirkt nur gegen den lokalen Cache der App) ein sich ändernder
+    // Parameter gegen jede unterwegs liegende Zwischenstation (z. B. ein Mobilfunk-Proxy).
+    var bustedUrl = configUrl + '?_=' + Date.now();
+    debugAdd({ msg: 'lade ' + bustedUrl });
     fetch(bustedUrl, { cache: 'no-store' }).then(function (r) {
-      if (!r.ok) throw new Error('HTTP ' + r.status);
+      debugAdd({ msg: 'Antwort: HTTP ' + r.status });
+      if (!r.ok) throw new Error('HTTP ' + r.status + ' von ' + configUrl);
       return r.json();
     }).then(applyLayout).catch(function (err) {
+      debugAdd({ msg: 'FEHLER: ' + err.message });
       if (!layout.widgets || !Object.keys(layout.widgets).length) {
-        document.body.innerHTML = '<div style="padding:30px;font:16px sans-serif;color:#5b6b82">Einstellungen konnten nicht geladen werden: ' + err.message + '</div>';
+        var extra = CFG.debug ? '<br><br><small>Abgefragte Adresse: ' + configUrl + '</small>' : '';
+        document.body.innerHTML = '<div style="padding:30px;font:16px sans-serif;color:#5b6b82">Einstellungen konnten nicht geladen werden: ' + err.message + extra + '</div>';
+        if (CFG.debug) paintDebugPanel();
       }
     });
   }

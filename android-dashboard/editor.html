@@ -1851,12 +1851,15 @@
     } catch (err) { say(err.message || 'Laden fehlgeschlagen. Ist das Netzwerk erreichbar?', 'err'); }
   }
 
-  /* jsDelivr spiegelt öffentliche GitHub-Repos, cacht aber eine Weile. Nach dem Hochladen kurz
-     den Cache für devices.json leeren, damit die App die neuen Einstellungen schneller sieht. */
+  /* Die App selbst liest devices.json direkt von raw.githubusercontent.com (siehe web/index.html) -
+     das cacht nur kurz, ein Leeren ist dafür nicht nötig. Nur der "Vorschau-Link" (zum Testen im
+     Browser) läuft über jsDelivr, weil nur jsDelivr HTML korrekt als Webseite ausliefert; dafür
+     lohnt sich das Leeren nach dem Hochladen weiterhin. */
   function purgeJsDelivr() {
     if (!cfg.owner || !cfg.repo) return;
-    const url = `https://purge.jsdelivr.net/gh/${cfg.owner}/${cfg.repo}@${cfg.branch || 'main'}/android-dashboard/devices.json`;
-    fetch(url, { cache: 'no-store' }).catch(() => {});
+    const base = `https://purge.jsdelivr.net/gh/${cfg.owner}/${cfg.repo}@${cfg.branch || 'main'}/android-dashboard`;
+    fetch(base + '/devices.json', { cache: 'no-store' }).catch(() => {});
+    fetch(base + '/web/index.html', { cache: 'no-store' }).catch(() => {});
   }
 
   async function upload() {
@@ -1885,7 +1888,7 @@
       if (!result) throw new Error('Die Datei wurde gleichzeitig geändert. Bitte noch einmal auf „Hochladen“ klicken.');
       baseline = body; updateState();
       purgeJsDelivr();
-      say('Hochgeladen. Die App übernimmt die Änderungen beim nächsten Abgleich (spätestens nach einigen Minuten), oder sofort über „Jetzt aktualisieren“ in der App.', 'ok');
+      say('Hochgeladen. Die App übernimmt die Änderungen beim nächsten Abgleich (Einstellung „Aktualisieren alle … Minuten“), oder sofort über die App neu öffnen.', 'ok');
     } catch (err) { say(err.message || 'Hochladen fehlgeschlagen. Ist das Netzwerk erreichbar?', 'err'); }
     finally { btn.disabled = false; }
   }
